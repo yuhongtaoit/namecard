@@ -9,12 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class,SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude={SecurityAutoConfiguration.class})
 public class NamecardApplication {
 	
 	@RequestMapping("/")
     public String index(){
-		System.out.println(1111);
+		System.out.println(1111); 
+		
+		
+		
+		
+		  
         return "Hello Spring Boot";
         
     }
