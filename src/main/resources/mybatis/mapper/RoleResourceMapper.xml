@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.dao.RoleResourceDao" >
+    <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.RoleResourceEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="role_id" property="roleId" jdbcType="BIGINT" />
+        <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id, role_id, resource_id
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM role_resource
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+	   FROM role_resource
+	   WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.zhongwei.namecard.entity.RoleResourceEntity" >
+       INSERT INTO 
+       		role_resource
+       		(role_id,resource_id) 
+       	VALUES
+       		(#{roleId}, #{resourceId})
+    </insert>
+    
+    <update id="update" parameterType="com.zhongwei.namecard.entity.RoleResourceEntity" >
+       UPDATE 
+       		role_resource 
+       SET 
+       	<if test="roleId != null">role_id = #{roleId},</if>
+       	<if test="resourceId != null">resource_id = #{resourceId}</if>
+       WHERE 
+       		id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="java.lang.Long" >
+       DELETE FROM
+       		 role_resource 
+       WHERE 
+       		 id =#{id}
+    </delete>
+
+</mapper>
