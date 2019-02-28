@@ -22,8 +22,8 @@ public class UserController {
 		return users;
 	}
 	
-    @RequestMapping("/getUser")
-    public UserEntity getUser(Long id) {
+    @RequestMapping("/getUser/{id}")
+    public UserEntity getUser(@PathVariable("id") Long id) {
     	UserEntity user=userDao.getOne(id);
         return user;
     }
