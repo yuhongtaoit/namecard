@@ -4,18 +4,20 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.zhongwei.namecard.entity.RoleEntity;
+import com.zhongwei.namecard.entity.UserRoleEntity;
 
 @Mapper
 public interface UserRoleDao {
 	
-	List<RoleEntity> getAll();
+	List<UserRoleEntity> getAll();
 	
-	RoleEntity getOne(Long id);
+	UserRoleEntity getOne(Long id);
+	
+	List<Integer> getRoleIdsByUserId(Integer userId);
 
-	void insert(RoleEntity role);
+	void insert(UserRoleEntity userRole);
 
-	void update(RoleEntity role);
+	void update(UserRoleEntity userRole);
 
 	void delete(Long id);
 

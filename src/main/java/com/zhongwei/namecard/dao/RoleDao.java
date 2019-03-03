@@ -11,6 +11,8 @@ public interface RoleDao {
 	
 	List<RoleEntity> getAll();
 	
+	List<RoleEntity> getByIds(List<Integer> roleIds);
+	
 	RoleEntity getOne(Long id);
 
 	void insert(RoleEntity role);

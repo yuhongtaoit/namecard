@@ -16,6 +16,16 @@
        <include refid="Base_Column_List" />
 	   FROM resource
     </select>
+    
+    <select id="getResourcesByIds" parameterType="ArrayList" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM resource
+	   WHERE id IN 
+	   <foreach collection="resourceIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+       </foreach>
+    </select>
 
     <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
         SELECT 

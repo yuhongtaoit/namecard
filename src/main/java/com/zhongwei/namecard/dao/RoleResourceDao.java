@@ -4,18 +4,20 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.zhongwei.namecard.entity.RoleEntity;
+import com.zhongwei.namecard.entity.RoleResourceEntity;
 
 @Mapper
 public interface RoleResourceDao {
 	
-	List<RoleEntity> getAll();
+	List<RoleResourceEntity> getAll();
 	
-	RoleEntity getOne(Long id);
+	RoleResourceEntity getOne(Long id);
+	
+	List<Integer> getResourceIdsByRoleId(Integer roleId);
 
-	void insert(RoleEntity role);
+	void insert(RoleResourceEntity roleResource);
 
-	void update(RoleEntity role);
+	void update(RoleResourceEntity roleResource);
 
 	void delete(Long id);
 

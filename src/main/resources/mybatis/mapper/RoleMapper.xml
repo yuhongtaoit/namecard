@@ -16,6 +16,16 @@
        <include refid="Base_Column_List" />
 	   FROM role
     </select>
+    
+    <select id="getByIds" parameterType="ArrayList" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM role
+	   WHERE id IN 
+	   <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+       </foreach>
+    </select>
 
     <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
         SELECT 

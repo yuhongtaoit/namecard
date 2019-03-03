@@ -23,6 +23,13 @@
 	   FROM user_role
 	   WHERE id = #{id}
     </select>
+    
+    <select id="getRoleIdsByUserId" parameterType="java.lang.Integer" resultMap="ArrayList" >
+        SELECT role_id
+       <include refid="Base_Column_List" />
+	   FROM user_role
+	   WHERE user_id = #{userId}
+    </select>
 
     <insert id="insert" parameterType="com.zhongwei.namecard.entity.UserRoleEntity" >
        INSERT INTO 
