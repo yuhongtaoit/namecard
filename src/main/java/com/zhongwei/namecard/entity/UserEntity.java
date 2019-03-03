@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Long id;
+	private Integer id;
 	private String userName;
 	private String passWord;
 	private String userSex;
@@ -22,11 +22,11 @@ public class UserEntity implements Serializable {
 		this.userSex = userSex;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

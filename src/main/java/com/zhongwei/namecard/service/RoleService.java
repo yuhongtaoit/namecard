@@ -3,11 +3,13 @@ package com.zhongwei.namecard.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zhongwei.namecard.dao.RoleDao;
 import com.zhongwei.namecard.dao.UserRoleDao;
 import com.zhongwei.namecard.entity.RoleEntity;
 
+@Service
 public class RoleService {
 	
 	@Autowired

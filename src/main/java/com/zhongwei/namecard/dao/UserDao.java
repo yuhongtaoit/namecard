@@ -12,6 +12,8 @@ public interface UserDao {
 	List<UserEntity> getAll();
 	
 	UserEntity getOne(Long id);
+	
+	List<UserEntity> getByUserName(String userName);
 
 	void insert(UserEntity user);
 
