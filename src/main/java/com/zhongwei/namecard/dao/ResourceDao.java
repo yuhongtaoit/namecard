@@ -21,4 +21,6 @@ public interface ResourceDao {
 	
 	void delete(Long id);
 
+	ResourceEntity getResourceByUrl(String url);
+
 }

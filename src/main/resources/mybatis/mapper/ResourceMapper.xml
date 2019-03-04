@@ -33,6 +33,13 @@
 	   FROM resource
 	   WHERE id = #{id}
     </select>
+    
+    <select id="getResourceByUrl" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+	   FROM resource
+	   WHERE url = #{url}
+    </select>
 
     <insert id="insert" parameterType="com.zhongwei.namecard.entity.ResourceEntity" >
        INSERT INTO 

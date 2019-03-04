@@ -18,9 +18,13 @@ public class ResourceService {
 	@Autowired
 	private ResourceDao resourceDao;
 
-	List<ResourceEntity> getResourcesByRoleId(Integer roleId){
+	public List<ResourceEntity> getResourcesByRoleId(Integer roleId){
 		List<Integer> resourceIds = roleResourceDao.getResourceIdsByRoleId(roleId);
 		List<ResourceEntity> resources = resourceDao.getResourcesByIds(resourceIds);
 		return resources;
+	}
+
+	public ResourceEntity getResourceByUrl(String requestUrl) {
+		return resourceDao.getResourceByUrl(requestUrl);
 	}
 }
