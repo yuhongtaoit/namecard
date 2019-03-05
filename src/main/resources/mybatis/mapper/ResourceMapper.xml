@@ -22,7 +22,7 @@
        <include refid="Base_Column_List" />
 	   FROM resource
 	   WHERE id IN 
-	   <foreach collection="resourceIds" index="index" item="item" open="(" separator="," close=")">
+	   <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
        </foreach>
     </select>

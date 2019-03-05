@@ -22,10 +22,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 import com.zhongwei.namecard.component.MyAccessDeniedHandler;
 import com.zhongwei.namecard.service.UserService;
@@ -36,6 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
     private UserService userService;
+	
+	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+	
+	private RequestCache requestCache = new HttpSessionRequestCache();
  
     //根据一个url请求，获得访问它所需要的roles权限
     @Autowired
@@ -72,10 +81,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                         return o;
                     }
                 })
-//                .antMatchers("/hello").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .loginProcessingUrl("/namecard/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
@@ -102,13 +111,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
+//                        httpServletResponse.setContentType("application/json;charset=utf-8");
+//                        PrintWriter out = httpServletResponse.getWriter();
 //                        ObjectMapper objectMapper = new ObjectMapper();
-                        String s = "{\"status\":\"success\",\"msg\":"  + "}";
-                        out.write(s);
-                        out.flush();
-                        out.close();
+//                        String s = "{\"status\":\"success\",\"msg\":"  + "123"+"}";
+//                        out.write(s);
+//                        out.flush();
+//                        out.close();
+                        redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/index");
                     }
                 })
                 .and()

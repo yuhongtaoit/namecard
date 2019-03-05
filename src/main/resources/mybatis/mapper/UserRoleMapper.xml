@@ -24,9 +24,8 @@
 	   WHERE id = #{id}
     </select>
     
-    <select id="getRoleIdsByUserId" parameterType="java.lang.Integer" resultType="ArrayList" >
-        SELECT role_id
-       <include refid="Base_Column_List" />
+    <select id="getRoleIdsByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+       SELECT role_id
 	   FROM user_role
 	   WHERE user_id = #{userId}
     </select>

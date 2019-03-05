@@ -20,7 +20,10 @@ public class ResourceService {
 
 	public List<ResourceEntity> getResourcesByRoleId(Integer roleId){
 		List<Integer> resourceIds = roleResourceDao.getResourceIdsByRoleId(roleId);
-		List<ResourceEntity> resources = resourceDao.getResourcesByIds(resourceIds);
+		List<ResourceEntity> resources = null;
+		if(resourceIds!=null && resourceIds.size()>0) {
+			resources = resourceDao.getResourcesByIds(resourceIds);
+		}
 		return resources;
 	}
 

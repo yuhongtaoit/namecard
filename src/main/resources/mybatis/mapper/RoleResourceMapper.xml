@@ -24,13 +24,13 @@
 	   WHERE id = #{id}
     </select>
     
-    <select id="getResourceIdsByRoleId" parameterType="java.lang.Integer" resultType="ArrayList" >
+    <select id="getResourceIdsByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
        SELECT resource_id
 	   FROM role_resource
 	   WHERE role_id = #{roleId}
     </select>
     
-    <select id="getRoleIdsByResourceId" parameterType="java.lang.Integer" resultType="ArrayList" >
+    <select id="getRoleIdsByResourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
        SELECT role_id
 	   FROM role_resource
 	   WHERE resource_id = #{resourceId}

@@ -24,13 +24,19 @@ public class RoleService {
 
 	public List<RoleEntity> getRolesByUserId(Integer userId){
 		List<Integer> roleIds = userRoleDao.getRoleIdsByUserId(userId);
-		List<RoleEntity> roles = roleDao.getByIds(roleIds);
+		List<RoleEntity> roles = null;
+		if(roleIds!=null && roleIds.size()>0) {
+			roles = roleDao.getByIds(roleIds);
+		}
 		return roles;
 	}
 	
 	public List<RoleEntity> getRolesByResourceId(Integer resourceId){
 		List<Integer> roleIds = roleResourceDao.getRoleIdsByResourceId(resourceId);
-		List<RoleEntity> roles = roleDao.getByIds(roleIds);
+		List<RoleEntity> roles = null;
+		if(roleIds!=null && roleIds.size()>0) {
+			roles = roleDao.getByIds(roleIds);
+		}
 		return roles;
 	}
 }

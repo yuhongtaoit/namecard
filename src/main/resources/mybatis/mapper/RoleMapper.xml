@@ -22,7 +22,7 @@
        <include refid="Base_Column_List" />
 	   FROM role
 	   WHERE id IN 
-	   <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")">
+	   <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
        </foreach>
     </select>

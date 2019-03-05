@@ -30,7 +30,7 @@ public class UserController {
     
     @RequestMapping("/add")
     public void save(UserEntity user) {
-    	user.setUserName("yuhongtao");
+    	user.setUserName("admin");
     	user.setNickName("YHT");
     	user.setUserSex("男");
     	user.setPassWord("123456");
