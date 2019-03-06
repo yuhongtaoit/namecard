@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="jquery/jquery-form.js"></script>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 html{
@@ -43,31 +45,50 @@ body{
 }
 
 </style>
+
+<script type="text/javascript">
+function userList(){
+	$( "#mainList" ).load( "${pageContext.request.contextPath }/user/getUserList", function( response, status, xhr ) {
+		  $('#mainList').html(response);
+	});
+}
+
+function category(){
+	$( "#mainList" ).load( "${pageContext.request.contextPath }/category/getCategoryList", function( response, status, xhr ) {
+		  $('#mainList').html(response);
+	});
+}
+
+function product(){
+	$( "#mainList" ).load( "${pageContext.request.contextPath }/product/getProductList", function( response, status, xhr ) {
+		  $('#mainList').html(response);
+	});
+}
+
+function namecard(){
+	$( "#mainList" ).load( "${pageContext.request.contextPath }/namecard/getNamecardList", function( response, status, xhr ) {
+		  $('#mainList').html(response);
+	});
+}
+</script>
 </head>
 <body>
-	<div class="container">
-        <div class="row row-centered">
-            <div class="well col-md-4 column">
-                <h2 style="margin-top: 0">欢迎</h2>
-            </div>
-        </div>
-    </div>
-<script type="text/javascript">
-    $("#submit").click(
-        function() {
-            $.ajax({
-                url : "/namecard/login",
-                type : 'POST',
-                data : $("#form").serialize(),
-                success : function(data) {
-                    if (data.success) {
-                         window.location.href = "../index.html"
-                    } else {
-                         alert(data.msg);
-                    }
-                }
-            });
-        });
-</script>
+<div class="container">
+	<br/>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default" role="navigation" style="background-color: #FCF5E3">
+				<div class="navbar-header">
+					 <a class="navbar-brand" href="#" onclick="userList()">用户管理</a>
+					 <a class="navbar-brand" href="#" onclick="role()">角色管理</a>
+					 <a class="navbar-brand" href="#" onclick="namecard()">名片管理</a>
+					 <a class="navbar-brand" href="#" onclick="mall()">商城管理</a>
+				</div>
+			</nav>
+			<div class="jumbotron" id="mainList">
+			</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>
