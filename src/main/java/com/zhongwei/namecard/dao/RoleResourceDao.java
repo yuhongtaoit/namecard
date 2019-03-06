@@ -11,7 +11,7 @@ public interface RoleResourceDao {
 	
 	List<RoleResourceEntity> getAll();
 	
-	RoleResourceEntity getOne(Long id);
+	RoleResourceEntity getOne(Integer id);
 	
 	List<Integer> getResourceIdsByRoleId(Integer roleId);
 	

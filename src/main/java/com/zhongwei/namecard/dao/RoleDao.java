@@ -13,7 +13,7 @@ public interface RoleDao {
 	
 	List<RoleEntity> getByIds(List<Integer> roleIds);
 	
-	RoleEntity getOne(Long id);
+	RoleEntity getOne(Integer id);
 
 	void insert(RoleEntity role);
 

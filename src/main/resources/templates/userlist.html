@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="jquery/jquery-form.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+html{
+	height: 100%;
+}
+
+body{
+	width: 100%;
+	height: 100%;
+	padding:0;
+	margin:0;
+    background: url("images/login_bg.jpg") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+}
+
+.container{
+    display:table;
+    height:100%;
+}
+
+.row{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:left;
+    margin-right:-4px;
+}
+</style>
+
+<script type="text/javascript">
+function add(){
+	window.open("/user/edit","新增用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+}
+
+function update(){
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	var uuid = document.getElementById("id"+index).innerText;
+	window.open("/user/edit?id="+uuid,"修改用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+}
+
+function deleteUser(){
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	var uuid = document.getElementById("uuid"+index).innerText;
+	$.post("/user/delete",
+			{
+				'uuid':uuid
+			},
+			function(data){
+				var json = eval(data);
+				if(json.success){
+					$.ajax({
+			             type: "GET",
+			             url: "${pageContext.request.contextPath }/user/getUserList",
+			             async:false,
+			             success: function(data){
+			            	 $("#mainList", window.document).html(data);
+			             }
+			         });
+					alert(json.message);
+					window.close();
+				}
+			},
+			"json");
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="btn-group">
+				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteUser()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							选择
+						</th>
+						<th>
+							用户ID
+						</th>
+						<th>
+							用户名
+						</th>
+						<th>
+							密码
+						</th>
+						<th>
+							昵称
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					 <tr th:each="user,iterStat : ${users}"> 
+					 	 <td><input name="radio" type="radio" value="radio"></td>
+					     <td th:text="${user.id}" th:id="'id'+${iterStat.count}">1</td>
+					     <td th:text="${user.userName}">Mark</td>
+					     <td th:text="${user.passWord}">Otto</td>
+					     <td th:text="${user.nickName}">@mdo</td>
+					 </tr>
+					<!-- <c:forEach var="user" items="${userList}" varStatus="status">
+						<tr>
+							<td><input name="radio" type="radio" value="radio"></td>
+							<td id="uuid${status.count}"><c:out value="${user.uuid }"></c:out></td>
+							<td id="username${status.count}"><c:out value="${user.userName }"></c:out></td>
+							<td id="password${status.count}"><c:out value="${user.password }"></c:out></td>
+							<td id="auth${status.count}"><c:out value="${user.auth }"></c:out></td>
+						</tr>
+					</c:forEach> -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

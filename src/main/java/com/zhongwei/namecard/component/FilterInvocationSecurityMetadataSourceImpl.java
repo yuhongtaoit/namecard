@@ -1,11 +1,15 @@
 package com.zhongwei.namecard.component;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
@@ -37,19 +41,32 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
  
         ResourceEntity resource = resourceService.getResourceByUrl(requestUrl);
  
+        Collection<ConfigAttribute> collection = new LinkedList<>();
         //如果没有匹配的url则说明大家都可以访问
         if(resource == null) {
-            return SecurityConfig.createList("ROLE_LOGIN");
+        	ConfigAttribute configAttribute = new SecurityConfig("ROLE_LOGIN");
+        	collection.add(configAttribute);
+            return collection;
         }
  
         //将resource所需要到的roles按框架要求封装返回（ResourceService里面的getRoles方法是基于RoleRepository实现的）
         List<RoleEntity> roles = roleService.getRolesByResourceId(resource.getId());
-        int size = roles.size();
-        String[] values = new String[size];
-        for (int i = 0; i < size; i++) {
-            values[i] = roles.get(i).getRoleName();
+        if(roles!=null && roles.size()>0) {
+        	for(RoleEntity role : roles) {
+        		ConfigAttribute configAttribute = new SecurityConfig(role.getRoleName());
+        		collection.add(configAttribute);
+        	}
+        }else {
+        	Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
+        	if (auth instanceof AnonymousAuthenticationToken) { 
+        		ConfigAttribute configAttribute = new SecurityConfig("ROLE_LOGIN");
+        		collection.add(configAttribute);
+        	}else {
+        		ConfigAttribute configAttribute = new SecurityConfig("ROLE_NO_AUTH");
+        		collection.add(configAttribute);
+        	}
         }
-        return SecurityConfig.createList(values);
+        return collection;
 
 	}
 

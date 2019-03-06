@@ -11,7 +11,7 @@ public interface ResourceDao {
 	
 	List<ResourceEntity> getAll();
 	
-	ResourceEntity getOne(Long id);
+	ResourceEntity getOne(Integer id);
 	
 	List<ResourceEntity> getResourcesByIds(List<Integer> resourceIds);
 

@@ -19,7 +19,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler{
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.write("{\"status\":\"error\",\"msg\":\"权限不足，请联系管理员!\"}");
         out.flush();

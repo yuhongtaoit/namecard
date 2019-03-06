@@ -11,7 +11,7 @@ public interface UserRoleDao {
 	
 	List<UserRoleEntity> getAll();
 	
-	UserRoleEntity getOne(Long id);
+	UserRoleEntity getOne(Integer id);
 	
 	List<Integer> getRoleIdsByUserId(Integer userId);
 

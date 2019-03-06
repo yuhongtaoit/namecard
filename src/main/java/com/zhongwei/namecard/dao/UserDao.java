@@ -11,7 +11,7 @@ public interface UserDao {
 	
 	List<UserEntity> getAll();
 	
-	UserEntity getOne(Long id);
+	UserEntity getOne(Integer id);
 	
 	List<UserEntity> getByUserName(String userName);
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="jquery/jquery-form.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
+<title>智慧名片后台管理</title>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+function save(){
+	var username = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
+	var uuid = document.getElementById("uuid").value;
+	var auth = document.getElementById("auth").value;
+	$.post("${pageContext.request.contextPath }/user/save",
+			{
+				'username':username,
+				'password':password,
+				'uuid':uuid,
+				'auth':auth
+			},
+			function(data){
+				var json = eval(data);
+				if(json.success){
+					$.ajax({
+			             type: "GET",
+			             url: "${pageContext.request.contextPath }/user/getUserList",
+			             async:false,
+			             success: function(data){
+			            	 $("#mainList", window.opener.document).html(data);
+			             }
+			         });
+					alert(json.message);
+					window.close();
+				}
+			},
+			"json");
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form role="form" action="/user/save" id="userinfo">
+				<input type="hidden" id="uuid" name="uuid" th:value="${user.id }"/>
+				<div class="form-group">
+					 <label for="exampleInputEmail1">用户名</label><input type="text" class="form-control" id="username" name="username" th:value="${user.userName }"/>
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">密码</label><input type="text" class="form-control" id="password" name="password" th:value="${user.passWord }" />
+				</div>
+				<div align="center">
+					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+					<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

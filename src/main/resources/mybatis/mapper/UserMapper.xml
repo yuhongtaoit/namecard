@@ -17,9 +17,10 @@
        SELECT 
        <include refid="Base_Column_List" />
 	   FROM users
+	   WHERE userName != 'admin'
     </select>
 
-    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
         SELECT 
        <include refid="Base_Column_List" />
 	   FROM users

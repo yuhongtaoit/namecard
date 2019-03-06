@@ -47,7 +47,7 @@ body{
 
 <script type="text/javascript">
 function userList(){
-	$( "#mainList" ).load( "${pageContext.request.contextPath }/user/getUserList", function( response, status, xhr ) {
+	$( "#mainList" ).load( "/user/getUserList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
 }
