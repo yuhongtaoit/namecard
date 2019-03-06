@@ -69,14 +69,12 @@ body{
     $("#submit").click(
         function() {
             $.ajax({
-                url : "/namecard/login",
+                url : "/login",
                 type : 'POST',
                 data : $("#form").serialize(),
                 success : function(data) {
                     if (data.success) {
-                         window.location.href = "../index.html"
                     } else {
-                         alert(data.msg);
                     }
                 }
             });
