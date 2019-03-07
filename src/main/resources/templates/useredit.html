@@ -14,22 +14,26 @@ function cancel(){
 }
 function save(){
 	var username = document.getElementById("username").value;
-	var password = document.getElementById("password").value;
-	var uuid = document.getElementById("uuid").value;
-	var auth = document.getElementById("auth").value;
-	$.post("${pageContext.request.contextPath }/user/save",
+	var id = document.getElementById("uuid").value;
+	var nickname = document.getElementById("nickname").value;
+	var usersex = document.getElementById("usersex").value;
+	var tel = document.getElementById("tel").value;
+	var email = document.getElementById("email").value;
+	$.post("/user/save",
 			{
-				'username':username,
-				'password':password,
-				'uuid':uuid,
-				'auth':auth
+				'userName':username,
+				'id':id,
+				'nickName':nickname,
+				'userSex':usersex,
+				'tel':tel,
+				'email':email
 			},
 			function(data){
 				var json = eval(data);
 				if(json.success){
 					$.ajax({
 			             type: "GET",
-			             url: "${pageContext.request.contextPath }/user/getUserList",
+			             url: "/user/getUserList",
 			             async:false,
 			             success: function(data){
 			            	 $("#mainList", window.opener.document).html(data);
@@ -56,13 +60,13 @@ function save(){
 					 <label for="exampleInputPassword1">昵称</label><input type="text" class="form-control" id="nickname" name="nickname" th:value="${user == null}?'':${user.nickName }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">性别</label><input type="text" class="form-control" id="password" name="password" th:value="${user == null}?'':${user.userSex }" />
+					 <label for="exampleInputPassword1">性别</label><input type="text" class="form-control" id="usersex" name="usersex" th:value="${user == null}?'':${user.userSex }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">电话</label><input type="text" class="form-control" id="password" name="password" th:value="${user == null}?'':${user.tel }" />
+					 <label for="exampleInputPassword1">电话</label><input type="text" class="form-control" id="tel" name="tel" th:value="${user == null}?'':${user.tel }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">email</label><input type="text" class="form-control" id="password" name="password" th:value="${user == null}?'':${user.email }" />
+					 <label for="exampleInputPassword1">email</label><input type="text" class="form-control" id="email" name="email" th:value="${user == null}?'':${user.email }" />
 				</div>
 				<div align="center">
 					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>

@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.UserDao;
 import com.zhongwei.namecard.entity.UserEntity;
 
@@ -39,29 +41,41 @@ public class UserController {
 		return "useredit";
 	}
 	
-    @RequestMapping("/getUser/{id}")
-    public UserEntity getUser(@PathVariable("id") Integer id) {
-    	UserEntity user=userDao.getOne(id);
-        return user;
-    }
-    
-    @RequestMapping("/add")
-    public void save(UserEntity user) {
-    	user.setUserName("admin");
-    	user.setNickName("YHT");
-    	user.setUserSex("男");
-    	user.setPassWord("123456");
-    	userDao.insert(user);
-    }
-    
-    @RequestMapping(value="update")
-    public void update(UserEntity user) {
-    	userDao.update(user);
-    }
-    
-    @RequestMapping(value="/delete/{id}")
-    public void delete(@PathVariable("id") Long id) {
-    	userDao.delete(id);
+	@RequestMapping("/save")
+	public @ResponseBody CommonMessage saveUser(HttpServletRequest request, HttpServletResponse response, UserEntity user){
+		CommonMessage message = new CommonMessage();
+		if(user!=null && user.getId()!=null){
+			UserEntity oldUser = this.userDao.getOne(user.getId());
+			if(oldUser!=null && oldUser.getId()!=0){
+				this.userDao.update(user);
+				message.setSuccess(true);
+				message.setMessage("保存成功！");
+				return message;
+			}else{
+				message.setSuccess(false);
+				message.setMessage("保存失败！");
+				return message;
+			}
+		}
+		user.setPassWord(BCrypt.hashpw("123456", BCrypt.gensalt()));
+		this.userDao.insert(user);
+		message.setSuccess(true);
+		message.setMessage("保存成功！");
+		return message;
+	}
+	
+    @RequestMapping(value="/delete")
+    public @ResponseBody CommonMessage delete(Integer id) {
+		CommonMessage message = new CommonMessage();
+		if(id!=null && id>0){
+			userDao.delete(id);
+			message.setSuccess(true);
+			message.setMessage("删除成功！");
+		}else{
+			message.setSuccess(false);
+			message.setMessage("删除失败！");
+		}
+		return message;
     }
     
     

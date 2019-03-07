@@ -7,10 +7,12 @@
         <result column="passWord" property="passWord" jdbcType="VARCHAR" />
         <result column="user_sex" property="userSex" jdbcType="VARCHAR"/>
         <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
     </resultMap>
     
     <sql id="Base_Column_List" >
-        id, userName, passWord, user_sex, nick_name
+        id, userName, passWord, user_sex, nick_name, tel, email
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
@@ -37,9 +39,9 @@
     <insert id="insert" parameterType="com.zhongwei.namecard.entity.UserEntity" >
        INSERT INTO 
        		users
-       		(userName,passWord,user_sex,nick_name) 
+       		(userName,passWord,user_sex,nick_name,tel,email) 
        	VALUES
-       		(#{userName}, #{passWord}, #{userSex}, #{nickName})
+       		(#{userName}, #{passWord}, #{userSex}, #{nickName},#{tel},#{email})
     </insert>
     
     <update id="update" parameterType="com.zhongwei.namecard.entity.UserEntity" >
@@ -47,13 +49,15 @@
        		users 
        SET 
        	<if test="userName != null">userName = #{userName},</if>
-       	<if test="passWord != null">passWord = #{passWord},</if>
-       	nick_name = #{nickName}
+       	user_sex = #{userSex},
+       	nick_name = #{nickName},
+       	tel = #{tel},
+       	email = #{email}
        WHERE 
        		id = #{id}
     </update>
     
-    <delete id="delete" parameterType="java.lang.Long" >
+    <delete id="delete" parameterType="java.lang.Integer" >
        DELETE FROM
        		 users 
        WHERE 

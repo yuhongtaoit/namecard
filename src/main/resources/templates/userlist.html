@@ -74,17 +74,17 @@ function deleteUser(){
 			index=i+1;
 		}
 	}
-	var uuid = document.getElementById("uuid"+index).innerText;
+	var uuid = document.getElementById("id"+index).innerText;
 	$.post("/user/delete",
 			{
-				'uuid':uuid
+				'id':uuid
 			},
 			function(data){
 				var json = eval(data);
 				if(json.success){
 					$.ajax({
 			             type: "GET",
-			             url: "${pageContext.request.contextPath }/user/getUserList",
+			             url: "/user/getUserList",
 			             async:false,
 			             success: function(data){
 			            	 $("#mainList", window.document).html(data);
@@ -112,26 +112,32 @@ function deleteUser(){
 							选择
 						</th>
 						<th>
-							用户ID
-						</th>
-						<th>
 							用户名
 						</th>
 						<th>
-							密码
+							昵称
 						</th>
 						<th>
-							昵称
+							性别
+						</th>
+						<th>
+							电话
+						</th>
+						<th>
+							email
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					 <tr th:each="user,iterStat : ${users}"> 
 					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
-					     <td style="vertical-align: middle" th:text="${user.id}" th:id="'id'+${iterStat.count}">1</td>
-					     <td style="vertical-align: middle" th:text="${user.userName}">Mark</td>
-					     <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td>
-					     <td style="vertical-align: middle" th:text="${user.nickName}">@mdo</td>
+					     <td style="vertical-align: middle;display: none;" th:text="${user.id}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${user.userName}"></td>
+					     <!-- <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td> -->
+					     <td style="vertical-align: middle" th:text="${user.nickName}"></td>
+					     <td style="vertical-align: middle" th:text="${user.userSex}"></td>
+					     <td style="vertical-align: middle" th:text="${user.tel}"></td>
+					     <td style="vertical-align: middle" th:text="${user.email}"></td>
 					     <td style="vertical-align: middle"><button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 关联角色</button></td>
 					 </tr>
 				</tbody>
