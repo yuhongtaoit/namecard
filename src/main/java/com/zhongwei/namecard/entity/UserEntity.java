@@ -10,17 +10,8 @@ public class UserEntity implements Serializable {
 	private String passWord;
 	private String userSex;
 	private String nickName;
-
-	public UserEntity() {
-		super();
-	}
-
-	public UserEntity(String userName, String passWord, String userSex) {
-		super();
-		this.passWord = passWord;
-		this.userName = userName;
-		this.userSex = userSex;
-	}
+	private String tel;
+	private String email;
 
 	public Integer getId() {
 		return id;
@@ -61,5 +52,22 @@ public class UserEntity implements Serializable {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 
 }

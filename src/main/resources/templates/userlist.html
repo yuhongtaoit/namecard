@@ -127,21 +127,13 @@ function deleteUser(){
 				</thead>
 				<tbody>
 					 <tr th:each="user,iterStat : ${users}"> 
-					 	 <td><input name="radio" type="radio" value="radio"></td>
-					     <td th:text="${user.id}" th:id="'id'+${iterStat.count}">1</td>
-					     <td th:text="${user.userName}">Mark</td>
-					     <td th:text="${user.passWord}">Otto</td>
-					     <td th:text="${user.nickName}">@mdo</td>
+					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
+					     <td style="vertical-align: middle" th:text="${user.id}" th:id="'id'+${iterStat.count}">1</td>
+					     <td style="vertical-align: middle" th:text="${user.userName}">Mark</td>
+					     <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td>
+					     <td style="vertical-align: middle" th:text="${user.nickName}">@mdo</td>
+					     <td style="vertical-align: middle"><button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 关联角色</button></td>
 					 </tr>
-					<!-- <c:forEach var="user" items="${userList}" varStatus="status">
-						<tr>
-							<td><input name="radio" type="radio" value="radio"></td>
-							<td id="uuid${status.count}"><c:out value="${user.uuid }"></c:out></td>
-							<td id="username${status.count}"><c:out value="${user.userName }"></c:out></td>
-							<td id="password${status.count}"><c:out value="${user.password }"></c:out></td>
-							<td id="auth${status.count}"><c:out value="${user.auth }"></c:out></td>
-						</tr>
-					</c:forEach> -->
 				</tbody>
 			</table>
 		</div>
