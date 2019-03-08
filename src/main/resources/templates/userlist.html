@@ -79,26 +79,33 @@ function deleteUser(){
 		}
 	}
 	var uuid = document.getElementById("id"+index).innerText;
-	$.post("/user/delete",
-			{
-				'id':uuid
-			},
-			function(data){
-				var json = eval(data);
-				if(json.success){
-					$.ajax({
-			             type: "GET",
-			             url: "/user/getUserList",
-			             async:false,
-			             success: function(data){
-			            	 $("#mainList", window.document).html(data);
-			             }
-			         });
-					alert(json.message);
-					window.close();
-				}
-			},
-			"json");
+	$.ajax({
+	    url:'/user/delete',
+	    type:'POST', //GET
+	    async:true,    //或false,是否异步
+	    data:{
+	    	'id':uuid
+	    },
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    success:function(data,textStatus,jqXHR){
+	    	var json = eval(data);
+			if(json.success){
+				$.ajax({
+		             type: "GET",
+		             url: "/user/getUserList",
+		             async:false,
+		             success: function(data){
+		            	 $("#mainList", window.document).html(data);
+		             }
+		         });
+				alert(json.message);
+				window.close();
+			}
+	    },
+	    error:function(xhr,textStatus){
+	    	alert(JSON.parse(msg).msg);
+	    }
+	})
 }
 </script>
 </head>

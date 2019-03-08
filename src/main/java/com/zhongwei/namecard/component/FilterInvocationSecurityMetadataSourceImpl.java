@@ -34,6 +34,12 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         System.out.println("用户请求的地址是：" + requestUrl);
         
+        //处理url带参数问题
+        int test = requestUrl.indexOf("?");
+        if(test>0) {
+        	requestUrl = requestUrl.substring(0, test);
+        }
+        
         //如果登录页面就不需要权限
         if ("/login".equals(requestUrl)) {
             return null;

@@ -11,9 +11,13 @@ public interface RoleDao {
 	
 	List<RoleEntity> getAll();
 	
+	List<RoleEntity> getAllForRoleList();
+	
 	List<RoleEntity> getByIds(List<Integer> roleIds);
 	
 	RoleEntity getOne(Integer id);
+	
+	RoleEntity getByRoleName(String roleName);
 
 	void insert(RoleEntity role);
 

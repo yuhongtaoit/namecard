@@ -17,6 +17,13 @@
 	   FROM role
     </select>
     
+    <select id="getAllForRoleList" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM role
+	   WHERE role_name != 'ROLE_ADMIN'
+    </select>
+    
     <select id="getByIds" parameterType="ArrayList" resultMap="BaseResultMap" >
        SELECT 
        <include refid="Base_Column_List" />
@@ -32,6 +39,13 @@
        <include refid="Base_Column_List" />
 	   FROM role
 	   WHERE id = #{id}
+    </select>
+    
+    <select id="getByRoleName" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+	   FROM role
+	   WHERE role_name = #{roleName}
     </select>
 
     <insert id="insert" parameterType="com.zhongwei.namecard.entity.RoleEntity" >

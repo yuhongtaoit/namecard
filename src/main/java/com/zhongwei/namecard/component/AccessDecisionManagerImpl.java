@@ -36,7 +36,7 @@ public class AccessDecisionManagerImpl implements AccessDecisionManager{
             //遍历当前用户所具有的权限
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {
-                if (authority.getAuthority().equals(needRole)) {
+                if ("ROLE_ADMIN".equals(authority.getAuthority()) || authority.getAuthority().equals(needRole)) {
                     return;
                 }
             }

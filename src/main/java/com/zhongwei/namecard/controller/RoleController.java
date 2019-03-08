@@ -43,7 +43,7 @@ public class RoleController {
 	
 	@RequestMapping("/getRoleList")
 	public String getUsers(Model model) {
-		List<RoleEntity> roles = roleDao.getAll();
+		List<RoleEntity> roles = roleDao.getAllForRoleList();
 		model.addAttribute("roles", roles);
 		return "rolelist";
 	}
@@ -100,9 +100,15 @@ public class RoleController {
 	@Transactional
 	public @ResponseBody CommonMessage saveRole(HttpServletRequest request, HttpServletResponse response, RoleEntity role){
 		CommonMessage message = new CommonMessage();
+		RoleEntity repeatTest = this.roleDao.getByRoleName(role.getRoleName());
 		if(role!=null && role.getId()!=null){
 			RoleEntity oldRole = this.roleDao.getOne(role.getId());
 			if(oldRole!=null && oldRole.getId()!=0){
+				if(!oldRole.getRoleName().equals(role.getRoleName()) && repeatTest!=null) {
+					message.setSuccess(false);
+					message.setMessage("角色名重复！");
+					return message;
+				}
 				this.roleDao.update(role);
 				message.setSuccess(true);
 				message.setMessage("保存成功！");
@@ -112,6 +118,11 @@ public class RoleController {
 				message.setMessage("保存失败！");
 				return message;
 			}
+		}
+		if(repeatTest!=null) {
+			message.setSuccess(false);
+			message.setMessage("角色名重复！");
+			return message;
 		}
 		this.roleDao.insert(role);
 		message.setSuccess(true);
