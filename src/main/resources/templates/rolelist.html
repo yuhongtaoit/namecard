@@ -47,11 +47,11 @@ body{
 
 <script type="text/javascript">
 function add(){
-	window.open("/user/edit","新增用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+	window.open("/role/edit","新增用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
-function getRoles(userId){
-	window.open("/user/getRoles?userId="+userId,"关联角色","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+function getResources(roleId){
+	window.open("/role/getResources?roleId="+roleId,"关联资源","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
 function update(){
@@ -63,10 +63,10 @@ function update(){
 		}
 	}
 	var uuid = document.getElementById("id"+index).innerText;
-	window.open("/user/edit?id="+uuid,"修改用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+	window.open("/role/edit?id="+uuid,"修改角色","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
-function deleteUser(){
+function deleteRole(){
 	var flag = confirm("确定删除本条数据？");
 	if(!flag){
 		return;
@@ -79,7 +79,7 @@ function deleteUser(){
 		}
 	}
 	var uuid = document.getElementById("id"+index).innerText;
-	$.post("/user/delete",
+	$.post("/role/delete",
 			{
 				'id':uuid
 			},
@@ -88,7 +88,7 @@ function deleteUser(){
 				if(json.success){
 					$.ajax({
 			             type: "GET",
-			             url: "/user/getUserList",
+			             url: "/role/getRoleList",
 			             async:false,
 			             success: function(data){
 			            	 $("#mainList", window.document).html(data);
@@ -107,7 +107,7 @@ function deleteUser(){
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteUser()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteRole()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
 			</div>
 			<table class="table">
 				<thead>
@@ -116,33 +116,21 @@ function deleteUser(){
 							选择
 						</th>
 						<th>
-							用户名
+							角色名
 						</th>
 						<th>
-							昵称
-						</th>
-						<th>
-							性别
-						</th>
-						<th>
-							电话
-						</th>
-						<th>
-							email
+							说明
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					 <tr th:each="user,iterStat : ${users}"> 
+					 <tr th:each="role,iterStat : ${roles}"> 
 					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
-					     <td style="vertical-align: middle;display: none;" th:text="${user.id}" th:id="'id'+${iterStat.count}"></td>
-					     <td style="vertical-align: middle" th:text="${user.userName}"></td>
+					     <td style="vertical-align: middle;display: none;" th:text="${role.id}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${role.roleName}"></td>
 					     <!-- <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td> -->
-					     <td style="vertical-align: middle" th:text="${user.nickName}"></td>
-					     <td style="vertical-align: middle" th:text="${user.userSex}"></td>
-					     <td style="vertical-align: middle" th:text="${user.tel}"></td>
-					     <td style="vertical-align: middle" th:text="${user.email}"></td>
-					     <td style="vertical-align: middle"><button class="btn btn-default" type="button" th:onclick="'getRoles('+${user.id}+')'"><em class="glyphicon glyphicon-plus"></em> 关联角色</button></td>
+					     <td style="vertical-align: middle" th:text="${role.roleNameZh}"></td>
+					     <td style="vertical-align: middle"><button class="btn btn-default" type="button" th:onclick="'getResources('+${role.id}+')'"><em class="glyphicon glyphicon-plus"></em> 关联资源</button></td>
 					 </tr>
 				</tbody>
 			</table>

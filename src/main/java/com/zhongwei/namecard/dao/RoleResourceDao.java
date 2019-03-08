@@ -21,6 +21,8 @@ public interface RoleResourceDao {
 
 	void update(RoleResourceEntity roleResource);
 
-	void delete(Long id);
+	void delete(Integer id);
+	
+	void deleteByRoleId(Integer roleId);
 
 }

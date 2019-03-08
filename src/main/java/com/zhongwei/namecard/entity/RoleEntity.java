@@ -11,6 +11,8 @@ public class RoleEntity implements Serializable{
 	private String roleName;
 	
 	private String roleNameZh;
+	
+	private boolean flag = false;
 
 	public Integer getId() {
 		return id;
@@ -34,6 +36,14 @@ public class RoleEntity implements Serializable{
 
 	public void setRoleNameZh(String roleNameZh) {
 		this.roleNameZh = roleNameZh;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 	
 }

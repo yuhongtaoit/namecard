@@ -19,6 +19,10 @@ public interface UserRoleDao {
 
 	void update(UserRoleEntity userRole);
 
-	void delete(Long id);
+	void delete(Integer id);
+	
+	void deleteByUserId(Integer userId);
+	
+	void deleteByRoleId(Integer roleId);
 
 }

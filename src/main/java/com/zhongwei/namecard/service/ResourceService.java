@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zhongwei.namecard.dao.ResourceDao;
 import com.zhongwei.namecard.dao.RoleResourceDao;
 import com.zhongwei.namecard.entity.ResourceEntity;
+import com.zhongwei.namecard.entity.RoleResourceEntity;
 
 @Service
 public class ResourceService {
@@ -29,5 +31,20 @@ public class ResourceService {
 
 	public ResourceEntity getResourceByUrl(String requestUrl) {
 		return resourceDao.getResourceByUrl(requestUrl);
+	}
+	
+	@Transactional
+	public void updateRoleResources(Integer roleId, List<Integer> resourceIds) {
+		if(roleId!=null && roleId>0) {
+			roleResourceDao.deleteByRoleId(roleId);
+		}
+		if(resourceIds!=null && resourceIds.size()>0) {
+			for(Integer resourceId : resourceIds) {
+				RoleResourceEntity roleResource = new RoleResourceEntity();
+				roleResource.setResourceId(resourceId);
+				roleResource.setRoleId(roleId);
+				roleResourceDao.insert(roleResource);
+			}
+		}
 	}
 }

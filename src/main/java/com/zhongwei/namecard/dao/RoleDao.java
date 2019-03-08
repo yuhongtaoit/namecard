@@ -19,6 +19,6 @@ public interface RoleDao {
 
 	void update(RoleEntity role);
 
-	void delete(Long id);
+	void delete(Integer id);
 
 }

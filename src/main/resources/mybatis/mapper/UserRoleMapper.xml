@@ -48,11 +48,25 @@
        		id = #{id}
     </update>
     
-    <delete id="delete" parameterType="java.lang.Long" >
+    <delete id="delete" parameterType="java.lang.Integer" >
        DELETE FROM
        		 user_role 
        WHERE 
        		 id =#{id}
+    </delete>
+    
+    <delete id="deleteByUserId" parameterType="java.lang.Integer" >
+       DELETE FROM
+       		 user_role 
+       WHERE 
+       		 user_id =#{userId}
+    </delete>
+    
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer" >
+       DELETE FROM
+       		 user_role 
+       WHERE 
+       		 role_id =#{roleId}
     </delete>
 
 </mapper>

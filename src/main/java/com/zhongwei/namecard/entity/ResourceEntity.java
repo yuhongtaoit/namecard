@@ -11,6 +11,8 @@ public class ResourceEntity implements Serializable{
 	private String url;
 	
 	private String resourceName;
+	
+	private boolean flag = false;
 
 	public Integer getId() {
 		return id;
@@ -34,6 +36,14 @@ public class ResourceEntity implements Serializable{
 
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 
 }

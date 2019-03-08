@@ -52,8 +52,8 @@ function userList(){
 	});
 }
 
-function category(){
-	$( "#mainList" ).load( "${pageContext.request.contextPath }/category/getCategoryList", function( response, status, xhr ) {
+function roleList(){
+	$( "#mainList" ).load( "/role/getRoleList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
 }
@@ -79,7 +79,7 @@ function namecard(){
 			<nav class="navbar navbar-default" role="navigation" style="background-color: #FCF5E3">
 				<div class="navbar-header">
 					 <a class="navbar-brand" href="#" onclick="userList()">用户管理</a>
-					 <a class="navbar-brand" href="#" onclick="role()">角色管理</a>
+					 <a class="navbar-brand" href="#" onclick="roleList()">角色管理</a>
 					 <a class="navbar-brand" href="#" onclick="namecard()">名片管理</a>
 					 <a class="navbar-brand" href="#" onclick="mall()">商城管理</a>
 				</div>

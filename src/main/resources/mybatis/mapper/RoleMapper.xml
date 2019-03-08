@@ -47,12 +47,12 @@
        		role 
        SET 
        	<if test="roleName != null">role_name = #{roleName},</if>
-       	<if test="roleNameZh != null">role_name_zh = #{roleNameZh},</if>
+       	role_name_zh = #{roleNameZh}
        WHERE 
        		id = #{id}
     </update>
     
-    <delete id="delete" parameterType="java.lang.Long" >
+    <delete id="delete" parameterType="java.lang.Integer" >
        DELETE FROM
        		 role 
        WHERE 
