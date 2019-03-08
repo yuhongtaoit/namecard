@@ -39,8 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
     private UserService userService;
 	
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	
     //根据一个url请求，获得访问它所需要的roles权限
     @Autowired
     FilterInvocationSecurityMetadataSource myFilterInvocationSecurityMetadataSource;
