@@ -65,7 +65,7 @@ function product(){
 }
 
 function namecard(){
-	$( "#mainList" ).load( "${pageContext.request.contextPath }/namecard/getNamecardList", function( response, status, xhr ) {
+	$( "#mainList" ).load( "/namecard/getNamecardList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
 }
