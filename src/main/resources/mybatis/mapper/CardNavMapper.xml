@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardNavMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardNav" >
+<mapper namespace="com.zhongwei.namecard.dao.CardNavMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.CardNav" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="images" property="images" jdbcType="VARCHAR" />
@@ -73,7 +73,7 @@
   <sql id="Base_Column_List" >
     id, uniacid, images, path, title, newid, linkType, appid, path_web
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardNavExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.CardNavExample" >
     select
     <if test="distinct" >
       distinct
@@ -98,13 +98,13 @@
     delete from ims_dbs_masclwlcard_nav
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardNavExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.CardNavExample" >
     delete from ims_dbs_masclwlcard_nav
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.CardNav" >
     insert into ims_dbs_masclwlcard_nav (id, uniacid, images, 
       path, title, newid, 
       linkType, appid, path_web
@@ -114,7 +114,7 @@
       #{linktype,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, #{pathWeb,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.CardNav" >
     insert into ims_dbs_masclwlcard_nav
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -175,7 +175,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardNavExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.CardNavExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_nav
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -231,7 +231,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.CardNav" >
     update ims_dbs_masclwlcard_nav
     <set >
       <if test="uniacid != null" >
@@ -261,7 +261,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.CardNav" >
     update ims_dbs_masclwlcard_nav
     set uniacid = #{uniacid,jdbcType=INTEGER},
       images = #{images,jdbcType=VARCHAR},

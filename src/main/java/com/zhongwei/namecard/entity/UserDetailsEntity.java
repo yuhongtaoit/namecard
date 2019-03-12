@@ -16,9 +16,9 @@ public class UserDetailsEntity implements UserDetails{
 	
     private String passWord;
     
-    private List<RoleEntity> roles;
+    private List<Role> roles;
  
-    public void setRoles(List<RoleEntity> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
  
@@ -26,18 +26,18 @@ public class UserDetailsEntity implements UserDetails{
     	
     }
  
-    public UserDetailsEntity(UserEntity user) {
+    public UserDetailsEntity(User user) {
         this.userName = user.getUserName();
         this.passWord = user.getPassWord();
     }
  
-    public UserDetailsEntity(UserEntity user, List<RoleEntity> roles) {
+    public UserDetailsEntity(User user, List<Role> roles) {
         this.userName = user.getUserName();
         this.passWord = user.getPassWord();
         this.roles = roles;
     }
  
-    public List<RoleEntity> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
@@ -45,7 +45,7 @@ public class UserDetailsEntity implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		if(roles!=null && roles.size()>0) {
-			for(RoleEntity role : roles) {
+			for(Role role : roles) {
 				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 			}
 		}

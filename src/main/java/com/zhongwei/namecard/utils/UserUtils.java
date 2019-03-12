@@ -6,11 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import com.zhongwei.namecard.miniapp.dao.AuthUserMapper;
-import com.zhongwei.namecard.miniapp.model.AuthUser;
-import com.zhongwei.namecard.miniapp.model.AuthUserExample;
+import com.zhongwei.namecard.dao.AuthUserMapper;
+import com.zhongwei.namecard.entity.AuthUser;
+import com.zhongwei.namecard.entity.AuthUserExample;
 
 @Component
 public class UserUtils {

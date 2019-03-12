@@ -14,8 +14,8 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 
-import com.zhongwei.namecard.entity.ResourceEntity;
-import com.zhongwei.namecard.entity.RoleEntity;
+import com.zhongwei.namecard.entity.Resource;
+import com.zhongwei.namecard.entity.Role;
 import com.zhongwei.namecard.service.ResourceService;
 import com.zhongwei.namecard.service.RoleService;
 
@@ -45,7 +45,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
             return null;
         }
  
-        ResourceEntity resource = resourceService.getResourceByUrl(requestUrl);
+        Resource resource = resourceService.getResourceByUrl(requestUrl);
  
         Collection<ConfigAttribute> collection = new LinkedList<>();
         //如果没有匹配的url则说明大家都可以访问
@@ -56,9 +56,9 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
         }
  
         //将resource所需要到的roles按框架要求封装返回（ResourceService里面的getRoles方法是基于RoleRepository实现的）
-        List<RoleEntity> roles = roleService.getRolesByResourceId(resource.getId());
+        List<Role> roles = roleService.getRolesByResourceId(resource.getId());
         if(roles!=null && roles.size()>0) {
-        	for(RoleEntity role : roles) {
+        	for(Role role : roles) {
         		ConfigAttribute configAttribute = new SecurityConfig(role.getRoleName());
         		collection.add(configAttribute);
         	}

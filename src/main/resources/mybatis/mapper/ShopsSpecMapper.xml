@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.ShopsSpecMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.ShopsSpec" >
+<mapper namespace="com.zhongwei.namecard.dao.ShopsSpecMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.ShopsSpec" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.ShopsSpec" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.entity.ShopsSpec" extends="BaseResultMap" >
     <result column="spec_content" property="specContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -75,7 +75,7 @@
   <sql id="Blob_Column_List" >
     spec_content
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpecExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.entity.ShopsSpecExample" >
     select
     <if test="distinct" >
       distinct
@@ -92,7 +92,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpecExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.ShopsSpecExample" >
     select
     <if test="distinct" >
       distinct
@@ -119,13 +119,13 @@
     delete from ims_dbs_masclwlcard_shops_spec
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpecExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.ShopsSpecExample" >
     delete from ims_dbs_masclwlcard_shops_spec
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpec" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.ShopsSpec" >
     insert into ims_dbs_masclwlcard_shops_spec (id, uniacid, title, 
       sort, enabled, spec_content
       )
@@ -133,7 +133,7 @@
       #{sort,jdbcType=INTEGER}, #{enabled,jdbcType=BIT}, #{specContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpec" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.ShopsSpec" >
     insert into ims_dbs_masclwlcard_shops_spec
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -176,7 +176,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpecExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.ShopsSpecExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_shops_spec
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -231,7 +231,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpec" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.ShopsSpec" >
     update ims_dbs_masclwlcard_shops_spec
     <set >
       <if test="uniacid != null" >
@@ -252,7 +252,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpec" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.entity.ShopsSpec" >
     update ims_dbs_masclwlcard_shops_spec
     set uniacid = #{uniacid,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
@@ -261,7 +261,7 @@
       spec_content = #{specContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.ShopsSpec" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.ShopsSpec" >
     update ims_dbs_masclwlcard_shops_spec
     set uniacid = #{uniacid,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},

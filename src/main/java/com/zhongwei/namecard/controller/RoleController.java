@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhongwei.namecard.common.CommonMessage;
-import com.zhongwei.namecard.dao.ResourceDao;
-import com.zhongwei.namecard.dao.RoleDao;
-import com.zhongwei.namecard.dao.RoleResourceDao;
-import com.zhongwei.namecard.dao.UserRoleDao;
-import com.zhongwei.namecard.entity.ResourceEntity;
-import com.zhongwei.namecard.entity.RoleEntity;
+import com.zhongwei.namecard.dao.ResourceMapper;
+import com.zhongwei.namecard.dao.RoleMapper;
+import com.zhongwei.namecard.dao.RoleResourceMapper;
+import com.zhongwei.namecard.dao.UserRoleMapper;
+import com.zhongwei.namecard.entity.Resource;
+import com.zhongwei.namecard.entity.Role;
 import com.zhongwei.namecard.service.ResourceService;
 
 @Controller
@@ -27,35 +27,35 @@ import com.zhongwei.namecard.service.ResourceService;
 public class RoleController {
 	
 	@Autowired
-	private RoleDao roleDao;
+	private RoleMapper roleDao;
 	
 	@Autowired
-	private ResourceDao resourceDao;
+	private ResourceMapper resourceDao;
 	
 	@Autowired
-	private UserRoleDao userRoleDao;
+	private UserRoleMapper userRoleDao;
 	
 	@Autowired
-	private RoleResourceDao roleResourceDao;
+	private RoleResourceMapper roleResourceDao;
 	
 	@Autowired
 	private ResourceService resourceService;
 	
 	@RequestMapping("/getRoleList")
 	public String getUsers(Model model) {
-		List<RoleEntity> roles = roleDao.getAllForRoleList();
+		List<Role> roles = roleDao.getAllForRoleList();
 		model.addAttribute("roles", roles);
 		return "rolelist";
 	}
 	
 	@RequestMapping("/getResources")
 	public String getResources(HttpServletRequest request, HttpServletResponse response, Model model, Integer roleId){
-		List<ResourceEntity> resources = resourceDao.getAll();
-		List<ResourceEntity> roleResources = resourceService.getResourcesByRoleId(roleId);
+		List<Resource> resources = resourceDao.getAll();
+		List<Resource> roleResources = resourceService.getResourcesByRoleId(roleId);
 		if(resources!=null && resources.size()>0) {
-			for(ResourceEntity resource : resources) {
+			for(Resource resource : resources) {
 				if(roleResources!=null && roleResources.size()>0) {
-					for(ResourceEntity roleResource : roleResources) {
+					for(Resource roleResource : roleResources) {
 						if(resource.getId()==roleResource.getId()) {
 							resource.setFlag(true);
 						}
@@ -90,7 +90,7 @@ public class RoleController {
 		String idStr = request.getParameter("id");
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
-			RoleEntity role = this.roleDao.getOne(id);
+			Role role = this.roleDao.getOne(id);
 			model.addAttribute("role", role);
 		}
 		return "roleedit";
@@ -98,11 +98,11 @@ public class RoleController {
 	
 	@RequestMapping("/save")
 	@Transactional
-	public @ResponseBody CommonMessage saveRole(HttpServletRequest request, HttpServletResponse response, RoleEntity role){
+	public @ResponseBody CommonMessage saveRole(HttpServletRequest request, HttpServletResponse response, Role role){
 		CommonMessage message = new CommonMessage();
-		RoleEntity repeatTest = this.roleDao.getByRoleName(role.getRoleName());
+		Role repeatTest = this.roleDao.getByRoleName(role.getRoleName());
 		if(role!=null && role.getId()!=null){
-			RoleEntity oldRole = this.roleDao.getOne(role.getId());
+			Role oldRole = this.roleDao.getOne(role.getId());
 			if(oldRole!=null && oldRole.getId()!=0){
 				if(!oldRole.getRoleName().equals(role.getRoleName()) && repeatTest!=null) {
 					message.setSuccess(false);

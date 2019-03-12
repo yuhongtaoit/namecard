@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zhongwei.namecard.dao.AuthUserMapper;
+import com.zhongwei.namecard.entity.AuthUser;
 //import com.github.binarywang.demo.wx.miniapp.config.WxMaConfiguration;
 //import com.github.binarywang.demo.wx.miniapp.utils.JsonUtils;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.miniapp.dao.AuthUserMapper;
-import com.zhongwei.namecard.miniapp.model.AuthUser;
 
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;

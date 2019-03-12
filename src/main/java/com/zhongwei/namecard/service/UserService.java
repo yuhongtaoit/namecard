@@ -8,16 +8,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.zhongwei.namecard.dao.UserDao;
-import com.zhongwei.namecard.entity.RoleEntity;
+import com.zhongwei.namecard.dao.UserMapper;
+import com.zhongwei.namecard.entity.Role;
+import com.zhongwei.namecard.entity.User;
 import com.zhongwei.namecard.entity.UserDetailsEntity;
-import com.zhongwei.namecard.entity.UserEntity;
 
 @Service
 public class UserService implements UserDetailsService{
 
 	@Autowired
-	private UserDao userDao;
+	private UserMapper userDao;
 	
 	@Autowired
 	private RoleService roleService;
@@ -26,12 +26,12 @@ public class UserService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("查找用户：" + username);
-        UserEntity user = userDao.getByUserName(username).get(0);
+        User user = userDao.getByUserName(username).get(0);
         if(user == null)
         {
             throw new UsernameNotFoundException("没有该用户");
         }
-        List<RoleEntity> roles = roleService.getRolesByUserId(user.getId());
+        List<Role> roles = roleService.getRolesByUserId(user.getId());
         return new UserDetailsEntity(user, roles);
 	}
 

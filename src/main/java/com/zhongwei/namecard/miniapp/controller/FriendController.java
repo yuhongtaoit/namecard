@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zhongwei.namecard.miniapp.dao.CardFriendMapper;
-import com.zhongwei.namecard.miniapp.dao.CardMapper;
-import com.zhongwei.namecard.miniapp.model.CardFriendWithBLOBs;
-import com.zhongwei.namecard.miniapp.model.CardWithBLOBs;
+import com.zhongwei.namecard.dao.CardFriendMapper;
+import com.zhongwei.namecard.dao.CardMapper;
+import com.zhongwei.namecard.entity.CardFriendWithBLOBs;
+import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.utils.DataUtils;
-
 
 @RestController
 @RequestMapping("/miniapp")

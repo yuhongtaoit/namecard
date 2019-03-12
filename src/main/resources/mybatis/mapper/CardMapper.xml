@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.Card" >
+<mapper namespace="com.zhongwei.namecard.dao.CardMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.Card" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="identify" property="identify" jdbcType="VARCHAR" />
@@ -42,7 +42,7 @@
     <result column="is_sendcard_id" property="isSendcardId" jdbcType="INTEGER" />
     <result column="is_sendcard" property="isSendcard" jdbcType="BIT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.entity.CardWithBLOBs" extends="BaseResultMap" >
     <result column="card_instr" property="cardInstr" jdbcType="LONGVARCHAR" />
     <result column="photo" property="photo" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -115,7 +115,7 @@
   <sql id="Blob_Column_List" >
     card_instr, photo
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.entity.CardExample" >
     select
     <if test="distinct" >
       distinct
@@ -132,7 +132,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.CardExample" >
     select
     <if test="distinct" >
       distinct
@@ -159,13 +159,13 @@
     delete from ims_dbs_masclwlcard
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.CardExample" >
     delete from ims_dbs_masclwlcard
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
     insert into ims_dbs_masclwlcard (id, uniacid, identify, 
       card_logo, detailed_address, card_name, 
       errmsg, card_id, userid, 
@@ -195,7 +195,7 @@
       #{shareTitle,jdbcType=VARCHAR}, #{isSendcardId,jdbcType=INTEGER}, #{isSendcard,jdbcType=BIT}, 
       #{cardInstr,jdbcType=LONGVARCHAR}, #{photo,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
     insert into ims_dbs_masclwlcard
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -448,7 +448,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.CardExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -677,7 +677,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
     update ims_dbs_masclwlcard
     <set >
       <if test="uniacid != null" >
@@ -803,7 +803,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
     update ims_dbs_masclwlcard
     set uniacid = #{uniacid,jdbcType=INTEGER},
       identify = #{identify,jdbcType=VARCHAR},
@@ -847,7 +847,7 @@
       photo = #{photo,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.Card" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.Card" >
     update ims_dbs_masclwlcard
     set uniacid = #{uniacid,jdbcType=INTEGER},
       identify = #{identify,jdbcType=VARCHAR},

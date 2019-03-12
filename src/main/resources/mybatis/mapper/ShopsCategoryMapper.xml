@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.ShopsCategoryMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.ShopsCategory" >
+<mapper namespace="com.zhongwei.namecard.dao.ShopsCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.ShopsCategory" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="thumb" property="thumb" jdbcType="VARCHAR" />
@@ -72,7 +72,7 @@
   <sql id="Base_Column_List" >
     id, uniacid, thumb, parentid, sort, num, enabled, title
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategoryExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.ShopsCategoryExample" >
     select
     <if test="distinct" >
       distinct
@@ -97,13 +97,13 @@
     delete from ims_dbs_masclwlcard_shops_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategoryExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.ShopsCategoryExample" >
     delete from ims_dbs_masclwlcard_shops_category
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategory" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.ShopsCategory" >
     insert into ims_dbs_masclwlcard_shops_category (id, uniacid, thumb, 
       parentid, sort, num, 
       enabled, title)
@@ -111,7 +111,7 @@
       #{parentid,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, 
       #{enabled,jdbcType=BIT}, #{title,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategory" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.ShopsCategory" >
     insert into ims_dbs_masclwlcard_shops_category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -166,7 +166,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategoryExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.ShopsCategoryExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_shops_category
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -218,7 +218,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategory" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.ShopsCategory" >
     update ims_dbs_masclwlcard_shops_category
     <set >
       <if test="uniacid != null" >
@@ -245,7 +245,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.ShopsCategory" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.ShopsCategory" >
     update ims_dbs_masclwlcard_shops_category
     set uniacid = #{uniacid,jdbcType=INTEGER},
       thumb = #{thumb,jdbcType=VARCHAR},

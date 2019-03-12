@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zhongwei.namecard.miniapp.dao.CardNewsMapper;
-import com.zhongwei.namecard.miniapp.model.CardNews;
+import com.zhongwei.namecard.dao.CardNewsMapper;
+import com.zhongwei.namecard.entity.CardNews;
 
 @RestController
 @RequestMapping("/miniapp")

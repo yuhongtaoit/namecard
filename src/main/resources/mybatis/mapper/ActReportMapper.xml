@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.ActReportMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.ActReport" >
+<mapper namespace="com.zhongwei.namecard.dao.ActReportMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.ActReport" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="openId" property="openid" jdbcType="VARCHAR" />
@@ -88,7 +88,7 @@
     card_id, num, act_id, status, gender, p_id, city, act_content, language, avatarUrl, 
     province, avatar
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.ActReportExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.ActReportExample" >
     select
     <if test="distinct" >
       distinct
@@ -113,13 +113,13 @@
     delete from ims_dbs_masclwlcard_act_report
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.ActReportExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.ActReportExample" >
     delete from ims_dbs_masclwlcard_act_report
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.ActReport" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.ActReport" >
     insert into ims_dbs_masclwlcard_act_report (id, uniacid, openId, 
       nickname, name, phone, 
       addtime, copytype, footertype, 
@@ -137,7 +137,7 @@
       #{language,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{avatar,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.ActReport" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.ActReport" >
     insert into ims_dbs_masclwlcard_act_report
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -276,7 +276,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.ActReportExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.ActReportExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_act_report
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -384,7 +384,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.ActReport" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.ActReport" >
     update ims_dbs_masclwlcard_act_report
     <set >
       <if test="uniacid != null" >
@@ -453,7 +453,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.ActReport" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.ActReport" >
     update ims_dbs_masclwlcard_act_report
     set uniacid = #{uniacid,jdbcType=INTEGER},
       openId = #{openid,jdbcType=VARCHAR},

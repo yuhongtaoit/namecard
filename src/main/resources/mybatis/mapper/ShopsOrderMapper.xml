@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.ShopsOrderMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.ShopsOrder" >
+<mapper namespace="com.zhongwei.namecard.dao.ShopsOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.ShopsOrder" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="from_user" property="fromUser" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
     <result column="avatar" property="avatar" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.ShopsOrder" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.entity.ShopsOrder" extends="BaseResultMap" >
     <result column="tp_text" property="tpText" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -96,7 +96,7 @@
   <sql id="Blob_Column_List" >
     tp_text
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrderExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.entity.ShopsOrderExample" >
     select
     <if test="distinct" >
       distinct
@@ -113,7 +113,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrderExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.ShopsOrderExample" >
     select
     <if test="distinct" >
       distinct
@@ -140,13 +140,13 @@
     delete from ims_dbs_masclwlcard_shops_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrderExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.ShopsOrderExample" >
     delete from ims_dbs_masclwlcard_shops_order
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrder" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.ShopsOrder" >
     insert into ims_dbs_masclwlcard_shops_order (id, uniacid, from_user, 
       orderid, staffid, shops_id, 
       card_id, shareid, tid, 
@@ -166,7 +166,7 @@
       #{newSpec,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{tpText,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrder" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.ShopsOrder" >
     insert into ims_dbs_masclwlcard_shops_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -323,7 +323,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrderExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.ShopsOrderExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_shops_order
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -473,7 +473,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrder" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.ShopsOrder" >
     update ims_dbs_masclwlcard_shops_order
     <set >
       <if test="uniacid != null" >
@@ -551,7 +551,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrder" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.entity.ShopsOrder" >
     update ims_dbs_masclwlcard_shops_order
     set uniacid = #{uniacid,jdbcType=INTEGER},
       from_user = #{fromUser,jdbcType=VARCHAR},
@@ -579,7 +579,7 @@
       tp_text = #{tpText,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.ShopsOrder" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.ShopsOrder" >
     update ims_dbs_masclwlcard_shops_order
     set uniacid = #{uniacid,jdbcType=INTEGER},
       from_user = #{fromUser,jdbcType=VARCHAR},

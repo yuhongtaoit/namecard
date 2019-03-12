@@ -6,30 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zhongwei.namecard.dao.ResourceDao;
-import com.zhongwei.namecard.dao.RoleResourceDao;
-import com.zhongwei.namecard.entity.ResourceEntity;
-import com.zhongwei.namecard.entity.RoleResourceEntity;
+import com.zhongwei.namecard.dao.ResourceMapper;
+import com.zhongwei.namecard.dao.RoleResourceMapper;
+import com.zhongwei.namecard.entity.Resource;
+import com.zhongwei.namecard.entity.RoleResource;
 
 @Service
 public class ResourceService {
 	
 	@Autowired
-	private RoleResourceDao roleResourceDao;
+	private RoleResourceMapper roleResourceDao;
 	
 	@Autowired
-	private ResourceDao resourceDao;
+	private ResourceMapper resourceDao;
 
-	public List<ResourceEntity> getResourcesByRoleId(Integer roleId){
+	public List<Resource> getResourcesByRoleId(Integer roleId){
 		List<Integer> resourceIds = roleResourceDao.getResourceIdsByRoleId(roleId);
-		List<ResourceEntity> resources = null;
+		List<Resource> resources = null;
 		if(resourceIds!=null && resourceIds.size()>0) {
 			resources = resourceDao.getResourcesByIds(resourceIds);
 		}
 		return resources;
 	}
 
-	public ResourceEntity getResourceByUrl(String requestUrl) {
+	public Resource getResourceByUrl(String requestUrl) {
 		return resourceDao.getResourceByUrl(requestUrl);
 	}
 	
@@ -40,7 +40,7 @@ public class ResourceService {
 		}
 		if(resourceIds!=null && resourceIds.size()>0) {
 			for(Integer resourceId : resourceIds) {
-				RoleResourceEntity roleResource = new RoleResourceEntity();
+				RoleResource roleResource = new RoleResource();
 				roleResource.setResourceId(resourceId);
 				roleResource.setRoleId(roleId);
 				roleResourceDao.insert(roleResource);

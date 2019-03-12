@@ -12,17 +12,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zhongwei.namecard.miniapp.dao.ActReportMapper;
-import com.zhongwei.namecard.miniapp.dao.CardMapper;
-import com.zhongwei.namecard.miniapp.dao.CardMemberMapper;
-import com.zhongwei.namecard.miniapp.dao.CardProductMapper;
-import com.zhongwei.namecard.miniapp.model.ActReport;
-import com.zhongwei.namecard.miniapp.model.ActReportExample;
-import com.zhongwei.namecard.miniapp.model.AuthUser;
-import com.zhongwei.namecard.miniapp.model.CardMember;
-import com.zhongwei.namecard.miniapp.model.CardMemberExample;
-import com.zhongwei.namecard.miniapp.model.CardProductWithBLOBs;
-import com.zhongwei.namecard.miniapp.model.CardWithBLOBs;
+import com.zhongwei.namecard.dao.ActReportMapper;
+import com.zhongwei.namecard.dao.CardMapper;
+import com.zhongwei.namecard.dao.CardMemberMapper;
+import com.zhongwei.namecard.dao.CardProductMapper;
+import com.zhongwei.namecard.entity.ActReport;
+import com.zhongwei.namecard.entity.ActReportExample;
+import com.zhongwei.namecard.entity.AuthUser;
+import com.zhongwei.namecard.entity.CardMember;
+import com.zhongwei.namecard.entity.CardMemberExample;
+import com.zhongwei.namecard.entity.CardProductWithBLOBs;
+import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.utils.QySendUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 

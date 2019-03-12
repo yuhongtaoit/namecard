@@ -2,7 +2,7 @@ package com.zhongwei.namecard.utils;
 
 import org.springframework.stereotype.Service;
 
-import com.zhongwei.namecard.miniapp.model.CardMember;
+import com.zhongwei.namecard.entity.CardMember;
 
 @Service
 public class SendCashUtils {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardFooterMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardFooter" >
+<mapper namespace="com.zhongwei.namecard.dao.CardFooterMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.CardFooter" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="card_img" property="cardImg" jdbcType="VARCHAR" />
@@ -96,7 +96,7 @@
     friend_type, web_type, card_type, shop_url, shop_path, card_path, web_path, web_appid, 
     card_appid, friend_appid, friend_path, shop_appid, friend_url, web_url
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardFooterExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.CardFooterExample" >
     select
     <if test="distinct" >
       distinct
@@ -121,13 +121,13 @@
     delete from ims_dbs_masclwlcard_footer
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardFooterExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.CardFooterExample" >
     delete from ims_dbs_masclwlcard_footer
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.CardFooter" >
     insert into ims_dbs_masclwlcard_footer (id, uniacid, card_img, 
       card_img_no, card_name, shop_name, 
       friend_name, web_name, shop_img, 
@@ -149,7 +149,7 @@
       #{friendAppid,jdbcType=VARCHAR}, #{friendPath,jdbcType=VARCHAR}, #{shopAppid,jdbcType=VARCHAR}, 
       #{friendUrl,jdbcType=VARCHAR}, #{webUrl,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.CardFooter" >
     insert into ims_dbs_masclwlcard_footer
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -330,7 +330,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardFooterExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.CardFooterExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_footer
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -466,7 +466,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.CardFooter" >
     update ims_dbs_masclwlcard_footer
     <set >
       <if test="uniacid != null" >
@@ -556,7 +556,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.CardFooter" >
     update ims_dbs_masclwlcard_footer
     set uniacid = #{uniacid,jdbcType=INTEGER},
       card_img = #{cardImg,jdbcType=VARCHAR},

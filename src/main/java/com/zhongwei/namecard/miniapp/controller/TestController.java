@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
-import com.zhongwei.namecard.miniapp.dao.AuthUserMapper;
-import com.zhongwei.namecard.miniapp.model.AuthUser;
-import com.zhongwei.namecard.miniapp.model.AuthUserExample;
+import com.zhongwei.namecard.dao.AuthUserMapper;
 
 @RestController
 @RequestMapping("/auth/session")

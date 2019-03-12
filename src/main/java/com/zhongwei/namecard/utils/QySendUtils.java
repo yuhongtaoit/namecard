@@ -8,11 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zhongwei.namecard.miniapp.dao.AccessTokenMapper;
-import com.zhongwei.namecard.miniapp.dao.SetQYMapper;
-import com.zhongwei.namecard.miniapp.model.AccessToken;
-import com.zhongwei.namecard.miniapp.model.SetQY;
-import com.zhongwei.namecard.miniapp.model.SetQYExample;
+import com.zhongwei.namecard.dao.AccessTokenMapper;
+import com.zhongwei.namecard.dao.SetQYMapper;
+import com.zhongwei.namecard.entity.AccessToken;
+import com.zhongwei.namecard.entity.SetQY;
+import com.zhongwei.namecard.entity.SetQYExample;
 
 @Service
 public class QySendUtils {

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhongwei.namecard.common.CommonMessage;
-import com.zhongwei.namecard.dao.RoleDao;
-import com.zhongwei.namecard.dao.UserDao;
-import com.zhongwei.namecard.dao.UserRoleDao;
-import com.zhongwei.namecard.entity.RoleEntity;
-import com.zhongwei.namecard.entity.UserEntity;
+import com.zhongwei.namecard.dao.RoleMapper;
+import com.zhongwei.namecard.dao.UserMapper;
+import com.zhongwei.namecard.dao.UserRoleMapper;
+import com.zhongwei.namecard.entity.Role;
+import com.zhongwei.namecard.entity.User;
 import com.zhongwei.namecard.service.RoleService;
 
 @Controller
@@ -27,32 +27,32 @@ import com.zhongwei.namecard.service.RoleService;
 public class UserController {
 	
 	@Autowired
-	private UserDao userDao;
+	private UserMapper userDao;
 	
 	@Autowired
-	private RoleDao roleDao;
+	private RoleMapper roleDao;
 	
 	@Autowired
-	private UserRoleDao userRoleDao;
+	private UserRoleMapper userRoleDao;
 	
 	@Autowired
 	private RoleService roleService;
 	
 	@RequestMapping("/getUserList")
 	public String getUsers(Model model) {
-		List<UserEntity> users=userDao.getAll();
+		List<User> users=userDao.getAll();
 		model.addAttribute("users", users);
 		return "userlist";
 	}
 	
 	@RequestMapping("/getRoles")
 	public String getRoles(HttpServletRequest request, HttpServletResponse response, Model model, Integer userId){
-		List<RoleEntity> roles = roleDao.getAll();
-		List<RoleEntity> userRoles = roleService.getRolesByUserId(userId);
+		List<Role> roles = roleDao.getAll();
+		List<Role> userRoles = roleService.getRolesByUserId(userId);
 		if(roles!=null && roles.size()>0) {
-			for(RoleEntity role : roles) {
+			for(Role role : roles) {
 				if(userRoles!=null && userRoles.size()>0) {
-					for(RoleEntity userRole : userRoles) {
+					for(Role userRole : userRoles) {
 						if(role.getId()==userRole.getId()) {
 							role.setFlag(true);
 						}
@@ -86,7 +86,7 @@ public class UserController {
 		String idStr = request.getParameter("id");
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
-			UserEntity user = this.userDao.getOne(id);
+			User user = this.userDao.getOne(id);
 			model.addAttribute("user", user);
 		}
 		return "useredit";
@@ -94,10 +94,10 @@ public class UserController {
 	
 	@RequestMapping("/save")
 	@Transactional
-	public @ResponseBody CommonMessage saveUser(HttpServletRequest request, HttpServletResponse response, UserEntity user){
+	public @ResponseBody CommonMessage saveUser(HttpServletRequest request, HttpServletResponse response, User user){
 		CommonMessage message = new CommonMessage();
 		if(user!=null && user.getId()!=null){
-			UserEntity oldUser = this.userDao.getOne(user.getId());
+			User oldUser = this.userDao.getOne(user.getId());
 			if(oldUser!=null && oldUser.getId()!=0){
 				this.userDao.update(user);
 				message.setSuccess(true);

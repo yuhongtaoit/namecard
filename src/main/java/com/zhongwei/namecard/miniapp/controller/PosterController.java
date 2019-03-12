@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zhongwei.namecard.miniapp.dao.CardMapper;
-import com.zhongwei.namecard.miniapp.dao.CardSetMapper;
-import com.zhongwei.namecard.miniapp.model.CardSet;
-import com.zhongwei.namecard.miniapp.model.CardSetExample;
-import com.zhongwei.namecard.miniapp.model.CardWithBLOBs;
+import com.zhongwei.namecard.dao.CardMapper;
+import com.zhongwei.namecard.dao.CardSetMapper;
+import com.zhongwei.namecard.entity.CardSet;
+import com.zhongwei.namecard.entity.CardSetExample;
+import com.zhongwei.namecard.entity.CardWithBLOBs;
 
 @RestController
 @RequestMapping("/miniapp")

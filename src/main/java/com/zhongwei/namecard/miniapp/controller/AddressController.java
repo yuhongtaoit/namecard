@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zhongwei.namecard.miniapp.dao.ShopsAddressMapper;
-import com.zhongwei.namecard.miniapp.model.AuthUser;
-import com.zhongwei.namecard.miniapp.model.ShopsAddress;
-import com.zhongwei.namecard.miniapp.model.ShopsAddressExample;
+import com.zhongwei.namecard.dao.ShopsAddressMapper;
+import com.zhongwei.namecard.entity.AuthUser;
+import com.zhongwei.namecard.entity.ShopsAddress;
+import com.zhongwei.namecard.entity.ShopsAddressExample;
 import com.zhongwei.namecard.utils.UserUtils;
 
 @RestController

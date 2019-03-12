@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.dao.UserDao" >
-    <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.UserEntity" >
+<mapper namespace="com.zhongwei.namecard.dao.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.User" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="userName" property="userName" jdbcType="VARCHAR" />
         <result column="passWord" property="passWord" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
 	   WHERE userName = #{userName}
     </select>
 
-    <insert id="insert" parameterType="com.zhongwei.namecard.entity.UserEntity" >
+    <insert id="insert" parameterType="com.zhongwei.namecard.entity.User" >
        INSERT INTO 
        		users
        		(userName,passWord,user_sex,nick_name,tel,email) 
@@ -44,7 +44,7 @@
        		(#{userName}, #{passWord}, #{userSex}, #{nickName},#{tel},#{email})
     </insert>
     
-    <update id="update" parameterType="com.zhongwei.namecard.entity.UserEntity" >
+    <update id="update" parameterType="com.zhongwei.namecard.entity.User" >
        UPDATE 
        		users 
        SET 

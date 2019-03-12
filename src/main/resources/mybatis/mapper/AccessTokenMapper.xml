@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.miniapp.dao.AccessTokenMapper" >
-  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.AccessToken" >
+<mapper namespace="com.zhongwei.namecard.dao.AccessTokenMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.AccessToken" >
     <id column="secret" property="secret" jdbcType="VARCHAR" />
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="corpid" property="corpid" jdbcType="VARCHAR" />
     <result column="valid_time" property="validTime" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.AccessToken" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.entity.AccessToken" extends="BaseResultMap" >
     <result column="access_token" property="accessToken" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -74,7 +74,7 @@
   <sql id="Blob_Column_List" >
     access_token
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.AccessTokenExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.entity.AccessTokenExample" >
     select
     <if test="distinct" >
       distinct
@@ -91,7 +91,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.AccessTokenExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.AccessTokenExample" >
     select
     <if test="distinct" >
       distinct
@@ -118,19 +118,19 @@
     delete from ims_dbs_masclwlcard_access_token
     where secret = #{secret,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.AccessTokenExample" >
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.AccessTokenExample" >
     delete from ims_dbs_masclwlcard_access_token
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.AccessToken" >
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.AccessToken" >
     insert into ims_dbs_masclwlcard_access_token (secret, uniacid, corpid, 
       valid_time, access_token)
     values (#{secret,jdbcType=VARCHAR}, #{uniacid,jdbcType=INTEGER}, #{corpid,jdbcType=VARCHAR}, 
       #{validTime,jdbcType=VARCHAR}, #{accessToken,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.AccessToken" >
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.AccessToken" >
     insert into ims_dbs_masclwlcard_access_token
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="secret != null" >
@@ -167,7 +167,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.AccessTokenExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.AccessTokenExample" resultType="java.lang.Integer" >
     select count(*) from ims_dbs_masclwlcard_access_token
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -217,7 +217,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.AccessToken" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.AccessToken" >
     update ims_dbs_masclwlcard_access_token
     <set >
       <if test="uniacid != null" >
@@ -235,7 +235,7 @@
     </set>
     where secret = #{secret,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.AccessToken" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.entity.AccessToken" >
     update ims_dbs_masclwlcard_access_token
     set uniacid = #{uniacid,jdbcType=INTEGER},
       corpid = #{corpid,jdbcType=VARCHAR},
@@ -243,7 +243,7 @@
       access_token = #{accessToken,jdbcType=LONGVARCHAR}
     where secret = #{secret,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.AccessToken" >
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.AccessToken" >
     update ims_dbs_masclwlcard_access_token
     set uniacid = #{uniacid,jdbcType=INTEGER},
       corpid = #{corpid,jdbcType=VARCHAR},

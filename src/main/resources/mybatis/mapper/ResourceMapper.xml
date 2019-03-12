@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zhongwei.namecard.dao.ResourceDao" >
-    <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.ResourceEntity" >
+<mapper namespace="com.zhongwei.namecard.dao.ResourceMapper" >
+    <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.Resource" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="url" property="url" jdbcType="VARCHAR" />
         <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
@@ -41,7 +41,7 @@
 	   WHERE url = #{url}
     </select>
 
-    <insert id="insert" parameterType="com.zhongwei.namecard.entity.ResourceEntity" >
+    <insert id="insert" parameterType="com.zhongwei.namecard.entity.Resource" >
        INSERT INTO 
        		resource
        		(url,resource_name) 
@@ -49,7 +49,7 @@
        		(#{url}, #{resourceName})
     </insert>
     
-    <update id="update" parameterType="com.zhongwei.namecard.entity.ResourceEntity" >
+    <update id="update" parameterType="com.zhongwei.namecard.entity.Resource" >
        UPDATE 
        		resource 
        SET 

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zhongwei.namecard.dao.ResourceDao;
-import com.zhongwei.namecard.dao.RoleDao;
-import com.zhongwei.namecard.dao.RoleResourceDao;
-import com.zhongwei.namecard.dao.UserRoleDao;
-import com.zhongwei.namecard.entity.RoleEntity;
+import com.zhongwei.namecard.dao.ResourceMapper;
+import com.zhongwei.namecard.dao.RoleMapper;
+import com.zhongwei.namecard.dao.RoleResourceMapper;
+import com.zhongwei.namecard.dao.UserRoleMapper;
+import com.zhongwei.namecard.entity.Role;
 import com.zhongwei.namecard.service.ResourceService;
 
 @Controller
@@ -19,23 +19,23 @@ import com.zhongwei.namecard.service.ResourceService;
 public class NameCardController {
 	
 	@Autowired
-	private RoleDao roleDao;
+	private RoleMapper roleDao;
 	
 	@Autowired
-	private ResourceDao resourceDao;
+	private ResourceMapper resourceDao;
 	
 	@Autowired
-	private UserRoleDao userRoleDao;
+	private UserRoleMapper userRoleDao;
 	
 	@Autowired
-	private RoleResourceDao roleResourceDao;
+	private RoleResourceMapper roleResourceDao;
 	
 	@Autowired
 	private ResourceService resourceService;
 	
 	@RequestMapping("/getCardList")
 	public String getUsers(Model model) {
-		List<RoleEntity> roles = roleDao.getAllForRoleList();
+		List<Role> roles = roleDao.getAllForRoleList();
 		model.addAttribute("roles", roles);
 		return "rolelist";
 	}

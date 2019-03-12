@@ -12,10 +12,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zhongwei.namecard.miniapp.dao.CardWebMapper;
-import com.zhongwei.namecard.miniapp.model.AuthUser;
-import com.zhongwei.namecard.miniapp.model.CardWeb;
-import com.zhongwei.namecard.miniapp.model.CardWebExample;
+import com.zhongwei.namecard.dao.CardWebMapper;
+import com.zhongwei.namecard.entity.AuthUser;
+import com.zhongwei.namecard.entity.CardWeb;
+import com.zhongwei.namecard.entity.CardWebExample;
 import com.zhongwei.namecard.utils.UserUtils;
 
 @RestController
