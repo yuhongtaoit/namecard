@@ -30,7 +30,7 @@ import cn.binarywang.wx.miniapp.config.WxMaInMemoryConfig;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 @RestController
-@RequestMapping("/auth/session")
+@RequestMapping("/miniapp")
 public class WxMaUserController {
 	 private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	 
@@ -46,7 +46,7 @@ public class WxMaUserController {
 	     * 登陆接口
 	     * @throws WxErrorException 
 	     */
-	    @GetMapping("/login")
+	    @GetMapping("/miniapplogin")
 	    public Map<String, Object> login(String code, HttpServletRequest request) throws WxErrorException {
 	    	Map<String, Object> result = new HashMap<String, Object>();
 	        if (!StringUtils.hasText(code)) {
