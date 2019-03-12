@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardProductMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardProduct" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="cp_bs_name" property="cpBsName" jdbcType="VARCHAR" />
+    <result column="cp_bs_price" property="cpBsPrice" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.CardProductWithBLOBs" extends="BaseResultMap" >
+    <result column="cp_bs_img" property="cpBsImg" jdbcType="LONGVARCHAR" />
+    <result column="cp_bs_content" property="cpBsContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, cp_bs_name, cp_bs_price, sort
+  </sql>
+  <sql id="Blob_Column_List" >
+    cp_bs_img, cp_bs_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardProductExample" >
+    delete from ims_dbs_masclwlcard_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardProductWithBLOBs" >
+    insert into ims_dbs_masclwlcard_product (id, uniacid, cp_bs_name, 
+      cp_bs_price, sort, cp_bs_img, 
+      cp_bs_content)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{cpBsName,jdbcType=VARCHAR}, 
+      #{cpBsPrice,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{cpBsImg,jdbcType=LONGVARCHAR}, 
+      #{cpBsContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardProductWithBLOBs" >
+    insert into ims_dbs_masclwlcard_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="cpBsName != null" >
+        cp_bs_name,
+      </if>
+      <if test="cpBsPrice != null" >
+        cp_bs_price,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="cpBsImg != null" >
+        cp_bs_img,
+      </if>
+      <if test="cpBsContent != null" >
+        cp_bs_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="cpBsName != null" >
+        #{cpBsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpBsPrice != null" >
+        #{cpBsPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cpBsImg != null" >
+        #{cpBsImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cpBsContent != null" >
+        #{cpBsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardProductExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cpBsName != null" >
+        cp_bs_name = #{record.cpBsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpBsPrice != null" >
+        cp_bs_price = #{record.cpBsPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.cpBsImg != null" >
+        cp_bs_img = #{record.cpBsImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.cpBsContent != null" >
+        cp_bs_content = #{record.cpBsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ims_dbs_masclwlcard_product
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      cp_bs_name = #{record.cpBsName,jdbcType=VARCHAR},
+      cp_bs_price = #{record.cpBsPrice,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      cp_bs_img = #{record.cpBsImg,jdbcType=LONGVARCHAR},
+      cp_bs_content = #{record.cpBsContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_product
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      cp_bs_name = #{record.cpBsName,jdbcType=VARCHAR},
+      cp_bs_price = #{record.cpBsPrice,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardProductWithBLOBs" >
+    update ims_dbs_masclwlcard_product
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="cpBsName != null" >
+        cp_bs_name = #{cpBsName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpBsPrice != null" >
+        cp_bs_price = #{cpBsPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cpBsImg != null" >
+        cp_bs_img = #{cpBsImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cpBsContent != null" >
+        cp_bs_content = #{cpBsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardProductWithBLOBs" >
+    update ims_dbs_masclwlcard_product
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      cp_bs_name = #{cpBsName,jdbcType=VARCHAR},
+      cp_bs_price = #{cpBsPrice,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      cp_bs_img = #{cpBsImg,jdbcType=LONGVARCHAR},
+      cp_bs_content = #{cpBsContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardProduct" >
+    update ims_dbs_masclwlcard_product
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      cp_bs_name = #{cpBsName,jdbcType=VARCHAR},
+      cp_bs_price = #{cpBsPrice,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardShopsMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardShops" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
+    <result column="specid" property="specid" jdbcType="INTEGER" />
+    <result column="sale_num" property="saleNum" jdbcType="INTEGER" />
+    <result column="shops_num" property="shopsNum" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="shop_spec" property="shopSpec" jdbcType="BIT" />
+    <result column="is_show" property="isShow" jdbcType="BIT" />
+    <result column="cp_bs_name" property="cpBsName" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="VARCHAR" />
+    <result column="gimg" property="gimg" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="fx_type" property="fxType" jdbcType="TINYINT" />
+    <result column="fx_price" property="fxPrice" jdbcType="DECIMAL" />
+    <result column="no_show_price" property="noShowPrice" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.CardShopsWithBLOBs" extends="BaseResultMap" >
+    <result column="cp_bs_img" property="cpBsImg" jdbcType="LONGVARCHAR" />
+    <result column="top_pic" property="topPic" jdbcType="LONGVARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="LONGVARCHAR" />
+    <result column="cp_bs_content" property="cpBsContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, typeid, specid, sale_num, shops_num, sort, shop_spec, is_show, cp_bs_name, 
+    addtime, gimg, price, fx_type, fx_price, no_show_price
+  </sql>
+  <sql id="Blob_Column_List" >
+    cp_bs_img, top_pic, shop_name, cp_bs_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_shops
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_shops
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_shops
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_shops
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsExample" >
+    delete from ims_dbs_masclwlcard_shops
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsWithBLOBs" >
+    insert into ims_dbs_masclwlcard_shops (id, uniacid, typeid, 
+      specid, sale_num, shops_num, 
+      sort, shop_spec, is_show, cp_bs_name, 
+      addtime, gimg, price, 
+      fx_type, fx_price, no_show_price, 
+      cp_bs_img, top_pic, shop_name, 
+      cp_bs_content)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, 
+      #{specid,jdbcType=INTEGER}, #{saleNum,jdbcType=INTEGER}, #{shopsNum,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{shopSpec,jdbcType=BIT}, #{isShow,jdbcType=BIT}, #{cpBsName,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=VARCHAR}, #{gimg,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{fxType,jdbcType=TINYINT}, #{fxPrice,jdbcType=DECIMAL}, #{noShowPrice,jdbcType=BIT}, 
+      #{cpBsImg,jdbcType=LONGVARCHAR}, #{topPic,jdbcType=LONGVARCHAR}, #{shopName,jdbcType=LONGVARCHAR}, 
+      #{cpBsContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsWithBLOBs" >
+    insert into ims_dbs_masclwlcard_shops
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="typeid != null" >
+        typeid,
+      </if>
+      <if test="specid != null" >
+        specid,
+      </if>
+      <if test="saleNum != null" >
+        sale_num,
+      </if>
+      <if test="shopsNum != null" >
+        shops_num,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="shopSpec != null" >
+        shop_spec,
+      </if>
+      <if test="isShow != null" >
+        is_show,
+      </if>
+      <if test="cpBsName != null" >
+        cp_bs_name,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="gimg != null" >
+        gimg,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="fxType != null" >
+        fx_type,
+      </if>
+      <if test="fxPrice != null" >
+        fx_price,
+      </if>
+      <if test="noShowPrice != null" >
+        no_show_price,
+      </if>
+      <if test="cpBsImg != null" >
+        cp_bs_img,
+      </if>
+      <if test="topPic != null" >
+        top_pic,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="cpBsContent != null" >
+        cp_bs_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="specid != null" >
+        #{specid,jdbcType=INTEGER},
+      </if>
+      <if test="saleNum != null" >
+        #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="shopsNum != null" >
+        #{shopsNum,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="shopSpec != null" >
+        #{shopSpec,jdbcType=BIT},
+      </if>
+      <if test="isShow != null" >
+        #{isShow,jdbcType=BIT},
+      </if>
+      <if test="cpBsName != null" >
+        #{cpBsName,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=VARCHAR},
+      </if>
+      <if test="gimg != null" >
+        #{gimg,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fxType != null" >
+        #{fxType,jdbcType=TINYINT},
+      </if>
+      <if test="fxPrice != null" >
+        #{fxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="noShowPrice != null" >
+        #{noShowPrice,jdbcType=BIT},
+      </if>
+      <if test="cpBsImg != null" >
+        #{cpBsImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="topPic != null" >
+        #{topPic,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cpBsContent != null" >
+        #{cpBsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_shops
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_shops
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeid != null" >
+        typeid = #{record.typeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.specid != null" >
+        specid = #{record.specid,jdbcType=INTEGER},
+      </if>
+      <if test="record.saleNum != null" >
+        sale_num = #{record.saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopsNum != null" >
+        shops_num = #{record.shopsNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopSpec != null" >
+        shop_spec = #{record.shopSpec,jdbcType=BIT},
+      </if>
+      <if test="record.isShow != null" >
+        is_show = #{record.isShow,jdbcType=BIT},
+      </if>
+      <if test="record.cpBsName != null" >
+        cp_bs_name = #{record.cpBsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addtime != null" >
+        addtime = #{record.addtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gimg != null" >
+        gimg = #{record.gimg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.fxType != null" >
+        fx_type = #{record.fxType,jdbcType=TINYINT},
+      </if>
+      <if test="record.fxPrice != null" >
+        fx_price = #{record.fxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.noShowPrice != null" >
+        no_show_price = #{record.noShowPrice,jdbcType=BIT},
+      </if>
+      <if test="record.cpBsImg != null" >
+        cp_bs_img = #{record.cpBsImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.topPic != null" >
+        top_pic = #{record.topPic,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.cpBsContent != null" >
+        cp_bs_content = #{record.cpBsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ims_dbs_masclwlcard_shops
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      typeid = #{record.typeid,jdbcType=INTEGER},
+      specid = #{record.specid,jdbcType=INTEGER},
+      sale_num = #{record.saleNum,jdbcType=INTEGER},
+      shops_num = #{record.shopsNum,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      shop_spec = #{record.shopSpec,jdbcType=BIT},
+      is_show = #{record.isShow,jdbcType=BIT},
+      cp_bs_name = #{record.cpBsName,jdbcType=VARCHAR},
+      addtime = #{record.addtime,jdbcType=VARCHAR},
+      gimg = #{record.gimg,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      fx_type = #{record.fxType,jdbcType=TINYINT},
+      fx_price = #{record.fxPrice,jdbcType=DECIMAL},
+      no_show_price = #{record.noShowPrice,jdbcType=BIT},
+      cp_bs_img = #{record.cpBsImg,jdbcType=LONGVARCHAR},
+      top_pic = #{record.topPic,jdbcType=LONGVARCHAR},
+      shop_name = #{record.shopName,jdbcType=LONGVARCHAR},
+      cp_bs_content = #{record.cpBsContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_shops
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      typeid = #{record.typeid,jdbcType=INTEGER},
+      specid = #{record.specid,jdbcType=INTEGER},
+      sale_num = #{record.saleNum,jdbcType=INTEGER},
+      shops_num = #{record.shopsNum,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      shop_spec = #{record.shopSpec,jdbcType=BIT},
+      is_show = #{record.isShow,jdbcType=BIT},
+      cp_bs_name = #{record.cpBsName,jdbcType=VARCHAR},
+      addtime = #{record.addtime,jdbcType=VARCHAR},
+      gimg = #{record.gimg,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      fx_type = #{record.fxType,jdbcType=TINYINT},
+      fx_price = #{record.fxPrice,jdbcType=DECIMAL},
+      no_show_price = #{record.noShowPrice,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsWithBLOBs" >
+    update ims_dbs_masclwlcard_shops
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="specid != null" >
+        specid = #{specid,jdbcType=INTEGER},
+      </if>
+      <if test="saleNum != null" >
+        sale_num = #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="shopsNum != null" >
+        shops_num = #{shopsNum,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="shopSpec != null" >
+        shop_spec = #{shopSpec,jdbcType=BIT},
+      </if>
+      <if test="isShow != null" >
+        is_show = #{isShow,jdbcType=BIT},
+      </if>
+      <if test="cpBsName != null" >
+        cp_bs_name = #{cpBsName,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=VARCHAR},
+      </if>
+      <if test="gimg != null" >
+        gimg = #{gimg,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fxType != null" >
+        fx_type = #{fxType,jdbcType=TINYINT},
+      </if>
+      <if test="fxPrice != null" >
+        fx_price = #{fxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="noShowPrice != null" >
+        no_show_price = #{noShowPrice,jdbcType=BIT},
+      </if>
+      <if test="cpBsImg != null" >
+        cp_bs_img = #{cpBsImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="topPic != null" >
+        top_pic = #{topPic,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cpBsContent != null" >
+        cp_bs_content = #{cpBsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardShopsWithBLOBs" >
+    update ims_dbs_masclwlcard_shops
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      typeid = #{typeid,jdbcType=INTEGER},
+      specid = #{specid,jdbcType=INTEGER},
+      sale_num = #{saleNum,jdbcType=INTEGER},
+      shops_num = #{shopsNum,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      shop_spec = #{shopSpec,jdbcType=BIT},
+      is_show = #{isShow,jdbcType=BIT},
+      cp_bs_name = #{cpBsName,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=VARCHAR},
+      gimg = #{gimg,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      fx_type = #{fxType,jdbcType=TINYINT},
+      fx_price = #{fxPrice,jdbcType=DECIMAL},
+      no_show_price = #{noShowPrice,jdbcType=BIT},
+      cp_bs_img = #{cpBsImg,jdbcType=LONGVARCHAR},
+      top_pic = #{topPic,jdbcType=LONGVARCHAR},
+      shop_name = #{shopName,jdbcType=LONGVARCHAR},
+      cp_bs_content = #{cpBsContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardShops" >
+    update ims_dbs_masclwlcard_shops
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      typeid = #{typeid,jdbcType=INTEGER},
+      specid = #{specid,jdbcType=INTEGER},
+      sale_num = #{saleNum,jdbcType=INTEGER},
+      shops_num = #{shopsNum,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      shop_spec = #{shopSpec,jdbcType=BIT},
+      is_show = #{isShow,jdbcType=BIT},
+      cp_bs_name = #{cpBsName,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=VARCHAR},
+      gimg = #{gimg,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      fx_type = #{fxType,jdbcType=TINYINT},
+      fx_price = #{fxPrice,jdbcType=DECIMAL},
+      no_show_price = #{noShowPrice,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

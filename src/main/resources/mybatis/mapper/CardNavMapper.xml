@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardNavMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardNav" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="newid" property="newid" jdbcType="VARCHAR" />
+    <result column="linkType" property="linktype" jdbcType="VARCHAR" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="path_web" property="pathWeb" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, images, path, title, newid, linkType, appid, path_web
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardNavExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_nav
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_nav
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_nav
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardNavExample" >
+    delete from ims_dbs_masclwlcard_nav
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+    insert into ims_dbs_masclwlcard_nav (id, uniacid, images, 
+      path, title, newid, 
+      linkType, appid, path_web
+      )
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{images,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{newid,jdbcType=VARCHAR}, 
+      #{linktype,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, #{pathWeb,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+    insert into ims_dbs_masclwlcard_nav
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="images != null" >
+        images,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="newid != null" >
+        newid,
+      </if>
+      <if test="linktype != null" >
+        linkType,
+      </if>
+      <if test="appid != null" >
+        appid,
+      </if>
+      <if test="pathWeb != null" >
+        path_web,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="newid != null" >
+        #{newid,jdbcType=VARCHAR},
+      </if>
+      <if test="linktype != null" >
+        #{linktype,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="pathWeb != null" >
+        #{pathWeb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardNavExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_nav
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_nav
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.images != null" >
+        images = #{record.images,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newid != null" >
+        newid = #{record.newid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linktype != null" >
+        linkType = #{record.linktype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appid != null" >
+        appid = #{record.appid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pathWeb != null" >
+        path_web = #{record.pathWeb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_nav
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      images = #{record.images,jdbcType=VARCHAR},
+      path = #{record.path,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      newid = #{record.newid,jdbcType=VARCHAR},
+      linkType = #{record.linktype,jdbcType=VARCHAR},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      path_web = #{record.pathWeb,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+    update ims_dbs_masclwlcard_nav
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="images != null" >
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="newid != null" >
+        newid = #{newid,jdbcType=VARCHAR},
+      </if>
+      <if test="linktype != null" >
+        linkType = #{linktype,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="pathWeb != null" >
+        path_web = #{pathWeb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardNav" >
+    update ims_dbs_masclwlcard_nav
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      images = #{images,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      newid = #{newid,jdbcType=VARCHAR},
+      linkType = #{linktype,jdbcType=VARCHAR},
+      appid = #{appid,jdbcType=VARCHAR},
+      path_web = #{pathWeb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

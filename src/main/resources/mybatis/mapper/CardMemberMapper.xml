@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardMember" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="openId" property="openid" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="aid" property="aid" jdbcType="INTEGER" />
+    <result column="show_zan" property="showZan" jdbcType="TINYINT" />
+    <result column="is_pop_card" property="isPopCard" jdbcType="TINYINT" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="language" property="language" jdbcType="VARCHAR" />
+    <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="gailv" property="gailv" jdbcType="TINYINT" />
+    <result column="hmd_status" property="hmdStatus" jdbcType="TINYINT" />
+    <result column="pb_status" property="pbStatus" jdbcType="TINYINT" />
+    <result column="source_id" property="sourceId" jdbcType="INTEGER" />
+    <result column="can_take" property="canTake" jdbcType="DECIMAL" />
+    <result column="total_broker" property="totalBroker" jdbcType="DECIMAL" />
+    <result column="has_taken" property="hasTaken" jdbcType="DECIMAL" />
+    <result column="in_taking" property="inTaking" jdbcType="DECIMAL" />
+    <result column="not_in_account" property="notInAccount" jdbcType="DECIMAL" />
+    <result column="send_cardid" property="sendCardid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, openId, nickname, name, phone, addtime, updatetime, aid, show_zan, is_pop_card, 
+    gender, city, language, avatar_url, province, avatar, gailv, hmd_status, pb_status, 
+    source_id, can_take, total_broker, has_taken, in_taking, not_in_account, send_cardid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardMemberExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_card_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_card_member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_card_member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardMemberExample" >
+    delete from ims_dbs_masclwlcard_card_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardMember" >
+    insert into ims_dbs_masclwlcard_card_member (id, uniacid, openId, 
+      nickname, name, phone, 
+      addtime, updatetime, aid, 
+      show_zan, is_pop_card, gender, 
+      city, language, avatar_url, 
+      province, avatar, gailv, 
+      hmd_status, pb_status, source_id, 
+      can_take, total_broker, has_taken, 
+      in_taking, not_in_account, send_cardid
+      )
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, #{aid,jdbcType=INTEGER}, 
+      #{showZan,jdbcType=TINYINT}, #{isPopCard,jdbcType=TINYINT}, #{gender,jdbcType=TINYINT}, 
+      #{city,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{gailv,jdbcType=TINYINT}, 
+      #{hmdStatus,jdbcType=TINYINT}, #{pbStatus,jdbcType=TINYINT}, #{sourceId,jdbcType=INTEGER}, 
+      #{canTake,jdbcType=DECIMAL}, #{totalBroker,jdbcType=DECIMAL}, #{hasTaken,jdbcType=DECIMAL}, 
+      #{inTaking,jdbcType=DECIMAL}, #{notInAccount,jdbcType=DECIMAL}, #{sendCardid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardMember" >
+    insert into ims_dbs_masclwlcard_card_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="openid != null" >
+        openId,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="showZan != null" >
+        show_zan,
+      </if>
+      <if test="isPopCard != null" >
+        is_pop_card,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="language != null" >
+        language,
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="gailv != null" >
+        gailv,
+      </if>
+      <if test="hmdStatus != null" >
+        hmd_status,
+      </if>
+      <if test="pbStatus != null" >
+        pb_status,
+      </if>
+      <if test="sourceId != null" >
+        source_id,
+      </if>
+      <if test="canTake != null" >
+        can_take,
+      </if>
+      <if test="totalBroker != null" >
+        total_broker,
+      </if>
+      <if test="hasTaken != null" >
+        has_taken,
+      </if>
+      <if test="inTaking != null" >
+        in_taking,
+      </if>
+      <if test="notInAccount != null" >
+        not_in_account,
+      </if>
+      <if test="sendCardid != null" >
+        send_cardid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="showZan != null" >
+        #{showZan,jdbcType=TINYINT},
+      </if>
+      <if test="isPopCard != null" >
+        #{isPopCard,jdbcType=TINYINT},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null" >
+        #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null" >
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="gailv != null" >
+        #{gailv,jdbcType=TINYINT},
+      </if>
+      <if test="hmdStatus != null" >
+        #{hmdStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pbStatus != null" >
+        #{pbStatus,jdbcType=TINYINT},
+      </if>
+      <if test="sourceId != null" >
+        #{sourceId,jdbcType=INTEGER},
+      </if>
+      <if test="canTake != null" >
+        #{canTake,jdbcType=DECIMAL},
+      </if>
+      <if test="totalBroker != null" >
+        #{totalBroker,jdbcType=DECIMAL},
+      </if>
+      <if test="hasTaken != null" >
+        #{hasTaken,jdbcType=DECIMAL},
+      </if>
+      <if test="inTaking != null" >
+        #{inTaking,jdbcType=DECIMAL},
+      </if>
+      <if test="notInAccount != null" >
+        #{notInAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="sendCardid != null" >
+        #{sendCardid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardMemberExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_card_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_card_member
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.openid != null" >
+        openId = #{record.openid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickname != null" >
+        nickname = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addtime != null" >
+        addtime = #{record.addtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aid != null" >
+        aid = #{record.aid,jdbcType=INTEGER},
+      </if>
+      <if test="record.showZan != null" >
+        show_zan = #{record.showZan,jdbcType=TINYINT},
+      </if>
+      <if test="record.isPopCard != null" >
+        is_pop_card = #{record.isPopCard,jdbcType=TINYINT},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.language != null" >
+        language = #{record.language,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatarUrl != null" >
+        avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatar != null" >
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gailv != null" >
+        gailv = #{record.gailv,jdbcType=TINYINT},
+      </if>
+      <if test="record.hmdStatus != null" >
+        hmd_status = #{record.hmdStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.pbStatus != null" >
+        pb_status = #{record.pbStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.sourceId != null" >
+        source_id = #{record.sourceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.canTake != null" >
+        can_take = #{record.canTake,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalBroker != null" >
+        total_broker = #{record.totalBroker,jdbcType=DECIMAL},
+      </if>
+      <if test="record.hasTaken != null" >
+        has_taken = #{record.hasTaken,jdbcType=DECIMAL},
+      </if>
+      <if test="record.inTaking != null" >
+        in_taking = #{record.inTaking,jdbcType=DECIMAL},
+      </if>
+      <if test="record.notInAccount != null" >
+        not_in_account = #{record.notInAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sendCardid != null" >
+        send_cardid = #{record.sendCardid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_card_member
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      openId = #{record.openid,jdbcType=VARCHAR},
+      nickname = #{record.nickname,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      addtime = #{record.addtime,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=VARCHAR},
+      aid = #{record.aid,jdbcType=INTEGER},
+      show_zan = #{record.showZan,jdbcType=TINYINT},
+      is_pop_card = #{record.isPopCard,jdbcType=TINYINT},
+      gender = #{record.gender,jdbcType=TINYINT},
+      city = #{record.city,jdbcType=VARCHAR},
+      language = #{record.language,jdbcType=VARCHAR},
+      avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      gailv = #{record.gailv,jdbcType=TINYINT},
+      hmd_status = #{record.hmdStatus,jdbcType=TINYINT},
+      pb_status = #{record.pbStatus,jdbcType=TINYINT},
+      source_id = #{record.sourceId,jdbcType=INTEGER},
+      can_take = #{record.canTake,jdbcType=DECIMAL},
+      total_broker = #{record.totalBroker,jdbcType=DECIMAL},
+      has_taken = #{record.hasTaken,jdbcType=DECIMAL},
+      in_taking = #{record.inTaking,jdbcType=DECIMAL},
+      not_in_account = #{record.notInAccount,jdbcType=DECIMAL},
+      send_cardid = #{record.sendCardid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardMember" >
+    update ims_dbs_masclwlcard_card_member
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        openId = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="aid != null" >
+        aid = #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="showZan != null" >
+        show_zan = #{showZan,jdbcType=TINYINT},
+      </if>
+      <if test="isPopCard != null" >
+        is_pop_card = #{isPopCard,jdbcType=TINYINT},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null" >
+        language = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="gailv != null" >
+        gailv = #{gailv,jdbcType=TINYINT},
+      </if>
+      <if test="hmdStatus != null" >
+        hmd_status = #{hmdStatus,jdbcType=TINYINT},
+      </if>
+      <if test="pbStatus != null" >
+        pb_status = #{pbStatus,jdbcType=TINYINT},
+      </if>
+      <if test="sourceId != null" >
+        source_id = #{sourceId,jdbcType=INTEGER},
+      </if>
+      <if test="canTake != null" >
+        can_take = #{canTake,jdbcType=DECIMAL},
+      </if>
+      <if test="totalBroker != null" >
+        total_broker = #{totalBroker,jdbcType=DECIMAL},
+      </if>
+      <if test="hasTaken != null" >
+        has_taken = #{hasTaken,jdbcType=DECIMAL},
+      </if>
+      <if test="inTaking != null" >
+        in_taking = #{inTaking,jdbcType=DECIMAL},
+      </if>
+      <if test="notInAccount != null" >
+        not_in_account = #{notInAccount,jdbcType=DECIMAL},
+      </if>
+      <if test="sendCardid != null" >
+        send_cardid = #{sendCardid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardMember" >
+    update ims_dbs_masclwlcard_card_member
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      openId = #{openid,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      aid = #{aid,jdbcType=INTEGER},
+      show_zan = #{showZan,jdbcType=TINYINT},
+      is_pop_card = #{isPopCard,jdbcType=TINYINT},
+      gender = #{gender,jdbcType=TINYINT},
+      city = #{city,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      gailv = #{gailv,jdbcType=TINYINT},
+      hmd_status = #{hmdStatus,jdbcType=TINYINT},
+      pb_status = #{pbStatus,jdbcType=TINYINT},
+      source_id = #{sourceId,jdbcType=INTEGER},
+      can_take = #{canTake,jdbcType=DECIMAL},
+      total_broker = #{totalBroker,jdbcType=DECIMAL},
+      has_taken = #{hasTaken,jdbcType=DECIMAL},
+      in_taking = #{inTaking,jdbcType=DECIMAL},
+      not_in_account = #{notInAccount,jdbcType=DECIMAL},
+      send_cardid = #{sendCardid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

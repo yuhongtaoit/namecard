@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardFriendMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardFriend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="card_id" property="cardId" jdbcType="INTEGER" />
+    <result column="is_card" property="isCard" jdbcType="TINYINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="INTEGER" />
+    <result column="head_img" property="headImg" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.CardFriendWithBLOBs" extends="BaseResultMap" >
+    <result column="all_img" property="allImg" jdbcType="LONGVARCHAR" />
+    <result column="content_card" property="contentCard" jdbcType="LONGVARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, card_id, is_card, title, time, head_img, sort
+  </sql>
+  <sql id="Blob_Column_List" >
+    all_img, content_card, content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_friend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_friend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendExample" >
+    delete from ims_dbs_masclwlcard_friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendWithBLOBs" >
+    insert into ims_dbs_masclwlcard_friend (id, uniacid, card_id, 
+      is_card, title, time, 
+      head_img, sort, all_img, 
+      content_card, content)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{cardId,jdbcType=INTEGER}, 
+      #{isCard,jdbcType=TINYINT}, #{title,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, 
+      #{headImg,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{allImg,jdbcType=LONGVARCHAR}, 
+      #{contentCard,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendWithBLOBs" >
+    insert into ims_dbs_masclwlcard_friend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="cardId != null" >
+        card_id,
+      </if>
+      <if test="isCard != null" >
+        is_card,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="headImg != null" >
+        head_img,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="allImg != null" >
+        all_img,
+      </if>
+      <if test="contentCard != null" >
+        content_card,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="cardId != null" >
+        #{cardId,jdbcType=INTEGER},
+      </if>
+      <if test="isCard != null" >
+        #{isCard,jdbcType=TINYINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="headImg != null" >
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="allImg != null" >
+        #{allImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="contentCard != null" >
+        #{contentCard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_friend
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardId != null" >
+        card_id = #{record.cardId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isCard != null" >
+        is_card = #{record.isCard,jdbcType=TINYINT},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=INTEGER},
+      </if>
+      <if test="record.headImg != null" >
+        head_img = #{record.headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.allImg != null" >
+        all_img = #{record.allImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.contentCard != null" >
+        content_card = #{record.contentCard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ims_dbs_masclwlcard_friend
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      card_id = #{record.cardId,jdbcType=INTEGER},
+      is_card = #{record.isCard,jdbcType=TINYINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=INTEGER},
+      head_img = #{record.headImg,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      all_img = #{record.allImg,jdbcType=LONGVARCHAR},
+      content_card = #{record.contentCard,jdbcType=LONGVARCHAR},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_friend
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      card_id = #{record.cardId,jdbcType=INTEGER},
+      is_card = #{record.isCard,jdbcType=TINYINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=INTEGER},
+      head_img = #{record.headImg,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendWithBLOBs" >
+    update ims_dbs_masclwlcard_friend
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="cardId != null" >
+        card_id = #{cardId,jdbcType=INTEGER},
+      </if>
+      <if test="isCard != null" >
+        is_card = #{isCard,jdbcType=TINYINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="headImg != null" >
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="allImg != null" >
+        all_img = #{allImg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="contentCard != null" >
+        content_card = #{contentCard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardFriendWithBLOBs" >
+    update ims_dbs_masclwlcard_friend
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      card_id = #{cardId,jdbcType=INTEGER},
+      is_card = #{isCard,jdbcType=TINYINT},
+      title = #{title,jdbcType=VARCHAR},
+      time = #{time,jdbcType=INTEGER},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      all_img = #{allImg,jdbcType=LONGVARCHAR},
+      content_card = #{contentCard,jdbcType=LONGVARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardFriend" >
+    update ims_dbs_masclwlcard_friend
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      card_id = #{cardId,jdbcType=INTEGER},
+      is_card = #{isCard,jdbcType=TINYINT},
+      title = #{title,jdbcType=VARCHAR},
+      time = #{time,jdbcType=INTEGER},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

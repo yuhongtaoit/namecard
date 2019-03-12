@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.Card" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="identify" property="identify" jdbcType="VARCHAR" />
+    <result column="card_logo" property="cardLogo" jdbcType="VARCHAR" />
+    <result column="detailed_address" property="detailedAddress" jdbcType="VARCHAR" />
+    <result column="card_name" property="cardName" jdbcType="VARCHAR" />
+    <result column="errmsg" property="errmsg" jdbcType="VARCHAR" />
+    <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="weixinid" property="weixinid" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="BIT" />
+    <result column="template_type" property="templateType" jdbcType="BIT" />
+    <result column="card_forward_status" property="cardForwardStatus" jdbcType="BIT" />
+    <result column="see_num" property="seeNum" jdbcType="INTEGER" />
+    <result column="browse_headimg_num" property="browseHeadimgNum" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="signature_count" property="signatureCount" jdbcType="INTEGER" />
+    <result column="share_num" property="shareNum" jdbcType="INTEGER" />
+    <result column="total_pic_num" property="totalPicNum" jdbcType="INTEGER" />
+    <result column="ishide" property="ishide" jdbcType="BIT" />
+    <result column="thumbs_num" property="thumbsNum" jdbcType="INTEGER" />
+    <result column="mrtype" property="mrtype" jdbcType="BIT" />
+    <result column="card_level" property="cardLevel" jdbcType="BIT" />
+    <result column="last_update_star_time" property="lastUpdateStarTime" jdbcType="VARCHAR" />
+    <result column="card_tel" property="cardTel" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="hide_property" property="hideProperty" jdbcType="BIT" />
+    <result column="customer_disturb" property="customerDisturb" jdbcType="BIT" />
+    <result column="open_boss" property="openBoss" jdbcType="TINYINT" />
+    <result column="zd_msg" property="zdMsg" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="template_img" property="templateImg" jdbcType="VARCHAR" />
+    <result column="share_img" property="shareImg" jdbcType="VARCHAR" />
+    <result column="share_title" property="shareTitle" jdbcType="VARCHAR" />
+    <result column="is_sendcard_id" property="isSendcardId" jdbcType="INTEGER" />
+    <result column="is_sendcard" property="isSendcard" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" extends="BaseResultMap" >
+    <result column="card_instr" property="cardInstr" jdbcType="LONGVARCHAR" />
+    <result column="photo" property="photo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, identify, card_logo, detailed_address, card_name, errmsg, card_id, userid, 
+    weixinid, address, sex, template_type, card_forward_status, see_num, browse_headimg_num, 
+    sort, signature_count, share_num, total_pic_num, ishide, thumbs_num, mrtype, card_level, 
+    last_update_star_time, card_tel, role_name, phone, email, hide_property, customer_disturb, 
+    open_boss, zd_msg, company_name, template_img, share_img, share_title, is_sendcard_id, 
+    is_sendcard
+  </sql>
+  <sql id="Blob_Column_List" >
+    card_instr, photo
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" >
+    delete from ims_dbs_masclwlcard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+    insert into ims_dbs_masclwlcard (id, uniacid, identify, 
+      card_logo, detailed_address, card_name, 
+      errmsg, card_id, userid, 
+      weixinid, address, sex, 
+      template_type, card_forward_status, see_num, 
+      browse_headimg_num, sort, signature_count, 
+      share_num, total_pic_num, ishide, 
+      thumbs_num, mrtype, card_level, 
+      last_update_star_time, card_tel, role_name, 
+      phone, email, hide_property, 
+      customer_disturb, open_boss, zd_msg, 
+      company_name, template_img, share_img, 
+      share_title, is_sendcard_id, is_sendcard, 
+      card_instr, photo)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{identify,jdbcType=VARCHAR}, 
+      #{cardLogo,jdbcType=VARCHAR}, #{detailedAddress,jdbcType=VARCHAR}, #{cardName,jdbcType=VARCHAR}, 
+      #{errmsg,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{weixinid,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, 
+      #{templateType,jdbcType=BIT}, #{cardForwardStatus,jdbcType=BIT}, #{seeNum,jdbcType=INTEGER}, 
+      #{browseHeadimgNum,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{signatureCount,jdbcType=INTEGER}, 
+      #{shareNum,jdbcType=INTEGER}, #{totalPicNum,jdbcType=INTEGER}, #{ishide,jdbcType=BIT}, 
+      #{thumbsNum,jdbcType=INTEGER}, #{mrtype,jdbcType=BIT}, #{cardLevel,jdbcType=BIT}, 
+      #{lastUpdateStarTime,jdbcType=VARCHAR}, #{cardTel,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{hideProperty,jdbcType=BIT}, 
+      #{customerDisturb,jdbcType=BIT}, #{openBoss,jdbcType=TINYINT}, #{zdMsg,jdbcType=VARCHAR}, 
+      #{companyName,jdbcType=VARCHAR}, #{templateImg,jdbcType=VARCHAR}, #{shareImg,jdbcType=VARCHAR}, 
+      #{shareTitle,jdbcType=VARCHAR}, #{isSendcardId,jdbcType=INTEGER}, #{isSendcard,jdbcType=BIT}, 
+      #{cardInstr,jdbcType=LONGVARCHAR}, #{photo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+    insert into ims_dbs_masclwlcard
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="identify != null" >
+        identify,
+      </if>
+      <if test="cardLogo != null" >
+        card_logo,
+      </if>
+      <if test="detailedAddress != null" >
+        detailed_address,
+      </if>
+      <if test="cardName != null" >
+        card_name,
+      </if>
+      <if test="errmsg != null" >
+        errmsg,
+      </if>
+      <if test="cardId != null" >
+        card_id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="weixinid != null" >
+        weixinid,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="templateType != null" >
+        template_type,
+      </if>
+      <if test="cardForwardStatus != null" >
+        card_forward_status,
+      </if>
+      <if test="seeNum != null" >
+        see_num,
+      </if>
+      <if test="browseHeadimgNum != null" >
+        browse_headimg_num,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="signatureCount != null" >
+        signature_count,
+      </if>
+      <if test="shareNum != null" >
+        share_num,
+      </if>
+      <if test="totalPicNum != null" >
+        total_pic_num,
+      </if>
+      <if test="ishide != null" >
+        ishide,
+      </if>
+      <if test="thumbsNum != null" >
+        thumbs_num,
+      </if>
+      <if test="mrtype != null" >
+        mrtype,
+      </if>
+      <if test="cardLevel != null" >
+        card_level,
+      </if>
+      <if test="lastUpdateStarTime != null" >
+        last_update_star_time,
+      </if>
+      <if test="cardTel != null" >
+        card_tel,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="hideProperty != null" >
+        hide_property,
+      </if>
+      <if test="customerDisturb != null" >
+        customer_disturb,
+      </if>
+      <if test="openBoss != null" >
+        open_boss,
+      </if>
+      <if test="zdMsg != null" >
+        zd_msg,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="templateImg != null" >
+        template_img,
+      </if>
+      <if test="shareImg != null" >
+        share_img,
+      </if>
+      <if test="shareTitle != null" >
+        share_title,
+      </if>
+      <if test="isSendcardId != null" >
+        is_sendcard_id,
+      </if>
+      <if test="isSendcard != null" >
+        is_sendcard,
+      </if>
+      <if test="cardInstr != null" >
+        card_instr,
+      </if>
+      <if test="photo != null" >
+        photo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="identify != null" >
+        #{identify,jdbcType=VARCHAR},
+      </if>
+      <if test="cardLogo != null" >
+        #{cardLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedAddress != null" >
+        #{detailedAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null" >
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="errmsg != null" >
+        #{errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinid != null" >
+        #{weixinid,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=BIT},
+      </if>
+      <if test="templateType != null" >
+        #{templateType,jdbcType=BIT},
+      </if>
+      <if test="cardForwardStatus != null" >
+        #{cardForwardStatus,jdbcType=BIT},
+      </if>
+      <if test="seeNum != null" >
+        #{seeNum,jdbcType=INTEGER},
+      </if>
+      <if test="browseHeadimgNum != null" >
+        #{browseHeadimgNum,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="signatureCount != null" >
+        #{signatureCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareNum != null" >
+        #{shareNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalPicNum != null" >
+        #{totalPicNum,jdbcType=INTEGER},
+      </if>
+      <if test="ishide != null" >
+        #{ishide,jdbcType=BIT},
+      </if>
+      <if test="thumbsNum != null" >
+        #{thumbsNum,jdbcType=INTEGER},
+      </if>
+      <if test="mrtype != null" >
+        #{mrtype,jdbcType=BIT},
+      </if>
+      <if test="cardLevel != null" >
+        #{cardLevel,jdbcType=BIT},
+      </if>
+      <if test="lastUpdateStarTime != null" >
+        #{lastUpdateStarTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cardTel != null" >
+        #{cardTel,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="hideProperty != null" >
+        #{hideProperty,jdbcType=BIT},
+      </if>
+      <if test="customerDisturb != null" >
+        #{customerDisturb,jdbcType=BIT},
+      </if>
+      <if test="openBoss != null" >
+        #{openBoss,jdbcType=TINYINT},
+      </if>
+      <if test="zdMsg != null" >
+        #{zdMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateImg != null" >
+        #{templateImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shareImg != null" >
+        #{shareImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shareTitle != null" >
+        #{shareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="isSendcardId != null" >
+        #{isSendcardId,jdbcType=INTEGER},
+      </if>
+      <if test="isSendcard != null" >
+        #{isSendcard,jdbcType=BIT},
+      </if>
+      <if test="cardInstr != null" >
+        #{cardInstr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.identify != null" >
+        identify = #{record.identify,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardLogo != null" >
+        card_logo = #{record.cardLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detailedAddress != null" >
+        detailed_address = #{record.detailedAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardName != null" >
+        card_name = #{record.cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errmsg != null" >
+        errmsg = #{record.errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardId != null" >
+        card_id = #{record.cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixinid != null" >
+        weixinid = #{record.weixinid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=BIT},
+      </if>
+      <if test="record.templateType != null" >
+        template_type = #{record.templateType,jdbcType=BIT},
+      </if>
+      <if test="record.cardForwardStatus != null" >
+        card_forward_status = #{record.cardForwardStatus,jdbcType=BIT},
+      </if>
+      <if test="record.seeNum != null" >
+        see_num = #{record.seeNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.browseHeadimgNum != null" >
+        browse_headimg_num = #{record.browseHeadimgNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.signatureCount != null" >
+        signature_count = #{record.signatureCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.shareNum != null" >
+        share_num = #{record.shareNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalPicNum != null" >
+        total_pic_num = #{record.totalPicNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.ishide != null" >
+        ishide = #{record.ishide,jdbcType=BIT},
+      </if>
+      <if test="record.thumbsNum != null" >
+        thumbs_num = #{record.thumbsNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.mrtype != null" >
+        mrtype = #{record.mrtype,jdbcType=BIT},
+      </if>
+      <if test="record.cardLevel != null" >
+        card_level = #{record.cardLevel,jdbcType=BIT},
+      </if>
+      <if test="record.lastUpdateStarTime != null" >
+        last_update_star_time = #{record.lastUpdateStarTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardTel != null" >
+        card_tel = #{record.cardTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleName != null" >
+        role_name = #{record.roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hideProperty != null" >
+        hide_property = #{record.hideProperty,jdbcType=BIT},
+      </if>
+      <if test="record.customerDisturb != null" >
+        customer_disturb = #{record.customerDisturb,jdbcType=BIT},
+      </if>
+      <if test="record.openBoss != null" >
+        open_boss = #{record.openBoss,jdbcType=TINYINT},
+      </if>
+      <if test="record.zdMsg != null" >
+        zd_msg = #{record.zdMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyName != null" >
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateImg != null" >
+        template_img = #{record.templateImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareImg != null" >
+        share_img = #{record.shareImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareTitle != null" >
+        share_title = #{record.shareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSendcardId != null" >
+        is_sendcard_id = #{record.isSendcardId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isSendcard != null" >
+        is_sendcard = #{record.isSendcard,jdbcType=BIT},
+      </if>
+      <if test="record.cardInstr != null" >
+        card_instr = #{record.cardInstr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.photo != null" >
+        photo = #{record.photo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ims_dbs_masclwlcard
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      identify = #{record.identify,jdbcType=VARCHAR},
+      card_logo = #{record.cardLogo,jdbcType=VARCHAR},
+      detailed_address = #{record.detailedAddress,jdbcType=VARCHAR},
+      card_name = #{record.cardName,jdbcType=VARCHAR},
+      errmsg = #{record.errmsg,jdbcType=VARCHAR},
+      card_id = #{record.cardId,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      weixinid = #{record.weixinid,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=BIT},
+      template_type = #{record.templateType,jdbcType=BIT},
+      card_forward_status = #{record.cardForwardStatus,jdbcType=BIT},
+      see_num = #{record.seeNum,jdbcType=INTEGER},
+      browse_headimg_num = #{record.browseHeadimgNum,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      signature_count = #{record.signatureCount,jdbcType=INTEGER},
+      share_num = #{record.shareNum,jdbcType=INTEGER},
+      total_pic_num = #{record.totalPicNum,jdbcType=INTEGER},
+      ishide = #{record.ishide,jdbcType=BIT},
+      thumbs_num = #{record.thumbsNum,jdbcType=INTEGER},
+      mrtype = #{record.mrtype,jdbcType=BIT},
+      card_level = #{record.cardLevel,jdbcType=BIT},
+      last_update_star_time = #{record.lastUpdateStarTime,jdbcType=VARCHAR},
+      card_tel = #{record.cardTel,jdbcType=VARCHAR},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      hide_property = #{record.hideProperty,jdbcType=BIT},
+      customer_disturb = #{record.customerDisturb,jdbcType=BIT},
+      open_boss = #{record.openBoss,jdbcType=TINYINT},
+      zd_msg = #{record.zdMsg,jdbcType=VARCHAR},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      template_img = #{record.templateImg,jdbcType=VARCHAR},
+      share_img = #{record.shareImg,jdbcType=VARCHAR},
+      share_title = #{record.shareTitle,jdbcType=VARCHAR},
+      is_sendcard_id = #{record.isSendcardId,jdbcType=INTEGER},
+      is_sendcard = #{record.isSendcard,jdbcType=BIT},
+      card_instr = #{record.cardInstr,jdbcType=LONGVARCHAR},
+      photo = #{record.photo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      identify = #{record.identify,jdbcType=VARCHAR},
+      card_logo = #{record.cardLogo,jdbcType=VARCHAR},
+      detailed_address = #{record.detailedAddress,jdbcType=VARCHAR},
+      card_name = #{record.cardName,jdbcType=VARCHAR},
+      errmsg = #{record.errmsg,jdbcType=VARCHAR},
+      card_id = #{record.cardId,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      weixinid = #{record.weixinid,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=BIT},
+      template_type = #{record.templateType,jdbcType=BIT},
+      card_forward_status = #{record.cardForwardStatus,jdbcType=BIT},
+      see_num = #{record.seeNum,jdbcType=INTEGER},
+      browse_headimg_num = #{record.browseHeadimgNum,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      signature_count = #{record.signatureCount,jdbcType=INTEGER},
+      share_num = #{record.shareNum,jdbcType=INTEGER},
+      total_pic_num = #{record.totalPicNum,jdbcType=INTEGER},
+      ishide = #{record.ishide,jdbcType=BIT},
+      thumbs_num = #{record.thumbsNum,jdbcType=INTEGER},
+      mrtype = #{record.mrtype,jdbcType=BIT},
+      card_level = #{record.cardLevel,jdbcType=BIT},
+      last_update_star_time = #{record.lastUpdateStarTime,jdbcType=VARCHAR},
+      card_tel = #{record.cardTel,jdbcType=VARCHAR},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      hide_property = #{record.hideProperty,jdbcType=BIT},
+      customer_disturb = #{record.customerDisturb,jdbcType=BIT},
+      open_boss = #{record.openBoss,jdbcType=TINYINT},
+      zd_msg = #{record.zdMsg,jdbcType=VARCHAR},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      template_img = #{record.templateImg,jdbcType=VARCHAR},
+      share_img = #{record.shareImg,jdbcType=VARCHAR},
+      share_title = #{record.shareTitle,jdbcType=VARCHAR},
+      is_sendcard_id = #{record.isSendcardId,jdbcType=INTEGER},
+      is_sendcard = #{record.isSendcard,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+    update ims_dbs_masclwlcard
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="identify != null" >
+        identify = #{identify,jdbcType=VARCHAR},
+      </if>
+      <if test="cardLogo != null" >
+        card_logo = #{cardLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedAddress != null" >
+        detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null" >
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="errmsg != null" >
+        errmsg = #{errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        card_id = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinid != null" >
+        weixinid = #{weixinid,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=BIT},
+      </if>
+      <if test="templateType != null" >
+        template_type = #{templateType,jdbcType=BIT},
+      </if>
+      <if test="cardForwardStatus != null" >
+        card_forward_status = #{cardForwardStatus,jdbcType=BIT},
+      </if>
+      <if test="seeNum != null" >
+        see_num = #{seeNum,jdbcType=INTEGER},
+      </if>
+      <if test="browseHeadimgNum != null" >
+        browse_headimg_num = #{browseHeadimgNum,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="signatureCount != null" >
+        signature_count = #{signatureCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareNum != null" >
+        share_num = #{shareNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalPicNum != null" >
+        total_pic_num = #{totalPicNum,jdbcType=INTEGER},
+      </if>
+      <if test="ishide != null" >
+        ishide = #{ishide,jdbcType=BIT},
+      </if>
+      <if test="thumbsNum != null" >
+        thumbs_num = #{thumbsNum,jdbcType=INTEGER},
+      </if>
+      <if test="mrtype != null" >
+        mrtype = #{mrtype,jdbcType=BIT},
+      </if>
+      <if test="cardLevel != null" >
+        card_level = #{cardLevel,jdbcType=BIT},
+      </if>
+      <if test="lastUpdateStarTime != null" >
+        last_update_star_time = #{lastUpdateStarTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cardTel != null" >
+        card_tel = #{cardTel,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="hideProperty != null" >
+        hide_property = #{hideProperty,jdbcType=BIT},
+      </if>
+      <if test="customerDisturb != null" >
+        customer_disturb = #{customerDisturb,jdbcType=BIT},
+      </if>
+      <if test="openBoss != null" >
+        open_boss = #{openBoss,jdbcType=TINYINT},
+      </if>
+      <if test="zdMsg != null" >
+        zd_msg = #{zdMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateImg != null" >
+        template_img = #{templateImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shareImg != null" >
+        share_img = #{shareImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shareTitle != null" >
+        share_title = #{shareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="isSendcardId != null" >
+        is_sendcard_id = #{isSendcardId,jdbcType=INTEGER},
+      </if>
+      <if test="isSendcard != null" >
+        is_sendcard = #{isSendcard,jdbcType=BIT},
+      </if>
+      <if test="cardInstr != null" >
+        card_instr = #{cardInstr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.miniapp.model.CardWithBLOBs" >
+    update ims_dbs_masclwlcard
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      identify = #{identify,jdbcType=VARCHAR},
+      card_logo = #{cardLogo,jdbcType=VARCHAR},
+      detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      errmsg = #{errmsg,jdbcType=VARCHAR},
+      card_id = #{cardId,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      weixinid = #{weixinid,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=BIT},
+      template_type = #{templateType,jdbcType=BIT},
+      card_forward_status = #{cardForwardStatus,jdbcType=BIT},
+      see_num = #{seeNum,jdbcType=INTEGER},
+      browse_headimg_num = #{browseHeadimgNum,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      signature_count = #{signatureCount,jdbcType=INTEGER},
+      share_num = #{shareNum,jdbcType=INTEGER},
+      total_pic_num = #{totalPicNum,jdbcType=INTEGER},
+      ishide = #{ishide,jdbcType=BIT},
+      thumbs_num = #{thumbsNum,jdbcType=INTEGER},
+      mrtype = #{mrtype,jdbcType=BIT},
+      card_level = #{cardLevel,jdbcType=BIT},
+      last_update_star_time = #{lastUpdateStarTime,jdbcType=VARCHAR},
+      card_tel = #{cardTel,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      hide_property = #{hideProperty,jdbcType=BIT},
+      customer_disturb = #{customerDisturb,jdbcType=BIT},
+      open_boss = #{openBoss,jdbcType=TINYINT},
+      zd_msg = #{zdMsg,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      template_img = #{templateImg,jdbcType=VARCHAR},
+      share_img = #{shareImg,jdbcType=VARCHAR},
+      share_title = #{shareTitle,jdbcType=VARCHAR},
+      is_sendcard_id = #{isSendcardId,jdbcType=INTEGER},
+      is_sendcard = #{isSendcard,jdbcType=BIT},
+      card_instr = #{cardInstr,jdbcType=LONGVARCHAR},
+      photo = #{photo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.Card" >
+    update ims_dbs_masclwlcard
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      identify = #{identify,jdbcType=VARCHAR},
+      card_logo = #{cardLogo,jdbcType=VARCHAR},
+      detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      errmsg = #{errmsg,jdbcType=VARCHAR},
+      card_id = #{cardId,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      weixinid = #{weixinid,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=BIT},
+      template_type = #{templateType,jdbcType=BIT},
+      card_forward_status = #{cardForwardStatus,jdbcType=BIT},
+      see_num = #{seeNum,jdbcType=INTEGER},
+      browse_headimg_num = #{browseHeadimgNum,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      signature_count = #{signatureCount,jdbcType=INTEGER},
+      share_num = #{shareNum,jdbcType=INTEGER},
+      total_pic_num = #{totalPicNum,jdbcType=INTEGER},
+      ishide = #{ishide,jdbcType=BIT},
+      thumbs_num = #{thumbsNum,jdbcType=INTEGER},
+      mrtype = #{mrtype,jdbcType=BIT},
+      card_level = #{cardLevel,jdbcType=BIT},
+      last_update_star_time = #{lastUpdateStarTime,jdbcType=VARCHAR},
+      card_tel = #{cardTel,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      hide_property = #{hideProperty,jdbcType=BIT},
+      customer_disturb = #{customerDisturb,jdbcType=BIT},
+      open_boss = #{openBoss,jdbcType=TINYINT},
+      zd_msg = #{zdMsg,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      template_img = #{templateImg,jdbcType=VARCHAR},
+      share_img = #{shareImg,jdbcType=VARCHAR},
+      share_title = #{shareTitle,jdbcType=VARCHAR},
+      is_sendcard_id = #{isSendcardId,jdbcType=INTEGER},
+      is_sendcard = #{isSendcard,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

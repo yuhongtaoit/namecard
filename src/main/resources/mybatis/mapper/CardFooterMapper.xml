@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardFooterMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardFooter" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="card_img" property="cardImg" jdbcType="VARCHAR" />
+    <result column="card_img_no" property="cardImgNo" jdbcType="VARCHAR" />
+    <result column="card_name" property="cardName" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="friend_name" property="friendName" jdbcType="VARCHAR" />
+    <result column="web_name" property="webName" jdbcType="VARCHAR" />
+    <result column="shop_img" property="shopImg" jdbcType="VARCHAR" />
+    <result column="friend_img" property="friendImg" jdbcType="VARCHAR" />
+    <result column="web_img" property="webImg" jdbcType="VARCHAR" />
+    <result column="shop_img_no" property="shopImgNo" jdbcType="VARCHAR" />
+    <result column="friend_img_no" property="friendImgNo" jdbcType="VARCHAR" />
+    <result column="web_img_no" property="webImgNo" jdbcType="VARCHAR" />
+    <result column="shop_type" property="shopType" jdbcType="BIT" />
+    <result column="friend_type" property="friendType" jdbcType="BIT" />
+    <result column="web_type" property="webType" jdbcType="BIT" />
+    <result column="card_type" property="cardType" jdbcType="BIT" />
+    <result column="shop_url" property="shopUrl" jdbcType="VARCHAR" />
+    <result column="shop_path" property="shopPath" jdbcType="VARCHAR" />
+    <result column="card_path" property="cardPath" jdbcType="VARCHAR" />
+    <result column="web_path" property="webPath" jdbcType="VARCHAR" />
+    <result column="web_appid" property="webAppid" jdbcType="VARCHAR" />
+    <result column="card_appid" property="cardAppid" jdbcType="VARCHAR" />
+    <result column="friend_appid" property="friendAppid" jdbcType="VARCHAR" />
+    <result column="friend_path" property="friendPath" jdbcType="VARCHAR" />
+    <result column="shop_appid" property="shopAppid" jdbcType="VARCHAR" />
+    <result column="friend_url" property="friendUrl" jdbcType="VARCHAR" />
+    <result column="web_url" property="webUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, card_img, card_img_no, card_name, shop_name, friend_name, web_name, 
+    shop_img, friend_img, web_img, shop_img_no, friend_img_no, web_img_no, shop_type, 
+    friend_type, web_type, card_type, shop_url, shop_path, card_path, web_path, web_appid, 
+    card_appid, friend_appid, friend_path, shop_appid, friend_url, web_url
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardFooterExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_footer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_footer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_footer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardFooterExample" >
+    delete from ims_dbs_masclwlcard_footer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+    insert into ims_dbs_masclwlcard_footer (id, uniacid, card_img, 
+      card_img_no, card_name, shop_name, 
+      friend_name, web_name, shop_img, 
+      friend_img, web_img, shop_img_no, 
+      friend_img_no, web_img_no, shop_type, 
+      friend_type, web_type, card_type, 
+      shop_url, shop_path, card_path, 
+      web_path, web_appid, card_appid, 
+      friend_appid, friend_path, shop_appid, 
+      friend_url, web_url)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{cardImg,jdbcType=VARCHAR}, 
+      #{cardImgNo,jdbcType=VARCHAR}, #{cardName,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{friendName,jdbcType=VARCHAR}, #{webName,jdbcType=VARCHAR}, #{shopImg,jdbcType=VARCHAR}, 
+      #{friendImg,jdbcType=VARCHAR}, #{webImg,jdbcType=VARCHAR}, #{shopImgNo,jdbcType=VARCHAR}, 
+      #{friendImgNo,jdbcType=VARCHAR}, #{webImgNo,jdbcType=VARCHAR}, #{shopType,jdbcType=BIT}, 
+      #{friendType,jdbcType=BIT}, #{webType,jdbcType=BIT}, #{cardType,jdbcType=BIT}, 
+      #{shopUrl,jdbcType=VARCHAR}, #{shopPath,jdbcType=VARCHAR}, #{cardPath,jdbcType=VARCHAR}, 
+      #{webPath,jdbcType=VARCHAR}, #{webAppid,jdbcType=VARCHAR}, #{cardAppid,jdbcType=VARCHAR}, 
+      #{friendAppid,jdbcType=VARCHAR}, #{friendPath,jdbcType=VARCHAR}, #{shopAppid,jdbcType=VARCHAR}, 
+      #{friendUrl,jdbcType=VARCHAR}, #{webUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+    insert into ims_dbs_masclwlcard_footer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="cardImg != null" >
+        card_img,
+      </if>
+      <if test="cardImgNo != null" >
+        card_img_no,
+      </if>
+      <if test="cardName != null" >
+        card_name,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="friendName != null" >
+        friend_name,
+      </if>
+      <if test="webName != null" >
+        web_name,
+      </if>
+      <if test="shopImg != null" >
+        shop_img,
+      </if>
+      <if test="friendImg != null" >
+        friend_img,
+      </if>
+      <if test="webImg != null" >
+        web_img,
+      </if>
+      <if test="shopImgNo != null" >
+        shop_img_no,
+      </if>
+      <if test="friendImgNo != null" >
+        friend_img_no,
+      </if>
+      <if test="webImgNo != null" >
+        web_img_no,
+      </if>
+      <if test="shopType != null" >
+        shop_type,
+      </if>
+      <if test="friendType != null" >
+        friend_type,
+      </if>
+      <if test="webType != null" >
+        web_type,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="shopUrl != null" >
+        shop_url,
+      </if>
+      <if test="shopPath != null" >
+        shop_path,
+      </if>
+      <if test="cardPath != null" >
+        card_path,
+      </if>
+      <if test="webPath != null" >
+        web_path,
+      </if>
+      <if test="webAppid != null" >
+        web_appid,
+      </if>
+      <if test="cardAppid != null" >
+        card_appid,
+      </if>
+      <if test="friendAppid != null" >
+        friend_appid,
+      </if>
+      <if test="friendPath != null" >
+        friend_path,
+      </if>
+      <if test="shopAppid != null" >
+        shop_appid,
+      </if>
+      <if test="friendUrl != null" >
+        friend_url,
+      </if>
+      <if test="webUrl != null" >
+        web_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="cardImg != null" >
+        #{cardImg,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImgNo != null" >
+        #{cardImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null" >
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="friendName != null" >
+        #{friendName,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopImg != null" >
+        #{shopImg,jdbcType=VARCHAR},
+      </if>
+      <if test="friendImg != null" >
+        #{friendImg,jdbcType=VARCHAR},
+      </if>
+      <if test="webImg != null" >
+        #{webImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shopImgNo != null" >
+        #{shopImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="friendImgNo != null" >
+        #{friendImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="webImgNo != null" >
+        #{webImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=BIT},
+      </if>
+      <if test="friendType != null" >
+        #{friendType,jdbcType=BIT},
+      </if>
+      <if test="webType != null" >
+        #{webType,jdbcType=BIT},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=BIT},
+      </if>
+      <if test="shopUrl != null" >
+        #{shopUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPath != null" >
+        #{shopPath,jdbcType=VARCHAR},
+      </if>
+      <if test="cardPath != null" >
+        #{cardPath,jdbcType=VARCHAR},
+      </if>
+      <if test="webPath != null" >
+        #{webPath,jdbcType=VARCHAR},
+      </if>
+      <if test="webAppid != null" >
+        #{webAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardAppid != null" >
+        #{cardAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="friendAppid != null" >
+        #{friendAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="friendPath != null" >
+        #{friendPath,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAppid != null" >
+        #{shopAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="friendUrl != null" >
+        #{friendUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        #{webUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardFooterExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_footer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_footer
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardImg != null" >
+        card_img = #{record.cardImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardImgNo != null" >
+        card_img_no = #{record.cardImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardName != null" >
+        card_name = #{record.cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friendName != null" >
+        friend_name = #{record.friendName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webName != null" >
+        web_name = #{record.webName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopImg != null" >
+        shop_img = #{record.shopImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friendImg != null" >
+        friend_img = #{record.friendImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webImg != null" >
+        web_img = #{record.webImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopImgNo != null" >
+        shop_img_no = #{record.shopImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friendImgNo != null" >
+        friend_img_no = #{record.friendImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webImgNo != null" >
+        web_img_no = #{record.webImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopType != null" >
+        shop_type = #{record.shopType,jdbcType=BIT},
+      </if>
+      <if test="record.friendType != null" >
+        friend_type = #{record.friendType,jdbcType=BIT},
+      </if>
+      <if test="record.webType != null" >
+        web_type = #{record.webType,jdbcType=BIT},
+      </if>
+      <if test="record.cardType != null" >
+        card_type = #{record.cardType,jdbcType=BIT},
+      </if>
+      <if test="record.shopUrl != null" >
+        shop_url = #{record.shopUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopPath != null" >
+        shop_path = #{record.shopPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardPath != null" >
+        card_path = #{record.cardPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webPath != null" >
+        web_path = #{record.webPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webAppid != null" >
+        web_appid = #{record.webAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardAppid != null" >
+        card_appid = #{record.cardAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friendAppid != null" >
+        friend_appid = #{record.friendAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friendPath != null" >
+        friend_path = #{record.friendPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopAppid != null" >
+        shop_appid = #{record.shopAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.friendUrl != null" >
+        friend_url = #{record.friendUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webUrl != null" >
+        web_url = #{record.webUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_footer
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      card_img = #{record.cardImg,jdbcType=VARCHAR},
+      card_img_no = #{record.cardImgNo,jdbcType=VARCHAR},
+      card_name = #{record.cardName,jdbcType=VARCHAR},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      friend_name = #{record.friendName,jdbcType=VARCHAR},
+      web_name = #{record.webName,jdbcType=VARCHAR},
+      shop_img = #{record.shopImg,jdbcType=VARCHAR},
+      friend_img = #{record.friendImg,jdbcType=VARCHAR},
+      web_img = #{record.webImg,jdbcType=VARCHAR},
+      shop_img_no = #{record.shopImgNo,jdbcType=VARCHAR},
+      friend_img_no = #{record.friendImgNo,jdbcType=VARCHAR},
+      web_img_no = #{record.webImgNo,jdbcType=VARCHAR},
+      shop_type = #{record.shopType,jdbcType=BIT},
+      friend_type = #{record.friendType,jdbcType=BIT},
+      web_type = #{record.webType,jdbcType=BIT},
+      card_type = #{record.cardType,jdbcType=BIT},
+      shop_url = #{record.shopUrl,jdbcType=VARCHAR},
+      shop_path = #{record.shopPath,jdbcType=VARCHAR},
+      card_path = #{record.cardPath,jdbcType=VARCHAR},
+      web_path = #{record.webPath,jdbcType=VARCHAR},
+      web_appid = #{record.webAppid,jdbcType=VARCHAR},
+      card_appid = #{record.cardAppid,jdbcType=VARCHAR},
+      friend_appid = #{record.friendAppid,jdbcType=VARCHAR},
+      friend_path = #{record.friendPath,jdbcType=VARCHAR},
+      shop_appid = #{record.shopAppid,jdbcType=VARCHAR},
+      friend_url = #{record.friendUrl,jdbcType=VARCHAR},
+      web_url = #{record.webUrl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+    update ims_dbs_masclwlcard_footer
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="cardImg != null" >
+        card_img = #{cardImg,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImgNo != null" >
+        card_img_no = #{cardImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null" >
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="friendName != null" >
+        friend_name = #{friendName,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        web_name = #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopImg != null" >
+        shop_img = #{shopImg,jdbcType=VARCHAR},
+      </if>
+      <if test="friendImg != null" >
+        friend_img = #{friendImg,jdbcType=VARCHAR},
+      </if>
+      <if test="webImg != null" >
+        web_img = #{webImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shopImgNo != null" >
+        shop_img_no = #{shopImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="friendImgNo != null" >
+        friend_img_no = #{friendImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="webImgNo != null" >
+        web_img_no = #{webImgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        shop_type = #{shopType,jdbcType=BIT},
+      </if>
+      <if test="friendType != null" >
+        friend_type = #{friendType,jdbcType=BIT},
+      </if>
+      <if test="webType != null" >
+        web_type = #{webType,jdbcType=BIT},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=BIT},
+      </if>
+      <if test="shopUrl != null" >
+        shop_url = #{shopUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPath != null" >
+        shop_path = #{shopPath,jdbcType=VARCHAR},
+      </if>
+      <if test="cardPath != null" >
+        card_path = #{cardPath,jdbcType=VARCHAR},
+      </if>
+      <if test="webPath != null" >
+        web_path = #{webPath,jdbcType=VARCHAR},
+      </if>
+      <if test="webAppid != null" >
+        web_appid = #{webAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardAppid != null" >
+        card_appid = #{cardAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="friendAppid != null" >
+        friend_appid = #{friendAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="friendPath != null" >
+        friend_path = #{friendPath,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAppid != null" >
+        shop_appid = #{shopAppid,jdbcType=VARCHAR},
+      </if>
+      <if test="friendUrl != null" >
+        friend_url = #{friendUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        web_url = #{webUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardFooter" >
+    update ims_dbs_masclwlcard_footer
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      card_img = #{cardImg,jdbcType=VARCHAR},
+      card_img_no = #{cardImgNo,jdbcType=VARCHAR},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      friend_name = #{friendName,jdbcType=VARCHAR},
+      web_name = #{webName,jdbcType=VARCHAR},
+      shop_img = #{shopImg,jdbcType=VARCHAR},
+      friend_img = #{friendImg,jdbcType=VARCHAR},
+      web_img = #{webImg,jdbcType=VARCHAR},
+      shop_img_no = #{shopImgNo,jdbcType=VARCHAR},
+      friend_img_no = #{friendImgNo,jdbcType=VARCHAR},
+      web_img_no = #{webImgNo,jdbcType=VARCHAR},
+      shop_type = #{shopType,jdbcType=BIT},
+      friend_type = #{friendType,jdbcType=BIT},
+      web_type = #{webType,jdbcType=BIT},
+      card_type = #{cardType,jdbcType=BIT},
+      shop_url = #{shopUrl,jdbcType=VARCHAR},
+      shop_path = #{shopPath,jdbcType=VARCHAR},
+      card_path = #{cardPath,jdbcType=VARCHAR},
+      web_path = #{webPath,jdbcType=VARCHAR},
+      web_appid = #{webAppid,jdbcType=VARCHAR},
+      card_appid = #{cardAppid,jdbcType=VARCHAR},
+      friend_appid = #{friendAppid,jdbcType=VARCHAR},
+      friend_path = #{friendPath,jdbcType=VARCHAR},
+      shop_appid = #{shopAppid,jdbcType=VARCHAR},
+      friend_url = #{friendUrl,jdbcType=VARCHAR},
+      web_url = #{webUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

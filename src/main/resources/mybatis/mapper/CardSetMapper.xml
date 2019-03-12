@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.miniapp.dao.CardSetMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.miniapp.model.CardSet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="company_addr" property="companyAddr" jdbcType="VARCHAR" />
+    <result column="template_id" property="templateId" jdbcType="VARCHAR" />
+    <result column="open_shop" property="openShop" jdbcType="BIT" />
+    <result column="company_tel" property="companyTel" jdbcType="VARCHAR" />
+    <result column="company_logo" property="companyLogo" jdbcType="VARCHAR" />
+    <result column="shop_bg" property="shopBg" jdbcType="VARCHAR" />
+    <result column="open_redpack" property="openRedpack" jdbcType="TINYINT" />
+    <result column="redpack_min" property="redpackMin" jdbcType="DECIMAL" />
+    <result column="redpack_max" property="redpackMax" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, company_name, lat, lng, num, company_addr, template_id, open_shop, company_tel, 
+    company_logo, shop_bg, open_redpack, redpack_min, redpack_max
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.miniapp.model.CardSetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_set
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_set
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_set
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardSetExample" >
+    delete from ims_dbs_masclwlcard_set
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.miniapp.model.CardSet" >
+    insert into ims_dbs_masclwlcard_set (id, uniacid, company_name, 
+      lat, lng, num, company_addr, 
+      template_id, open_shop, company_tel, 
+      company_logo, shop_bg, open_redpack, 
+      redpack_min, redpack_max)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{companyAddr,jdbcType=VARCHAR}, 
+      #{templateId,jdbcType=VARCHAR}, #{openShop,jdbcType=BIT}, #{companyTel,jdbcType=VARCHAR}, 
+      #{companyLogo,jdbcType=VARCHAR}, #{shopBg,jdbcType=VARCHAR}, #{openRedpack,jdbcType=TINYINT}, 
+      #{redpackMin,jdbcType=DECIMAL}, #{redpackMax,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.miniapp.model.CardSet" >
+    insert into ims_dbs_masclwlcard_set
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="companyAddr != null" >
+        company_addr,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="openShop != null" >
+        open_shop,
+      </if>
+      <if test="companyTel != null" >
+        company_tel,
+      </if>
+      <if test="companyLogo != null" >
+        company_logo,
+      </if>
+      <if test="shopBg != null" >
+        shop_bg,
+      </if>
+      <if test="openRedpack != null" >
+        open_redpack,
+      </if>
+      <if test="redpackMin != null" >
+        redpack_min,
+      </if>
+      <if test="redpackMax != null" >
+        redpack_max,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="companyAddr != null" >
+        #{companyAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="openShop != null" >
+        #{openShop,jdbcType=BIT},
+      </if>
+      <if test="companyTel != null" >
+        #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLogo != null" >
+        #{companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopBg != null" >
+        #{shopBg,jdbcType=VARCHAR},
+      </if>
+      <if test="openRedpack != null" >
+        #{openRedpack,jdbcType=TINYINT},
+      </if>
+      <if test="redpackMin != null" >
+        #{redpackMin,jdbcType=DECIMAL},
+      </if>
+      <if test="redpackMax != null" >
+        #{redpackMax,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.miniapp.model.CardSetExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_set
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_set
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyName != null" >
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lat != null" >
+        lat = #{record.lat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lng != null" >
+        lng = #{record.lng,jdbcType=VARCHAR},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyAddr != null" >
+        company_addr = #{record.companyAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateId != null" >
+        template_id = #{record.templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openShop != null" >
+        open_shop = #{record.openShop,jdbcType=BIT},
+      </if>
+      <if test="record.companyTel != null" >
+        company_tel = #{record.companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyLogo != null" >
+        company_logo = #{record.companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopBg != null" >
+        shop_bg = #{record.shopBg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openRedpack != null" >
+        open_redpack = #{record.openRedpack,jdbcType=TINYINT},
+      </if>
+      <if test="record.redpackMin != null" >
+        redpack_min = #{record.redpackMin,jdbcType=DECIMAL},
+      </if>
+      <if test="record.redpackMax != null" >
+        redpack_max = #{record.redpackMax,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_set
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      lat = #{record.lat,jdbcType=VARCHAR},
+      lng = #{record.lng,jdbcType=VARCHAR},
+      num = #{record.num,jdbcType=INTEGER},
+      company_addr = #{record.companyAddr,jdbcType=VARCHAR},
+      template_id = #{record.templateId,jdbcType=VARCHAR},
+      open_shop = #{record.openShop,jdbcType=BIT},
+      company_tel = #{record.companyTel,jdbcType=VARCHAR},
+      company_logo = #{record.companyLogo,jdbcType=VARCHAR},
+      shop_bg = #{record.shopBg,jdbcType=VARCHAR},
+      open_redpack = #{record.openRedpack,jdbcType=TINYINT},
+      redpack_min = #{record.redpackMin,jdbcType=DECIMAL},
+      redpack_max = #{record.redpackMax,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.miniapp.model.CardSet" >
+    update ims_dbs_masclwlcard_set
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="companyAddr != null" >
+        company_addr = #{companyAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="openShop != null" >
+        open_shop = #{openShop,jdbcType=BIT},
+      </if>
+      <if test="companyTel != null" >
+        company_tel = #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLogo != null" >
+        company_logo = #{companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="shopBg != null" >
+        shop_bg = #{shopBg,jdbcType=VARCHAR},
+      </if>
+      <if test="openRedpack != null" >
+        open_redpack = #{openRedpack,jdbcType=TINYINT},
+      </if>
+      <if test="redpackMin != null" >
+        redpack_min = #{redpackMin,jdbcType=DECIMAL},
+      </if>
+      <if test="redpackMax != null" >
+        redpack_max = #{redpackMax,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.miniapp.model.CardSet" >
+    update ims_dbs_masclwlcard_set
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      company_addr = #{companyAddr,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=VARCHAR},
+      open_shop = #{openShop,jdbcType=BIT},
+      company_tel = #{companyTel,jdbcType=VARCHAR},
+      company_logo = #{companyLogo,jdbcType=VARCHAR},
+      shop_bg = #{shopBg,jdbcType=VARCHAR},
+      open_redpack = #{openRedpack,jdbcType=TINYINT},
+      redpack_min = #{redpackMin,jdbcType=DECIMAL},
+      redpack_max = #{redpackMax,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
