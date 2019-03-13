@@ -18,10 +18,10 @@ public class NameCardController {
 	@Autowired
 	private CardMapper cardMapper;
 	
-	@RequestMapping("/getCardList")
+	@RequestMapping("/getNamecardList")
 	public String getUsers(Model model) {
-		List<Card> cardList = cardMapper.selectByExample(new CardExample());
-		return "rolelist";
+//		List<Card> cardList = cardMapper.selectByExample(new CardExample());
+		return "cardlist";
 	}
 	
 }
