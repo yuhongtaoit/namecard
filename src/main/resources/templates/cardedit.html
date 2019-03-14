@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script>var require = { urlArgs: 'v=20170426' };</script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+<script type="text/javascript" src="../js/common.min.js"></script>
+<script type="text/javascript" src="../js/require.js"></script>
+<script type="text/javascript" src="../js/util.js"></script>
+<title>智慧名片后台管理</title>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+function save(){
+	var username = document.getElementById("username").value;
+	var id = document.getElementById("uuid").value;
+	var nickname = document.getElementById("nickname").value;
+	var usersex = document.getElementById("usersex").value;
+	var tel = document.getElementById("tel").value;
+	var email = document.getElementById("email").value;
+	$.post("/user/save",
+			{
+				'userName':username,
+				'id':id,
+				'nickName':nickname,
+				'userSex':usersex,
+				'tel':tel,
+				'email':email
+			},
+			function(data){
+				var json = eval(data);
+				if(json.success){
+					$.ajax({
+			             type: "GET",
+			             url: "/user/getUserList",
+			             async:false,
+			             success: function(data){
+			            	 $("#mainList", window.opener.document).html(data);
+			             }
+			         });
+					alert(json.message);
+					window.close();
+				}else{
+					alert(json.message);
+					window.close();
+				}
+			},
+			"json");
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form action="" method="post" id="form" class="form-horizontal" role="form">
+				<div class="form-group">
+					<label for="lastname" class="col-sm-2 control-label">头像图片</label>
+					<div class="col-sm-8">
+						<script type="text/javascript">
+							function showImageDialog(elm, opts, options) {
+								require(["util"], function(util){
+									var btn = $(elm);
+									var ipt = btn.parent().prev();
+									var val = ipt.val();
+									var img = ipt.parent().next().children();
+									options = {'global':false,'class_extra':'','direct':true,'multiple':false,'fileSizeLimit':5120000};
+									util.image(val, function(url){
+										if(url.url){
+											if(img.length > 0){
+												img.get(0).src = url.url;
+											}
+											ipt.val(url.attachment);
+											ipt.attr("filename",url.filename);
+											ipt.attr("url",url.url);
+										}
+										if(url.media_id){
+											if(img.length > 0){
+												img.get(0).src = "";
+											}
+											ipt.val(url.media_id);
+										}
+									}, options);
+								});
+							}
+							function deleteImage(elm){
+								$(elm).prev().attr("src", "../images/nopic.jpg");
+								$(elm).parent().prev().find("input").val("");
+							}
+						</script>
+						<div class="input-group ">
+							<input type="text" name="card_logo" value="" class="form-control" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+							</span>
+						</div>
+						<div class="input-group " style="margin-top:.5em;">
+							<img src="../images/nopic.jpg" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+						</div>				
+						</div>
+						<span class="help-block">默认样式图片640px * 640px,样式一图片:600px * 600px; 样式二 只要上传一个logo图片670*394px</span>
+				  </div>
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">姓名</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="card_name" name="card_name" placeholder="请输入详姓名" value="">
+					</div>
+			  	  </div>
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">个人电话</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="card_tel" name="card_tel" placeholder="请输入个人电话" value="">
+					</div>
+				  </div>
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">微信号</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="weixinid" name="weixinid" placeholder="请输入微信号" value="">
+					</div>
+				  </div>
+			  
+			      <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">点赞数</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="thumbs_num" name="thumbs_num" placeholder="请输入点赞数" value="">
+					</div>
+			  	  </div>
+			  
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">企业号帐号</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入企业号帐号" value="">
+					</div>
+					<span class="help-block">需要填写是唯一的,存在相同号的直接企业后台得到</span>
+				  </div>
+			  
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">邮箱</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱" value="">
+					</div>
+				  </div>
+			  
+			   	  <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">性别</label>
+					<div class="col-xs-12 col-sm-8">
+						<label class="radio radio-inline">
+							<input type="radio" name="sex" value="0" checked="checked"> 女
+						</label>
+						<label class="radio radio-inline">
+							<input type="radio" name="sex" value="1"> 男
+						</label>
+					</div>
+				  </div>
+			
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">公司名称</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="company_name" name="company_name" placeholder="请输入公司名称" value="">
+					</div>
+				  </div>
+							
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">公司电话</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入公司电话" value="">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">公司职位</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="role_name" name="role_name" placeholder="请输入公司职位" value="">
+					</div>
+				  </div>
+			
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">公司详细地址</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="detailed_address" name="detailed_address" placeholder="请输入详细地址" value="">
+					</div>
+				  </div>
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">分享标题</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="share_title" name="share_title" placeholder="请输入分享标题" value="">
+					</div>
+				  </div>
+			  
+				  <div class="form-group">
+					<label for="lastname" class="col-sm-2 control-label">分享图片</label>
+					<div class="col-sm-8">
+						<div class="input-group ">
+							<input type="text" name="share_img" value="" class="form-control" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+							</span>
+						</div>
+						<div class="input-group " style="margin-top:.5em;">
+							<img src="../images/nopic.jpg" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+						</div>				
+					</div>
+					<span class="help-block">图片长宽比是 5:4 的比例</span>
+				  </div>
+			  
+			  
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">个人简介</label>
+					<div class="col-sm-8">
+						<textarea class="form-control" rows="3" id="card_instr" name="card_instr" placeholder="公司名称销售热线：*** 地址：***"></textarea>
+					</div>
+				  </div>
+			  
+				  <div class="form-group">
+					<label for="lastname" class="col-sm-2 control-label">个人照片</label>
+					<div class="col-sm-10">
+						
+						<script type="text/javascript">
+							function uploadMultiImage(elm) {
+								var name = $(elm).next().val();
+								util.image( "", function(urls){
+									$.each(urls, function(idx, url){
+										$(elm).parent().parent().next().append('<div class="multi-item"><img onerror="this.src=\'../images/nopic.jpg\'; this.title=\'图片未找到.\'" src="'+url.url+'" class="img-responsive img-thumbnail"><input type="hidden" name="'+name+'[]" value="'+url.attachment+'"><em class="close" title="删除这张图片" onclick="deleteMultiImage(this)">×</em></div>');
+									});
+								}, {"multiple":true,"direct":false,"fileSizeLimit":5120000});
+							}
+							function deleteMultiImage(elm){
+								$(elm).parent().remove();
+							}
+						</script>
+						<div class="input-group">
+							<input type="text" class="form-control" readonly="readonly" value="" placeholder="批量上传图片" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+								<input type="hidden" value="photo">
+							</span>
+						</div>
+						<div class="input-group multi-img-details"></div>				
+					</div>
+				</div>
+			 
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">默认显示</label>
+					<div class="col-xs-12 col-sm-8">
+						<label class="radio radio-inline">
+							<input type="radio" name="mrtype" value="0" checked="checked"> 否
+						</label>
+						<label class="radio radio-inline">
+							<input type="radio" name="mrtype" value="1"> 是
+						</label>
+					</div>
+				</div>
+			
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">名片样式</label>
+					<div class="col-xs-12 col-sm-8">
+						<label class="radio radio-inline">
+							<input type="radio" name="template_type" value="0" checked="checked"> 默认样式
+						</label>
+						<label class="radio radio-inline">
+							<input type="radio" name="template_type" value="2"> 样式一
+						</label>
+						<label class="radio radio-inline">
+							<input type="radio" name="template_type" value="3"> 样式二
+						</label>
+						<span class="help-block">样式一建议需要设置一个背景图片,样式二 只要上传一个logo图片就好670*394px,样式三的海报会有变化</span>
+					</div>
+				</div>
+			
+				<div class="form-group">
+					<label for="lastname" class="col-sm-2 control-label">样式二背景图片</label>
+					<div class="col-sm-8">
+						<div class="input-group ">
+							<input type="text" name="template_img" value="" class="form-control" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+							</span>
+						</div>
+						<div class="input-group " style="margin-top:.5em;">
+							<img src="../images/nopic.jpg" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+						</div>				
+					</div>
+					<span class="help-block">670px*394px</span>
+				 </div>
+			
+			
+			 
+				 <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-13">
+						<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1">
+					  	<input type="hidden" name="token" value="2450a41f">
+					</div>
+				 </div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

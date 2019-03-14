@@ -47,7 +47,7 @@ body{
 
 <script type="text/javascript">
 function add(){
-	window.open("/user/edit","新增用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+	window.open("/namecard/edit","新增名片","toolbar=no,menubar=no,top=200,right=400");
 }
 
 function getRoles(userId){
@@ -123,33 +123,31 @@ function deleteUser(){
 							选择
 						</th>
 						<th>
-							用户名
+							显示顺序
 						</th>
 						<th>
-							昵称
+							职位
 						</th>
 						<th>
-							性别
+							姓名
 						</th>
 						<th>
 							电话
 						</th>
 						<th>
-							email
+							状态
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					 <tr th:each="user,iterStat : ${users}"> 
+					 <tr th:each="card,iterStat : ${cards}"> 
 					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
-					     <td style="vertical-align: middle;display: none;" th:text="${user.id}" th:id="'id'+${iterStat.count}"></td>
-					     <td style="vertical-align: middle" th:text="${user.userName}"></td>
-					     <!-- <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td> -->
-					     <td style="vertical-align: middle" th:text="${user.nickName}"></td>
-					     <td style="vertical-align: middle" th:text="${user.userSex}"></td>
-					     <td style="vertical-align: middle" th:text="${user.tel}"></td>
-					     <td style="vertical-align: middle" th:text="${user.email}"></td>
-					     <td style="vertical-align: middle"><button class="btn btn-default" type="button" th:onclick="'getRoles('+${user.id}+')'"><em class="glyphicon glyphicon-plus"></em> 关联角色</button></td>
+					     <td style="vertical-align: middle;display: none;" th:text="${card.id}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${card.sort}"></td>
+					     <td style="vertical-align: middle" th:text="${card.roleName}"></td>
+					     <td style="vertical-align: middle" th:text="${card.cardName}"></td>
+					     <td style="vertical-align: middle" th:text="${card.cardTel}"></td>
+					     <td style="vertical-align: middle" th:text="${card.status}"></td>
 					 </tr>
 				</tbody>
 			</table>
