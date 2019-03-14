@@ -5,8 +5,12 @@
 <script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../jquery/jquery-form.js"></script>
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script>var require = { urlArgs: 'v=20170426' };</script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+<script type="text/javascript" src="../js/common.min.js"></script>
+<script type="text/javascript" src="../js/require.js"></script>
+<script type="text/javascript" src="../js/util.js"></script>
 <title>智慧名片后台管理</title>
 <script type="text/javascript">
 function cancel(){
@@ -92,7 +96,8 @@ function save(){
 						<div class="input-group ">
 							<input type="text" name="card_logo" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">
@@ -200,7 +205,8 @@ function save(){
 						<div class="input-group ">
 							<input type="text" name="share_img" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">
@@ -239,7 +245,8 @@ function save(){
 						<div class="input-group">
 							<input type="text" class="form-control" readonly="readonly" value="" placeholder="批量上传图片" autocomplete="off">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" onclick="uploadMultiImage(this);">选择图片</button>
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 								<input type="hidden" value="photo">
 							</span>
 						</div>
@@ -282,7 +289,8 @@ function save(){
 						<div class="input-group ">
 							<input type="text" name="template_img" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+								<label for="we7resourceFile" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="we7resourceFile" multiple="multiple" name="file" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">

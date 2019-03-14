@@ -475,7 +475,7 @@ CREATE TABLE `ims_dbs_masclwlcard_shops_spec` (
   `sort` int(11) NOT NULL COMMENT '规格名称',
   `enabled` tinyint(1) NOT NULL COMMENT '规格名称',
   PRIMARY KEY (`id`)
-)
+);
 
 DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops_address`;
 CREATE TABLE `ims_dbs_masclwlcard_shops_address` (
