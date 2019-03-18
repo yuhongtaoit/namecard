@@ -1,5 +1,5 @@
+var m = new Map();
 $(function() {
- 
 		$('#logoimage,#shareimage,#personalimage,#style2bgimage').fileupload({
 			//url : '/FileTest/upload',//请求发送的目标地址
 			//Type : 'POST',//请求方式 ，可以选择POST，PUT或者PATCH,默认POST
@@ -21,11 +21,14 @@ $(function() {
 			var inputName = data.fileInput[0].attributes.name.nodeValue;
 			if(inputName=='logoimage'){
 				var url = getUrl(data.files[0]);
+				m.set("logoimage",data.files[0]);
 				$("#logoimageview").attr("src", url);
 			}else if(inputName=='shareimage'){
 				var url = getUrl(data.files[0]);
+				m.set("shareimage",data.files[0]);
 				$("#shareimageview").attr("src", url);
 			}else if(inputName=='personalimage'){
+				m.set("personalimage",data.files);
 				var personalImageHtml="";
 				 $.each(data.files, function(index, file) {
 					 var url = getUrl(file);
@@ -36,15 +39,16 @@ $(function() {
 					});
 				 $("#personalimagediv").append(personalImageHtml);
 			}else if(inputName=='style2bgimage'){
+				var url = getUrl(data.files[0]);
+				m.set("style2bgimage",data.files[0]);
 				$("#style2bgimageview").attr("src", url);
 			}
-			
-			//绑定开始上传事件
-			$('#save').click(function() {
-				jqXHR = data.submit();
-				//解绑，防止重复执行
-				$("#save").off("click"); 
-			})
+//			//绑定开始上传事件
+//			$('#save').click(function() {
+//				jqXHR = data.submit();
+//				//解绑，防止重复执行
+//				$("#save").off("click"); 
+//			})
 			
 		})
 		//当一个单独的文件处理队列结束触发(验证文件格式和大小)
@@ -117,8 +121,18 @@ function deleteMultiImage(elm){
 }
 
 function save(){
-	alert(123);
 	 var form = new FormData(document.querySelector("form"));
+	 form.delete("logoimage");
+	 form.delete("shareimage");
+	 form.delete("personalimage");
+	 form.delete("style2bgimage");
+	 form.append("logoimage", m.get("logoimage"));
+	 form.append("shareimage", m.get("shareimage"));
+//	 form.append("personalimage", m.get("personalimage"));
+	 $.each(m.get("personalimage"), function(i, file){
+		 form.append('files', file);
+	 });
+	 form.append("style2bgimage", m.get("style2bgimage"));
 	 $.ajax({
 	     url:"/namecard/save",
 	     type:"post",

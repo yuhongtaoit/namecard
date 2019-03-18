@@ -1,7 +1,11 @@
 package com.zhongwei.namecard.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,13 +54,39 @@ public class NameCardController {
 	@RequestMapping("/save")
 	@Transactional
 	public @ResponseBody CommonMessage saveCard(HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card,
-			@RequestParam("personalimage") MultipartFile[] personalimage, @RequestParam("logoimage") MultipartFile[] logoimage,
-			@RequestParam("shareimage") MultipartFile[] shareimage,@RequestParam("style2bgimage") MultipartFile[] style2bgimage){
+			@RequestParam("logoimage") MultipartFile logoimage, 
+			@RequestParam("shareimage") MultipartFile shareimage,
+			@RequestParam("style2bgimage") MultipartFile style2bgimage,
+			@RequestParam("files") MultipartFile[] personalimage){
 		CommonMessage message = new CommonMessage();
 		Date date = new Date();
-		for(MultipartFile personal : personalimage) {
-			System.out.println(personal.getOriginalFilename());
+		try {
+			File path = new File(ResourceUtils.getURL("classpath:").getPath());
+			if(!path.exists()) path = new File("");
+			String fileName = logoimage.getOriginalFilename();
+			@SuppressWarnings("deprecation")
+			File tempFile = new File(path.getAbsolutePath(),"static/attachment/"+date.getYear()+"/"+date.getMonth()+"/"+date.getDay()+"/"+date.getTime() + String.valueOf(fileName));
+			if (!tempFile.getParentFile().exists()) {
+				tempFile.getParentFile().mkdir();
+			}
+			if (!tempFile.exists()) {
+				try {
+					tempFile.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			try {
+				logoimage.transferTo(tempFile);
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
 		}
+        
 		if(card!=null && card.getId()!=null){
 			Card oldCard = cardMapper.selectByPrimaryKey(card.getId());
 			if(oldCard!=null && oldCard.getId()!=0){
