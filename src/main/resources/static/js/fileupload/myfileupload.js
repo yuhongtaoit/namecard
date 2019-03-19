@@ -126,9 +126,25 @@ function save(){
 	 form.delete("shareimage");
 	 form.delete("personalimage");
 	 form.delete("style2bgimage");
+	 if(m.get("logoimage")==undefined){
+		 alert('请上传头像图片');
+		 return;
+	 }
+	 if(m.get("shareimage")==undefined){
+		 alert('请上传分享图片');
+		 return;
+	 }
+	 if(m.get("personalimage")==undefined){
+		 alert('请上传个人图片');
+		 return;
+	 }
+	 if(m.get("style2bgimage")==undefined){
+		 alert('请上传背景图片');
+		 return;
+	 }
+	
 	 form.append("logoimage", m.get("logoimage"));
 	 form.append("shareimage", m.get("shareimage"));
-//	 form.append("personalimage", m.get("personalimage"));
 	 $.each(m.get("personalimage"), function(i, file){
 		 form.append('files', file);
 	 });
@@ -140,7 +156,22 @@ function save(){
 	     processData:false,
 	     contentType:false,
 	     success:function(data){
-	         console.log("over..");
+	         var json = eval(data);
+				if(json.success){
+					$.ajax({
+			             type: "GET",
+			             url: "/namecard/getNamecardList",
+			             async:false,
+			             success: function(data){
+			            	 $("#mainList", window.opener.document).html(data);
+			             }
+			         });
+					alert(json.message);
+					window.close();
+				}else{
+					alert(json.message);
+					window.close();
+				}
 	     },
 	     error:function(e){
 	         alert("错误！！");
