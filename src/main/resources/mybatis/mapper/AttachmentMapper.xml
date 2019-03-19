@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.dao.AttachmentMapper" >
+    <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.Attachment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="uniacid" property="uniacid" jdbcType="BIGINT" />
+        <result column="uid" property="uid" jdbcType="BIGINT" />
+        <result column="filename" property="filename" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="createtime" property="createTime" jdbcType="BIGINT" />
+        <result column="module_upload_dir" property="moduleUploadDir" jdbcType="VARCHAR" />
+        <result column="group_id" property="groupId" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id, uniacid, uid, filename, path, type, createtime, module_upload_dir, group_id
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM core_attachment
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+	   FROM core_attachment
+	   WHERE id = #{id}
+    </select>
+    
+    <insert id="insert" parameterType="com.zhongwei.namecard.entity.Attachment" >
+       INSERT INTO 
+       		core_attachment
+       		(uniacid, uid, filename, path, type, createtime, module_upload_dir, group_id) 
+       	VALUES
+       		(#{uniacid}, #{uid}, #{filename}, #{path},#{type},#{createTime}, #{moduleUploadDir},#{groupId})
+    </insert>
+    
+    <update id="update" parameterType="com.zhongwei.namecard.entity.Attachment" >
+       UPDATE 
+       		core_attachment 
+       SET 
+       	uniacid = #{uniacid},
+       	uid = #{uid},
+       	filename = #{filename},
+       	path = #{path},
+       	type = #{type},
+       	createtime = #{createTime},
+       	module_upload_dir = #{moduleUploadDir},
+       	group_id = #{groupId}
+       WHERE 
+       		id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="java.lang.Integer" >
+       DELETE FROM
+       		 core_attachment 
+       WHERE 
+       		 id =#{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+
+<title>智慧名片后台管理</title>
+<style type="text/css">
+img{
+  width:200px;
+  height:200px;
+}
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form action="/namecard/save" method="post" id="form" enctype="multipart/form-data" class="form-horizontal" role="form">
+					<label for="lastname" class="col-sm-2 control-label">头像图片</label>
+					<div class="col-sm-8">
+						<div class="input-group ">
+							<input type="text" name="card_logo" value="" class="form-control" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="logoimage" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="logoimage" multiple="multiple" name="logoimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+								<img alt="" src="/attachment/2019/3/19/20190319120203$1$ijQKtUu$4q7USVjMEqv8yTW3baGT70.png">
+							</span>
+						</div>
+				  </div>
+				 <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-13">
+						<button type="submit" class="btn btn-primary" style="width: 80px">保存</button>
+						<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+						<!-- <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1">
+					  	<input type="hidden" name="token" value="2450a41f"> -->
+					</div>
+				 </div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

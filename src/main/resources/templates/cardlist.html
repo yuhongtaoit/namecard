@@ -47,7 +47,9 @@ body{
 
 <script type="text/javascript">
 function add(){
-	window.open("/namecard/edit","新增名片","toolbar=no,menubar=no,top=200,right=400");
+	var winWidth = window.screen.width-400;
+    var winHeight = window.screen.height-150;
+	window.open("/namecard/edit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
 function getRoles(userId){
