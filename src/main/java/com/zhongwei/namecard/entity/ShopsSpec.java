@@ -1,5 +1,8 @@
 package com.zhongwei.namecard.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ShopsSpec {
     private Integer id;
 
@@ -12,6 +15,17 @@ public class ShopsSpec {
     private Boolean enabled;
 
     private String specContent;
+    
+    public Map<String, Object> specToMap(ShopsSpec spec){
+    	Map<String, Object> result = new HashMap<String, Object>();
+    	result.put("enabled", spec.getEnabled());
+    	result.put("id", spec.getId());
+    	result.put("sort", spec.getSort());
+    	result.put("specContent", spec.getSpecContent());
+    	result.put("title", spec.getTitle());
+    	result.put("uniacid", spec.getUniacid());
+    	return result;
+    }
 
     public Integer getId() {
         return id;

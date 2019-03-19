@@ -1,6 +1,7 @@
 package com.zhongwei.namecard.entity;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class CardShops {
     private Integer id;
@@ -35,7 +36,7 @@ public class CardShops {
 
     private int noShowPrice;
     
-    private ShopsSpec spec;
+    private Map<String, Object> spec;
 
     public Integer getId() {
         return id;
@@ -165,12 +166,12 @@ public class CardShops {
         this.noShowPrice = noShowPrice;
     }
     
-    public ShopsSpec getSpec() {
+    public Map<String, Object> getSpec() {
 		return spec;
 	}
     
-    public void setSpec(ShopsSpec spec) {
-		this.spec = spec;
+    public void setSpec(Map<String, Object> specMap) {
+		this.spec = specMap;
 	}
     
 }

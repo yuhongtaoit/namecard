@@ -39,6 +39,7 @@ import com.zhongwei.namecard.entity.ShopsOrderExample;
 import com.zhongwei.namecard.entity.ShopsSpec;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
 import com.zhongwei.namecard.utils.DataUtils;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 
 @RestController
@@ -111,35 +112,45 @@ public class ShopsConTroller {
 		CardShopsExample shopsExample = new CardShopsExample();
 		shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1).andIdEqualTo(shops_id);
 		shopsList = cardShopsMapper.selectByExampleWithBLOBs(shopsExample);
+		Map<String, Object> shopMap = shops.shopsToMap(shops);
 		if(shopsList.size() > 0) {
 			shops = shopsList.get(0);
-//			$shops["gimg"] = tomedia($shops["gimg"]);******
+			shopMap.put("gimg", ImageUrlUtils.getAbsolutelyURL(shops.getGimg()));
 			ShopsSpec shopsSpec = shopsSpecMapper.selectByPrimaryKey(shops.getSpecid());
-//			$spec["spec_content"] = unserialize($spec["spec_content"]); ******
-//			if (!empty($spec["spec_content"])) {
-//				foreach ($spec["spec_content"] as $key => $val) {
-//					$spec["new_spec"][$key]["spec_content"] = $val;
-//				}
-//			}
-			shops.setSpec(shopsSpec);
-//			if ($shops["cp_bs_img"]) {
-//				$shops["cp_bs_img"] = unserialize($shops["cp_bs_img"]);
-//				if (!empty($shops["cp_bs_img"])) {
-//					foreach ($shops["cp_bs_img"] as $key => $val) {
-//						$shops["cp_bs_img"][$key] = tomedia($val);
-//					}
-//				}
-//			}
-//			if ($shops["top_pic"]) {
-//				$shops["top_pic"] = unserialize($shops["top_pic"]);
-//				if (!empty($shops["top_pic"])) {
-//					foreach ($shops["top_pic"] as $key => $val) {
-//						$shops["top_pic"][$key] = tomedia($val);
-//					}
-//				}
-//			}
+			Map<String, Object> specMap = shopsSpec.specToMap(shopsSpec);
+			String[] contents = ImageUrlUtils.unserialize(shopsSpec.getSpecContent());
+			specMap.put("specContent", contents);
+			List<Map<String, Object>> newSpec = new ArrayList<Map<String, Object>>();
+			if(StringUtils.hasText(shopsSpec.getSpecContent())) {
+				for(String str : contents) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("specContent", str);
+					newSpec.add(map);
+				}
+			}
+			specMap.put("newSpec", newSpec);
+			shopMap.put("spec", specMap);
+			if(StringUtils.hasText(shops.getCpBsImg())) {
+				String[] imgArray = ImageUrlUtils.unserialize(shops.getCpBsImg());
+				if(imgArray.length > 0) {
+					for(int i = 0; i< imgArray.length; i++) {
+						imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+					}
+				}
+				shopMap.put("cpBsImg", imgArray);
+			}
+			if(StringUtils.hasText(shops.getTopPic())) {
+				String[] imgArray = ImageUrlUtils.unserialize(shops.getTopPic());
+				if(imgArray.length > 0) {
+					for(int i = 0; i< imgArray.length; i++) {
+						imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+					}
+				}
+				shopMap.put("topPic", imgArray);
+			}
 		}
 		CardWithBLOBs card = cardMapper.selectByPrimaryKey(card_id);
+		card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 		int showUser = 0;
 		if(memberList.size() > 0) {
 			showUser = 0;
@@ -151,7 +162,7 @@ public class ShopsConTroller {
 		data.put("errno", errno);
 		data.put("isAuthorize", isAuthorize);
 		data.put("showUser", showUser);
-		data.put("shops", shops);
+		data.put("shops", shopMap);
 		data.put("member", cardMember);
 		data.put("card", card);
 		data.put("openid", openId);
@@ -192,31 +203,39 @@ public class ShopsConTroller {
 			shopsExample.setOrderByClause("sort DESC");
 			shopList = cardShopsMapper.selectByExampleWithBLOBs(shopsExample);
 		}
+		List<Map<String, Object>> shopsMapList = new ArrayList<Map<String, Object>>();
 		if(shopList.size() > 0) {
-			//****** 反序列化及图片位置处理
-//			$shops[$k]["gimg"] = tomedia($v["gimg"]);
-//			if ($v["cp_bs_img"]) {
-//				$shops[$k]["cp_bs_img"] = unserialize($v["cp_bs_img"]);
-//				if (!empty($shops[$k]["cp_bs_img"])) {
-//					foreach ($shops[$k]["cp_bs_img"] as $key => $val) {
-//						$shops[$k]["cp_bs_img"][$key] = tomedia($val);
-//					}
-//				}
-//			}
-//			if ($v["top_pic"]) {
-//				$shops[$k]["top_pic"] = unserialize($v["top_pic"]);
-//				if (!empty($shops[$k]["top_pic"])) {
-//					foreach ($shops[$k]["top_pic"] as $key => $val) {
-//						$shops[$k]["top_pic"][$key] = tomedia($val);
-//					}
-//				}
-//			}
+			Map<String, Object> map = null;
+			for(CardShopsWithBLOBs shop : shopList) {
+				map = new HashMap<String, Object>();
+				map = shop.shopsToMap(shop);
+				map.put("gimg", ImageUrlUtils.getAbsolutelyURL(shop.getGimg()));
+				if(StringUtils.hasText(shop.getCpBsImg())) {
+					String[] imgArray = ImageUrlUtils.unserialize(shop.getCpBsImg());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("cpBsImg", imgArray);
+				}
+				if(StringUtils.hasText(shop.getTopPic())) {
+					String[] imgArray = ImageUrlUtils.unserialize(shop.getTopPic());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("topPic", imgArray);
+				}
+				shopsMapList.add(map);
+			}
 		}
 		
 		shopsExample = new CardShopsExample();
 		shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1);
 		int total = cardShopsMapper.countByExample(shopsExample);
-		data.put("shops", shopList);
+		data.put("shops", shopsMapList);
 		data.put("total", total);
 		result.put("data", data);
 		return result;
@@ -247,28 +266,36 @@ public class ShopsConTroller {
 			shopsExample.setOrderByClause("sort DESC");
 			shopList = cardShopsMapper.selectByExampleWithBLOBs(shopsExample);
 		}
+		List<Map<String, Object>> shopsMapList = new ArrayList<Map<String, Object>>();
 		if(shopList.size() > 0) {
-			//****** 反序列化及图片位置处理
-//			$shops[$k]["gimg"] = tomedia($v["gimg"]);
-//			if ($v["cp_bs_img"]) {
-//				$shops[$k]["cp_bs_img"] = unserialize($v["cp_bs_img"]);
-//				if (!empty($shops[$k]["cp_bs_img"])) {
-//					foreach ($shops[$k]["cp_bs_img"] as $key => $val) {
-//						$shops[$k]["cp_bs_img"][$key] = tomedia($val);
-//					}
-//				}
-//			}
-//			if ($v["top_pic"]) {
-//				$shops[$k]["top_pic"] = unserialize($v["top_pic"]);
-//				if (!empty($shops[$k]["top_pic"])) {
-//					foreach ($shops[$k]["top_pic"] as $key => $val) {
-//						$shops[$k]["top_pic"][$key] = tomedia($val);
-//					}
-//				}
-//			}
+			Map<String, Object> map = null;
+			for(CardShopsWithBLOBs shop : shopList) {
+				map = new HashMap<String, Object>();
+				map = shop.shopsToMap(shop);
+				map.put("gimg", ImageUrlUtils.getAbsolutelyURL(shop.getGimg()));
+				if(StringUtils.hasText(shop.getCpBsImg())) {
+					String[] imgArray = ImageUrlUtils.unserialize(shop.getCpBsImg());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("cpBsImg", imgArray);
+				}
+				if(StringUtils.hasText(shop.getTopPic())) {
+					String[] imgArray = ImageUrlUtils.unserialize(shop.getTopPic());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("topPic", imgArray);
+				}
+				shopsMapList.add(map);
+			}
 		}
 		
-		data.put("shops", shopList);
+		data.put("shops", shopsMapList);
 		result.put("data", data);
 		return result;
 	}
@@ -386,11 +413,9 @@ public class ShopsConTroller {
 		if(orderList.size() > 0) {
 			for(ShopsOrder order : orderList) {
 				CardShopsWithBLOBs shops = cardShopsMapper.selectByPrimaryKey(order.getCardId());
+				shops.setGimg(ImageUrlUtils.getAbsolutelyURL(order.getShops().getGimg()));
 				order.setShops(shops);
 				order.setDateline(DataUtils.millisToString(order.getAddtime()));
-//				$order_list[$k]["shops"] = pdo_fetch("SELECT * FROM " . tablename("dbs_masclwlcard_shops") . " WHERE uniacid =:uniacid and id=:id  ", array(":uniacid" => $_W["uniacid"], ":id" => $v["shops_id"]));
-//				$order_list[$k]["shops"]["g_img"] = tomedia($order_list[$k]["shops"]["gimg"]);
-//				$order_list[$k]["dateline"] = date("Y-m-d H:i:s", $v["addtime"]);
 			}
 		}
 		result.put("data", orderList);
@@ -422,9 +447,9 @@ public class ShopsConTroller {
 		cardShopsExample.setOrderByClause("sort DESC");
 		shops = cardShopsMapper.selectByExampleWithBLOBs(cardShopsExample);
 		if(shops.size() > 0) {
-//			foreach ($shops as $key => $val) {
-//				$shops[$key]["gimg"] = tomedia($val["gimg"]);
-//			}
+			for(CardShopsWithBLOBs shop : shops) {
+				shop.setGimg(ImageUrlUtils.getAbsolutelyURL(shop.getGimg()));
+			}
 		}
 		map0.put("childClassify", shops);
 		dataAll.add(map0);
@@ -437,9 +462,9 @@ public class ShopsConTroller {
 				cardShopsExample2.setOrderByClause("sort DESC");
 				shops2 = cardShopsMapper.selectByExampleWithBLOBs(cardShopsExample);
 				if(shops2.size() > 0) {
-//					foreach ($shops as $key => $val) {
-//						$shops[$key]["gimg"] = tomedia($val["gimg"]);
-//					}
+					for(CardShopsWithBLOBs shop : shops2) {
+						shop.setGimg(ImageUrlUtils.getAbsolutelyURL(shop.getGimg()));
+					}
 				}
 				map0 = new HashMap<String, Object>();
 				map0.put("title", titles.get(i).getTitle());

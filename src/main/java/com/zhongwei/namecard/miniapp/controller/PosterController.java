@@ -16,6 +16,7 @@ import com.zhongwei.namecard.dao.CardSetMapper;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 
 @RestController
 @RequestMapping("/miniapp")
@@ -38,23 +39,18 @@ public class PosterController {
 		
 		CardWithBLOBs card = cardMapper.selectByPrimaryKey(card_id);
 		data.putAll(card.cardToMap(card));
-//		data.put("", value)
-//		$info["card_logo"] = tomedia($info["card_logo"]);
+		data.put("cardLogo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 		
 		List<CardSet> list = new ArrayList<CardSet>();
 		CardSetExample setExample = new CardSetExample();
 		setExample.createCriteria().andUniacidEqualTo(uniacid);
 		list = setMapper.selectByExample(setExample);
 		CardSet cardSet = list.size() > 0 ? list.get(0) : new CardSet();
+		cardSet.setCompanyLogo(ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()).replaceAll("http://", "https://"));
 		data.put("base", cardSet);
-		data.put("card_logo", cardSet);
-		data.put("card_logo", cardSet);
-		
-//		$info["base"]["company_logo"] = tomedia($info["base"]["company_logo"]); *******
-//		$info["codepng"] = tomedia("addons/dbs_masclwlcard/sea/" . $_W["uniacid"] . "/" . $info["id"] . ".png");
-//		$info["codepng"] = str_replace("http://", "https://", $info["codepng"]);
-//		$info["card_logo"] = str_replace("http://", "https://", $info["card_logo"]);
-//		$info["base"]["company_logo"] = str_replace("http://", "https://", $info["base"]["company_logo"]);
+		data.put("codepng", ImageUrlUtils.getAbsolutelyURL("addons/dbs_masclwlcard/sea/" + uniacid + "/" + card.getId() + ".png").replaceAll("http://", "https://"));
+		data.put("cardLogo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("http://", "https://"));
+		data.put("card_logo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("http://", "https://"));
 		
 		result.put("data", data);
 		return result;

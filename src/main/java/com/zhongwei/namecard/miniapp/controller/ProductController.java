@@ -23,6 +23,7 @@ import com.zhongwei.namecard.entity.CardMember;
 import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardProductWithBLOBs;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 
@@ -90,8 +91,6 @@ public class ProductController {
 			reportUser.setLanguage(user.getLanguage() == null ? "" : user.getLanguage());
 			reportUser.setAvatarurl(user.getAvatarurl() == null ? "" : user.getAvatarurl());
 			reportUser.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
-//			reportUser.setAddtime(String.valueOf(System.currentTimeMillis()));
-//			reportUser.setUpdatetime("");
 			String content = info.getCpBsName();
 			reportUser.setActContent(content);
 			List<CardMember> memberList = new ArrayList<CardMember>();
@@ -117,25 +116,26 @@ public class ProductController {
 				}
 			}
 		}
-//		$card["card_logo"] = tomedia($card["card_logo"]); ********
-		
+		card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 		
 		data.putAll(info.CardProductToMap(info));
 		data.put("card", card);
 		data.put("card_id", card_id);
 		
-//		$info["cp_bs_img"] = unserialize($info["cp_bs_img"]);
-//		if (!empty($info["cp_bs_img"])) {
-//			foreach ($info["cp_bs_img"] as $key => $val) {
-//				$info["cp_bs_img"][$key] = tomedia($val);
-//			}
-//		}
-//		$info["cp_bs_content"] = unserialize($info["cp_bs_content"]);
-//		if (!empty($info["cp_bs_content"])) {
-//			foreach ($info["cp_bs_content"] as $key => $val) {
-//				$info["cp_bs_content"][$key] = tomedia($val);
-//			}
-//		}
+		String[] imgs = ImageUrlUtils.unserialize(info.getCpBsImg());
+		if(imgs.length > 0) {
+			for(String str : imgs) {
+				str = ImageUrlUtils.getAbsolutelyURL(str);
+			}
+		}
+		data.put("cpBsImg", imgs);
+		String[] contents = ImageUrlUtils.unserialize(info.getCpBsContent());
+		if(imgs.length > 0) {
+			for(String str : contents) {
+				str = ImageUrlUtils.getAbsolutelyURL(str);
+			}
+		}
+		data.put("cpBsContent", contents);
 		result.put("data", data);
 		return result;
 	}

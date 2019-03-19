@@ -19,7 +19,7 @@ public class CardSet {
 
     private String templateId;
 
-    private Boolean openShop;
+    private int openShop;
 
     private String companyTel;
 
@@ -97,11 +97,11 @@ public class CardSet {
         this.templateId = templateId == null ? null : templateId.trim();
     }
 
-    public Boolean getOpenShop() {
+    public int getOpenShop() {
         return openShop;
     }
 
-    public void setOpenShop(Boolean openShop) {
+    public void setOpenShop(int openShop) {
         this.openShop = openShop;
     }
 

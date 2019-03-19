@@ -16,6 +16,7 @@ import com.zhongwei.namecard.dao.CardWebMapper;
 import com.zhongwei.namecard.entity.AuthUser;
 import com.zhongwei.namecard.entity.CardWeb;
 import com.zhongwei.namecard.entity.CardWebExample;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 
 @RestController
@@ -45,7 +46,7 @@ public class WebController {
 		}
 		CardWeb web = webList.size() > 0 ? webList.get(0) : new CardWeb();
 		if(web.getTxVideo() > 0) {
-			web.setVideo(web.getVideo());//******tomedia($web["video"]);
+			web.setVideo(ImageUrlUtils.getAbsolutelyURL(web.getVideo()));
 		}
 		data.putAll(web.cardWebToMap(web));
 		result.put("data", data);

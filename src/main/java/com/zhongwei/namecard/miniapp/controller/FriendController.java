@@ -14,6 +14,7 @@ import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.entity.CardFriendWithBLOBs;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.utils.DataUtils;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 
 @RestController
 @RequestMapping("/miniapp")
@@ -41,15 +42,16 @@ public class FriendController {
 			friend_id = 0;
 		
 		CardFriendWithBLOBs info = cardFriendMapper.selectByPrimaryKey(friend_id);
-//		$info["head_img"] = tomedia($info["head_img"]);******
+		info.setHeadImg(ImageUrlUtils.getAbsolutelyURL(info.getHeadImg()));
 		CardWithBLOBs card = cardMapper.selectByPrimaryKey(card_id);
-//		$card["card_logo"] = tomedia($card["card_logo"]);
+		card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 		
 		data.putAll(info.friendToMap(info));
 		data.put("card", card);
 		data.put("card_id", card_id);
 		data.put("time", DataUtils.millisToString(info.getTime()));
-//		if (!empty($info["all_img"])) {
+		info.setAllImgarr(info.getAllImg().split(","));
+//		if (!empty($info["all_img"])) {   ******
 //			$info["all_imgarr"] = explode(",", $info["all_img"]);
 //		}
 		result.put("data", data);

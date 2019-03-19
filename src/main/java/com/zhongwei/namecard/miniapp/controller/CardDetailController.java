@@ -65,6 +65,7 @@ import com.zhongwei.namecard.entity.MemberExample;
 import com.zhongwei.namecard.entity.ShopsCategory;
 import com.zhongwei.namecard.entity.ShopsCategoryExample;
 import com.zhongwei.namecard.utils.DataUtils;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
 import com.zhongwei.namecard.utils.SendCashUtils;
 import com.zhongwei.namecard.utils.UserUtils;
@@ -409,9 +410,10 @@ public class CardDetailController {
 					friend.setIsup(isupinfo.getStatus());
 				}
 				if(StringUtils.hasText(friend.getAllImg())) {
-					friend.setAllImgarr(friend.getAllImg().split(","));
+					friend.setAllImgarr(friend.getAllImg().split(","));  //******String转数组
 				}
 				friend.setTimeStr(DataUtils.millisToString(friend.getTime()));
+				friend.setHeadImg(ImageUrlUtils.getAbsolutelyURL(friend.getHeadImg()));
 			}
 		}
 		
@@ -420,92 +422,104 @@ public class CardDetailController {
 		productExample.createCriteria().andUniacidEqualTo(uniacid);
 		productExample.setOrderByClause("sort DESC");
 		productList = cardProductMapper.selectByExampleWithBLOBs(productExample);
+		List<Map<String, Object>> productMapList = new ArrayList<Map<String, Object>>();
 		if(productList.size() > 0) {
+			Map<String, Object> map = null;
 			for(CardProductWithBLOBs product : productList) {
+				map = new HashMap<String, Object>();
+				map = product.CardProductToMap(product);
 				if(StringUtils.hasText(product.getCpBsImg())) {
-					//******暂不知该如何处理
+					String[] imgArray = ImageUrlUtils.unserialize(product.getCpBsImg());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("cpBsImg", imgArray);
 				}
 				if(StringUtils.hasText(product.getCpBsContent())) {
-					//******暂不知该如何处理
-//					$product[$k]["cp_bs_content"] = unserialize($v["cp_bs_content"]);
-//					if (!empty($product[$k]["cp_bs_content"])) {
-//						foreach ($product[$k]["cp_bs_content"] as $key => $val) {
-//							$product[$k]["cp_bs_content"][$key] = tomedia($val);
-//						}
-//					}
+					String[] contentArray = ImageUrlUtils.unserialize(product.getCpBsContent());
+					if(contentArray.length > 0) {
+						for(int i = 0; i< contentArray.length; i++) {
+							contentArray[i] = ImageUrlUtils.getAbsolutelyURL(contentArray[i]);
+						}
+					}
+					map.put("cpBsContent", contentArray);
 				}
+				productMapList.add(map);
 			}
 		}
+		List<Map<String, Object>> shopsMapList = new ArrayList<Map<String, Object>>();
 		if(shopsList.size() > 0) {
+			Map<String, Object> map = null;
 			for(CardShopsWithBLOBs shop : shopsList) {
-				// ******暂不知该如何处理
-//				$shops[$k]["gimg"] = tomedia($v["gimg"]);
-//				if ($v["cp_bs_img"]) {
-//					$shops[$k]["cp_bs_img"] = unserialize($v["cp_bs_img"]);
-//					if (!empty($shops[$k]["cp_bs_img"])) {
-//						foreach ($shops[$k]["cp_bs_img"] as $key => $val) {
-//							$shops[$k]["cp_bs_img"][$key] = tomedia($val);
-//						}
-//					}
-//				}
-//				if ($v["top_pic"]) {
-//					$shops[$k]["top_pic"] = unserialize($v["top_pic"]);
-//					if (!empty($shops[$k]["top_pic"])) {
-//						foreach ($shops[$k]["top_pic"] as $key => $val) {
-//							$shops[$k]["top_pic"][$key] = tomedia($val);
-//						}
-//					}
-//				}
+				map = new HashMap<String, Object>();
+				map = shop.shopsToMap(shop);
+				map.put("gimg", ImageUrlUtils.getAbsolutelyURL(shop.getGimg()));
+				if(StringUtils.hasText(shop.getCpBsImg())) {
+					String[] imgArray = ImageUrlUtils.unserialize(shop.getCpBsImg());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("cpBsImg", imgArray);
+				}
+				if(StringUtils.hasText(shop.getTopPic())) {
+					String[] imgArray = ImageUrlUtils.unserialize(shop.getTopPic());
+					if(imgArray.length > 0) {
+						for(int i = 0; i< imgArray.length; i++) {
+							imgArray[i] = ImageUrlUtils.getAbsolutelyURL(imgArray[i]);
+						}
+					}
+					map.put("topPic", imgArray);
+				}
+				shopsMapList.add(map);
 			}
 		}
 		
 		if(newsList.size() > 0) {
 			for(CardNews news : newsList) {
 				news.setTimeStr(DataUtils.millisToString(news.getTime()));
-//				$news[$k]["head_img"] = tomedia($v["head_img"]);
+				news.setHeadImg(ImageUrlUtils.getAbsolutelyURL(news.getHeadImg()));
 			}
 		}
-		// ******
-//		if (!empty($nav)) {
-//			foreach ($nav as $k => $v) {
-//				$nav[$k]["images"] = tomedia($v["images"]);
-//			}
-//		}
-//		if (!empty($adv)) {
-//			foreach ($adv as $k => $v) {
-//				$adv[$k]["images"] = tomedia($v["images"]);
-//			}
-//		}
-//		$web["video"] = tomedia($web["video"]);
-//		$web["images"] = tomedia($web["images"]);
-		
-//		$j_photo = array();
-//		if (!empty($web["cp_bs_content"])) {
-//			$js_photo = unserialize($web["cp_bs_content"]);
-//			foreach ($js_photo as $k => $v) {
-//				$j_photo[] = tomedia($v);
-//			}
-//		}
+		if(navList.size() > 0) {
+			for(CardNav cardNav : navList) {
+				cardNav.setImages(ImageUrlUtils.getAbsolutelyURL(cardNav.getImages()));
+			}
+		}
+		if(advList.size() > 0) {
+			for(CardAdv adv : advList) {
+				adv.setImages(ImageUrlUtils.getAbsolutelyURL(adv.getImages()));
+			}
+		}
+		cardWeb.setVideo(ImageUrlUtils.getAbsolutelyURL(cardWeb.getVideo()));
+		cardWeb.setImages(ImageUrlUtils.getAbsolutelyURL(cardWeb.getImages()));
+		List<String> jPhoto = new ArrayList<String>();
+		if(StringUtils.hasText(cardWeb.getCpBsContent())) {
+			String[] contents = ImageUrlUtils.unserialize(cardWeb.getCpBsContent());
+			for(String str : contents) {
+				jPhoto.add(ImageUrlUtils.getAbsolutelyURL(str));
+			}
+		}
 		
 		data.put("web", cardWeb);
 		data.put("adv", advList);
-		data.put("j_photo", "j_photo");// ******
+		data.put("j_photo", jPhoto);
 		data.put("news", newsList);
-		data.put("shops", shopsList.size() > 0 ? shopsList : "");
+		data.put("shops", shopsMapList);
 		data.put("nav", navList);
 		data.put("dynamic_list", dynamicList);
-		data.put("product", productList);
-//		$photo = array();******
-//		if (!empty($info["photo"])) {
-//			$newphoto = unserialize($info["photo"]);
-//			if (!empty($newphoto)) {
-//				foreach ($newphoto as $k => $v) {
-//					$photo[] = tomedia($v);
-//				}
-//			}
-//		}
-		data.put("newphoto", info.getPhoto());//******待转换
-		
+		data.put("product", productMapList);
+		List<String> photo = new ArrayList<String>();
+		if(StringUtils.hasText(info.getPhoto())) {
+			String[] newphoto = ImageUrlUtils.unserialize(info.getPhoto());
+			for(String str : newphoto) {
+				photo.add(ImageUrlUtils.getAbsolutelyURL(str));
+			}
+		}
+		data.put("newphoto", photo);
 		List<CardMember> cardAllmembr = new ArrayList<CardMember>();
 		CardMemberExample memberExample2 = new CardMemberExample();
 		memberExample2.createCriteria().andUniacidEqualTo(uniacid).andAidEqualTo(card_id);
@@ -558,19 +572,18 @@ public class CardDetailController {
 		footerNavList.add(footer.getFriendName());
 		footerNavList.add(footer.getWebName());
 		
-		footer.setCardImg(StringUtils.hasText(footer.getCardImg()) ? footer.getCardImg() : "../../images/card/01_2x.png");
-		footer.setCardImgNo(StringUtils.hasText(footer.getCardImgNo()) ? footer.getCardImgNo() : "../../images/card/01_2x_n.png");
-		footer.setShopImg(StringUtils.hasText(footer.getShopImg()) ? footer.getShopImg() : "../../images/card/02_x.png");
-		footer.setShopImgNo(StringUtils.hasText(footer.getShopImgNo()) ? footer.getShopImgNo() : "../../images/card/02_x_n.png");
-		footer.setFriendImg(StringUtils.hasText(footer.getFriendImg()) ? footer.getFriendImg() : "../../images/card/03_x.png");
-		footer.setFriendImgNo(StringUtils.hasText(footer.getFriendImgNo()) ? footer.getFriendImgNo() : "../../images/card/03_x_n.png");
-		footer.setWebImg(StringUtils.hasText(footer.getWebImg()) ? footer.getWebImg() : "../../images/card/04_x.png");
-		footer.setWebImgNo(StringUtils.hasText(footer.getWebImgNo()) ? footer.getWebImgNo() : "../../images/card/04_x_n.png");
+		footer.setCardImg(StringUtils.hasText(footer.getCardImg()) ? ImageUrlUtils.getAbsolutelyURL(footer.getCardImg()) : "../../images/card/01_2x.png");
+		footer.setCardImgNo(StringUtils.hasText(footer.getCardImgNo()) ? ImageUrlUtils.getAbsolutelyURL(footer.getCardImgNo()) : "../../images/card/01_2x_n.png");
+		footer.setShopImg(StringUtils.hasText(footer.getShopImg()) ? ImageUrlUtils.getAbsolutelyURL(footer.getShopImg()) : "../../images/card/02_x.png");
+		footer.setShopImgNo(StringUtils.hasText(footer.getShopImgNo()) ? ImageUrlUtils.getAbsolutelyURL(footer.getShopImgNo()) : "../../images/card/02_x_n.png");
+		footer.setFriendImg(StringUtils.hasText(footer.getFriendImg()) ? ImageUrlUtils.getAbsolutelyURL(footer.getFriendImg()) : "../../images/card/03_x.png");
+		footer.setFriendImgNo(StringUtils.hasText(footer.getFriendImgNo()) ? ImageUrlUtils.getAbsolutelyURL(footer.getFriendImgNo()) : "../../images/card/03_x_n.png");
+		footer.setWebImg(StringUtils.hasText(footer.getWebImg()) ? ImageUrlUtils.getAbsolutelyURL(footer.getWebImg()) : "../../images/card/04_x.png");
+		footer.setWebImgNo(StringUtils.hasText(footer.getWebImgNo()) ? ImageUrlUtils.getAbsolutelyURL(footer.getWebImgNo()) : "../../images/card/04_x_n.png");
 		Map<String, Object> map0 = new HashMap<String, Object>();
 		Map<String, Object> map1 = new HashMap<String, Object>();
 		Map<String, Object> map2 = new HashMap<String, Object>();
 		Map<String, Object> map3 = new HashMap<String, Object>();
-//		Map<Integer, Object> navFooter = new HashMap<Integer, Object>();
 		List<Map<String, Object>> navFooterList = new ArrayList<Map<String, Object>>();
 		
 		map0.put("name", footer.getCardName());
@@ -617,9 +630,13 @@ public class CardDetailController {
 		data.put("titles", titles);
 		data.put("hmd_status", member.getHmdStatus());
 		data.put("share_id", share_id);//****** intval($_GPC["share_id"]) ? intval($_GPC["share_id"]) : 0;
-		data.put("card_logo", "");//******
-		data.put("template_img", "");
-		data.put("share_img", "");
+		data.put("card_logo", ImageUrlUtils.getAbsolutelyURL(info.getCardLogo()));
+		data.put("template_img", ImageUrlUtils.getAbsolutelyURL(info.getTemplateImg()));
+		data.put("share_img", ImageUrlUtils.getAbsolutelyURL(info.getShareImg()));
+		if(StringUtils.hasText(cardSet.getCompanyLogo())) {
+			cardSet.setCompanyLogo(ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()));
+			cardSet.setShopBg(ImageUrlUtils.getAbsolutelyURL(cardSet.getShopBg()));
+		}
 		data.put("card", cardSet);
 		data.putAll(info.cardToMap(info));
 		

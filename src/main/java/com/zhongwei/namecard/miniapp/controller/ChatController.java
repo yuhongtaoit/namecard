@@ -21,6 +21,7 @@ import com.zhongwei.namecard.entity.CardChatExample;
 import com.zhongwei.namecard.entity.CardMember;
 import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 
@@ -110,7 +111,7 @@ public class ChatController {
 		.andAddtimeGreaterThanOrEqualTo(String.valueOf(System.currentTimeMillis()-(24 * 3600 * 100)));
 		msg = cardChatMapper.selectByExample(chatExample);
 		
-//		$card["card_logo"] = tomedia($card["card_logo"]); ////********
+		card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 		card.setAvatarUrl(user.getAvatarurl());
 		data.put("card", card);
 		data.put("msg", msg);

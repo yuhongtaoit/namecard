@@ -27,6 +27,7 @@ import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.SendCashUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 
@@ -145,6 +146,7 @@ public class CardController {
 		
 		if(info != null && info.size() >0) {
 			for(CardWithBLOBs card : info) {
+				card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 				int op = 0;
 				op = arr1.contains(card.getId()) ? 1 : 0;
 				if(card.getStatus() ==1) {
@@ -188,7 +190,7 @@ public class CardController {
 			data.put("message", message);
 			data.put("errno", errno);
 			data.put("isAuthorize", isAuthorize);
-			data.put("company_logo", cardSet.getCompanyLogo());
+			data.put("company_logo", ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()));
 			data.put("company_name", cardSet.getCompanyName());
 			data.put("info", info);
 			result.put("data", data);
