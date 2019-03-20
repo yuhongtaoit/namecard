@@ -48,14 +48,14 @@ function cancel(){
 					<label for="lastname" class="col-sm-2 control-label">头像图片</label>
 					<div class="col-sm-8">
 						<div class="input-group ">
-							<input type="text" name="card_logo" value="" class="form-control" autocomplete="off">
+							<input type="text" readonly="readonly" name="card_logo" id="card_logo" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
 								<label for="logoimage" class="btn btn-primary ng-binding">上传图片</label>
 								<input type="file" id="logoimage" name="logoimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">
-							<img src="../images/nopic.jpg" id="logoimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail">
+							<img src="../images/nopic.jpg" th:src="@{/attachment/2019/3/19/20190319152814$1$wOeCDD.a$jSMjnDwW3dsu6dnGIPV5H..png}" id="logoimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail">
 							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 						</div>				
 						</div>
@@ -65,28 +65,28 @@ function cancel(){
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">姓名</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="cardName" name="cardName" placeholder="请输入详姓名" value="">
+					  <input type="text" class="form-control" id="cardName" name="cardName" placeholder="请输入详姓名" value="" th:value="${card == null}?'':${card.cardName }">
 					</div>
 			  	  </div>
 			  
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">个人电话</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="cardTel" name="cardTel" placeholder="请输入个人电话" value="">
+					  <input type="text" class="form-control" id="cardTel" name="cardTel" placeholder="请输入个人电话" value="" th:value="${card == null}?'':${card.cardTel }">
 					</div>
 				  </div>
 			  
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">微信号</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="weixinid" name="weixinid" placeholder="请输入微信号" value="">
+					  <input type="text" class="form-control" id="weixinid" name="weixinid" placeholder="请输入微信号" value="" th:value="${card == null}?'':${card.weixinid }">
 					</div>
 				  </div>
 			  
 			      <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">点赞数</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="thumbsNum" name="thumbsNum" placeholder="请输入点赞数" value="">
+					  <input type="text" class="form-control" id="thumbsNum" name="thumbsNum" placeholder="请输入点赞数" value="" th:value="${card == null}?'':${card.thumbsNum }">
 					</div>
 			  	  </div>
 			  
@@ -94,7 +94,7 @@ function cancel(){
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">企业号帐号</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入企业号帐号" value="">
+					  <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入企业号帐号" value="" th:value="${card == null}?'':${card.userid }">
 					</div>
 					<span class="help-block">需要填写是唯一的,存在相同号的直接企业后台得到</span>
 				  </div>
@@ -103,7 +103,7 @@ function cancel(){
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">邮箱</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱" value="">
+					  <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱" value="" th:value="${card == null}?'':${card.email }">
 					</div>
 				  </div>
 			  
@@ -111,10 +111,10 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">性别</label>
 					<div class="col-xs-12 col-sm-8">
 						<label class="radio radio-inline">
-							<input type="radio" name="sex" value="0" checked="checked"> 女
+							<input type="radio" name="sex" value="0" th:checked="(${card == null}?0:${card.sex }) == 0" checked="checked"> 女
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="sex" value="1"> 男
+							<input type="radio" name="sex" value="1" th:checked="(${card == null}?0:${card.sex }) == 1"> 男
 						</label>
 					</div>
 				  </div>
@@ -122,34 +122,34 @@ function cancel(){
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">公司名称</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="companyName" name="companyName" placeholder="请输入公司名称" value="">
+					  <input type="text" class="form-control" id="companyName" name="companyName" placeholder="请输入公司名称" value="" th:value="${card == null}?'':${card.companyName }">
 					</div>
 				  </div>
 							
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">公司电话</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入公司电话" value="">
+					  <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入公司电话" value="" th:value="${card == null}?'':${card.phone }">
 					</div>
 				  </div>
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">公司职位</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="roleName" name="roleName" placeholder="请输入公司职位" value="">
+					  <input type="text" class="form-control" id="roleName" name="roleName" placeholder="请输入公司职位" value="" th:value="${card == null}?'':${card.roleName }">
 					</div>
 				  </div>
 			
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">公司详细地址</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="detailedAddress" name="detailedAddress" placeholder="请输入详细地址" value="">
+					  <input type="text" class="form-control" id="detailedAddress" name="detailedAddress" placeholder="请输入详细地址" value="" th:value="${card == null}?'':${card.detailedAddress }">
 					</div>
 				  </div>
 			  
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">分享标题</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="shareTitle" name="shareTitle" placeholder="请输入分享标题" value="">
+					  <input type="text" class="form-control" id="shareTitle" name="shareTitle" placeholder="请输入分享标题" value="" th:value="${card == null}?'':${card.shareTitle }">
 					</div>
 				  </div>
 			  
@@ -157,7 +157,7 @@ function cancel(){
 					<label for="lastname" class="col-sm-2 control-label">分享图片</label>
 					<div class="col-sm-8">
 						<div class="input-group ">
-							<input type="text" name="share_img" value="" class="form-control" autocomplete="off">
+							<input type="text" readonly="readonly" name="share_img" id="share_img" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
 								<label for="shareimage" class="btn btn-primary ng-binding">上传图片</label>
 								<input type="file" id="shareimage" name="shareimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
@@ -173,7 +173,7 @@ function cancel(){
 				  <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">个人简介</label>
 					<div class="col-sm-8">
-						<textarea class="form-control" rows="3" id="cardInstr" name="cardInstr" placeholder="公司名称销售热线：*** 地址：***"></textarea>
+						<textarea class="form-control" rows="3" id="cardInstr" name="cardInstr" placeholder="公司名称销售热线：*** 地址：***" th:text="${card == null}?'':${card.cardInstr }"></textarea>
 					</div>
 				  </div>
 			  
@@ -195,10 +195,10 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">默认显示</label>
 					<div class="col-xs-12 col-sm-8">
 						<label class="radio radio-inline">
-							<input type="radio" name="mrtype" value="0" checked="checked"> 否
+							<input type="radio" name="mrtype" value="0" th:checked="(${card == null}?0:${card.mrtype }) == 0" checked="checked"> 否
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="mrtype" value="1"> 是
+							<input type="radio" name="mrtype" th:checked="(${card == null}?0:${card.mrtype }) == 1" value="1"> 是
 						</label>
 					</div>
 				</div>
@@ -207,13 +207,13 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">名片样式</label>
 					<div class="col-xs-12 col-sm-8">
 						<label class="radio radio-inline">
-							<input type="radio" name="templateType" value="0" checked="checked"> 默认样式
+							<input type="radio" name="templateType" value="0" th:checked="(${card == null}?0:${card.templateType }) == 0" checked="checked"> 默认样式
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="templateType" value="2"> 样式一
+							<input type="radio" name="templateType" th:checked="(${card == null}?0:${card.templateType }) == 2" value="2"> 样式一
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="templateType" value="3"> 样式二
+							<input type="radio" name="templateType" th:checked="(${card == null}?0:${card.templateType }) == 3" value="3"> 样式二
 						</label>
 						<span class="help-block">样式一建议需要设置一个背景图片,样式二 只要上传一个logo图片就好670*394px,样式三的海报会有变化</span>
 					</div>
@@ -223,7 +223,7 @@ function cancel(){
 					<label for="lastname" class="col-sm-2 control-label">样式二背景图片</label>
 					<div class="col-sm-8">
 						<div class="input-group ">
-							<input type="text" name="template_img" value="" class="form-control" autocomplete="off">
+							<input type="text" readonly="readonly" name="template_img" id="template_img" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
 								<label for="style2bgimage" class="btn btn-primary ng-binding">上传图片</label>
 								<input type="file" id="style2bgimage" name="style2bgimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">

@@ -21,10 +21,12 @@ $(function() {
 			var inputName = data.fileInput[0].attributes.name.nodeValue;
 			if(inputName=='logoimage'){
 				var url = getUrl(data.files[0]);
+				$("#card_logo").val(data.files[0].name);
 				m.set("logoimage",data.files[0]);
 				$("#logoimageview").attr("src", url);
 			}else if(inputName=='shareimage'){
 				var url = getUrl(data.files[0]);
+				$("#share_img").val(data.files[0].name);
 				m.set("shareimage",data.files[0]);
 				$("#shareimageview").attr("src", url);
 			}else if(inputName=='personalimage'){
@@ -40,6 +42,7 @@ $(function() {
 				 $("#personalimagediv").append(personalImageHtml);
 			}else if(inputName=='style2bgimage'){
 				var url = getUrl(data.files[0]);
+				$("#template_img").val(data.files[0].name);
 				m.set("style2bgimage",data.files[0]);
 				$("#style2bgimageview").attr("src", url);
 			}
