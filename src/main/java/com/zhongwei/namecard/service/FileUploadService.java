@@ -3,6 +3,7 @@ package com.zhongwei.namecard.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,13 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUploadService {
 	
 	public String uploadForSingleFile(HttpServletRequest request, HttpServletResponse response, MultipartFile file){
-		return this.upload(file);
+		return this.upload(file,request);
 	}
 	
 	public List<String> uploadForMultiFile(HttpServletRequest request, HttpServletResponse response, MultipartFile[] files){
 		List<String> resultPath = new ArrayList<String>();
 		for(MultipartFile file : files) {
-			String returnPath = this.upload(file);
+			String returnPath = this.upload(file,request);
 			resultPath.add(returnPath);
 		}
 		return resultPath;
@@ -49,33 +50,36 @@ public class FileUploadService {
 	    return flag;
 	}
 	
-	private String upload(MultipartFile file) {
+	private String upload(MultipartFile file, HttpServletRequest request) {
 		String returnPath="";
-		try {
-			Calendar calender = Calendar.getInstance();
-			File path = new File(ResourceUtils.getURL("classpath:").getPath());
-			if(!path.exists()) path = new File("");
-			String fileName = file.getOriginalFilename();
-			String finalFileName = this.getUniFileName(fileName);
-			returnPath = "attachment/"+calender.get(Calendar.YEAR)+"/"+(calender.get(Calendar.MONTH)+1)+"/"+calender.get(Calendar.DAY_OF_MONTH)+"/"+finalFileName;
-			File tempFile = new File(path.getAbsolutePath(),"static/"+returnPath);
-			if (!tempFile.getParentFile().exists()) {
-				tempFile.getParentFile().mkdirs();
-			}
-			if (!tempFile.exists()) {
-				try {
-					tempFile.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		Calendar calender = Calendar.getInstance();
+		String path = request.getSession().getServletContext().getRealPath("resources/upload");
+		File filePath = new File(path);
+		Paths.get("/upload");
+		if (!filePath.exists() && !filePath.isDirectory()) {
+		    System.out.println("目录不存在，创建目录：" + filePath);
+		    filePath.mkdir();
+		}
+//			File path = new File(ResourceUtils.getURL("classpath:").getPath());
+//			if(!path.exists()) path = new File("");
+		String fileName = file.getOriginalFilename();
+		String finalFileName = this.getUniFileName(fileName);
+		returnPath = "attachment/"+calender.get(Calendar.YEAR)+"/"+(calender.get(Calendar.MONTH)+1)+"/"+calender.get(Calendar.DAY_OF_MONTH)+"/"+finalFileName;
+		File tempFile = new File(filePath.getAbsolutePath(),returnPath);
+		if (!tempFile.getParentFile().exists()) {
+			tempFile.getParentFile().mkdirs();
+		}
+		if (!tempFile.exists()) {
 			try {
-				file.transferTo(tempFile);
-			} catch (IllegalStateException | IOException e) {
+				tempFile.createNewFile();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+		}
+		try {
+			file.transferTo(tempFile);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
 		}
 		return returnPath;
 	}
