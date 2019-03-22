@@ -15,12 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.digest.Md5Crypt;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileUploadService {
+	
+	@Value(value = "${file.basefilepath}")
+	private String baseFilePath;//资源文件绝对地址目录
 	
 	public String uploadForSingleFile(HttpServletRequest request, HttpServletResponse response, MultipartFile file){
 		return this.upload(file,request);
