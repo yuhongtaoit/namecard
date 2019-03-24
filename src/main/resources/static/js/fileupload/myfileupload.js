@@ -124,39 +124,51 @@ function deleteMultiImage(elm){
 }
 
 function save(){
+	 var cardLogo = $("#cardLogo").val();
+	 var shareImg = $("#shareImg").val();
+	 var templateImg = $("#templateImg").val();
+	 var personalimages = $("#personalimages").val();
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("logoimage");
 	 form.delete("shareimage");
 	 form.delete("personalimage");
 	 form.delete("style2bgimage");
-	 if(m.get("logoimage")==undefined){
+	 if(m.get("logoimage")==undefined && cardLogo==''){
 		 alert('请上传头像图片');
 		 return;
 	 }
-	 if(m.get("shareimage")==undefined){
+	 if(m.get("shareimage")==undefined && shareImg==''){
 		 alert('请上传分享图片');
 		 return;
 	 }
-	 if(m.get("personalimage")==undefined){
+	 if(m.get("personalimage")==undefined && personalimages==''){
 		 alert('请上传个人图片');
 		 return;
 	 }
-	 if(m.get("style2bgimage")==undefined){
+	 if(m.get("style2bgimage")==undefined && templateImg==''){
 		 alert('请上传背景图片');
 		 return;
 	 }
-	
-	 form.append("logoimage", m.get("logoimage"));
-	 form.append("shareimage", m.get("shareimage"));
-	 $.each(m.get("personalimage"), function(i, file){
-		 form.append('files', file);
-	 });
-	 form.append("style2bgimage", m.get("style2bgimage"));
+	 if(m.get("personalimage")!=undefined){
+		 form.append("logoimageKey", m.get("logoimage"));
+	 }
+	 if(m.get("shareimage")!=undefined){
+		 form.append("shareimageKey", m.get("shareimage"));
+	 }
+	 if(m.get("personalimage")!=undefined){
+		 $.each(m.get("personalimage"), function(i, file){
+			 form.append('filesKey', file);
+		 });
+	 }
+	 if(m.get("style2bgimage")!=undefined){
+		 form.append("style2bgimageKey", m.get("style2bgimage"));
+	 }
 	 $.ajax({
 	     url:"/namecard/save",
 	     type:"post",
 	     data:form,
 	     processData:false,
+	     enctype : 'multipart/form-data',
 	     contentType:false,
 	     success:function(data){
 	         var json = eval(data);

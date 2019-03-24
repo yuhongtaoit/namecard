@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,14 +50,49 @@ public class NameCardController {
 		return "cardedit";
 	}
 	
-	@RequestMapping("/save")
+	@RequestMapping(value= {"/save"},consumes= {"multipart/form-data" })
 	@Transactional
-	public @ResponseBody CommonMessage saveCard(HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card,
-			@RequestParam("logoimage") MultipartFile logoimage, 
-			@RequestParam("shareimage") MultipartFile shareimage,
-			@RequestParam("style2bgimage") MultipartFile style2bgimage,
-			@RequestParam("files") MultipartFile[] personalimage){
+	public @ResponseBody CommonMessage saveCard(
+			@RequestParam(name="logoimageKey",required=false) MultipartFile logoimage, 
+			@RequestParam(name="shareimageKey",required=false) MultipartFile shareimage,
+			@RequestParam(name="style2bgimageKey",required=false) MultipartFile style2bgimage,
+			@RequestParam(name="filesKey",required=false) MultipartFile[] personalimage,
+			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card){
 		CommonMessage message = new CommonMessage();
+		if(card!=null && card.getId()!=null && card.getId()>0) {
+			CardWithBLOBs oldCard = cardMapper.selectByPrimaryKey(card.getId());
+			if(oldCard!=null && oldCard.getId()!=0) {
+				this.setCardDefaultValue(card);
+				if(logoimage==null && !StringUtils.isEmpty(card.getCardLogo())) {
+					card.setCardLogo(oldCard.getCardLogo());
+				}else {
+					this.fileUploadService.deleteFile(oldCard.getCardLogo());
+					card.setCardLogo(this.fileUploadService.uploadForSingleFile(request, response, logoimage));
+				}
+				if(shareimage==null && !StringUtils.isEmpty(card.getShareImg())) {
+					card.setShareImg(oldCard.getShareImg());
+				}else {
+					this.fileUploadService.deleteFile(oldCard.getShareImg());
+					card.setShareImg(this.fileUploadService.uploadForSingleFile(request, response, shareimage));
+				}
+				if(style2bgimage==null && !StringUtils.isEmpty(card.getTemplateImg())) {
+					card.setTemplateImg(oldCard.getTemplateImg());
+				}else {
+					this.fileUploadService.deleteFile(oldCard.getTemplateImg());
+					card.setTemplateImg(this.fileUploadService.uploadForSingleFile(request, response, style2bgimage));
+				}
+				if(personalimage==null || personalimage.length<=0) {
+					card.setPhoto(oldCard.getPhoto());
+					String photo = card.getPhoto();
+					photo.substring(photo.indexOf("[")+1, photo.lastIndexOf("]"));
+				}else {
+					String photo = card.getPhoto();
+					photo.substring(photo.indexOf("["), photo.lastIndexOf("]"));
+					String oldPhoto = oldCard.getPhoto();
+				}
+				this.cardMapper.updateByPrimaryKey(card);
+			}
+		}
 		String logoImagePath = fileUploadService.uploadForSingleFile(request, response, logoimage);
 		String shareImagePath = fileUploadService.uploadForSingleFile(request, response, shareimage);
 		String style2bgImagePath = fileUploadService.uploadForSingleFile(request, response, style2bgimage);
@@ -83,9 +119,6 @@ public class NameCardController {
 			message.setMessage("保存失败！");
 			return message;
 		}
-//		message.setSuccess(true);
-//		message.setMessage("保存成功！");
-//		return message;
 	}
 	
 	private CardWithBLOBs setCardDefaultValue(CardWithBLOBs card) {
