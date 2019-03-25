@@ -1,8 +1,7 @@
 var m = new Map();
+var personImages = new Array();
 $(function() {
 		$('#logoimage,#shareimage,#personalimage,#style2bgimage').fileupload({
-			//url : '/FileTest/upload',//请求发送的目标地址
-			//Type : 'POST',//请求方式 ，可以选择POST，PUT或者PATCH,默认POST
 			autoUpload : false,
 	        singleFileUploads: false,
 			acceptFileTypes : /(gif|jpe?g|png)$/i,//验证图片格式
@@ -21,46 +20,36 @@ $(function() {
 			var inputName = data.fileInput[0].attributes.name.nodeValue;
 			if(inputName=='logoimage'){
 				var url = getUrl(data.files[0]);
-				$("#card_logo").val(data.files[0].name);
+				$("#cardLogo").val(data.files[0].name);
 				m.set("logoimage",data.files[0]);
 				$("#logoimageview").attr("src", url);
 			}else if(inputName=='shareimage'){
 				var url = getUrl(data.files[0]);
-				$("#share_img").val(data.files[0].name);
+				$("#shareImg").val(data.files[0].name);
 				m.set("shareimage",data.files[0]);
 				$("#shareimageview").attr("src", url);
 			}else if(inputName=='personalimage'){
 				m.set("personalimage",data.files);
 				var personalImageHtml="";
 				 $.each(data.files, function(index, file) {
+					 personImages.push(file);
 					 var url = getUrl(file);
 						personalImageHtml += "<div class='input-group multi-item' style='margin-top:.5em;'>"+
-						"<img src="+url+" class='img-responsive img-thumbnail'>"+
+						"<img src="+url+" name="+file.name+" class='img-responsive img-thumbnail'>"+
 						"<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>"+
 						"</div>"
 					});
 				 $("#personalimagediv").append(personalImageHtml);
 			}else if(inputName=='style2bgimage'){
 				var url = getUrl(data.files[0]);
-				$("#template_img").val(data.files[0].name);
+				$("#templateImg").val(data.files[0].name);
 				m.set("style2bgimage",data.files[0]);
 				$("#style2bgimageview").attr("src", url);
 			}
-//			//绑定开始上传事件
-//			$('#save').click(function() {
-//				jqXHR = data.submit();
-//				//解绑，防止重复执行
-//				$("#save").off("click"); 
-//			})
 			
 		})
 		//当一个单独的文件处理队列结束触发(验证文件格式和大小)
 		.on("fileuploadprocessalways", function(e, data) {
-			//获取文件
-			file = data.files[0];
-			//获取错误信息
-			if (file.error) {
-			}
 		})
 		//上传请求失败时触发的回调函数
 		.on("fileuploadfail", function(e, data) {
@@ -73,46 +62,20 @@ $(function() {
 		.on("fileuploadalways", function(e, data) {
  
 		})
- 
-		
-		//手动验证
-		function validate(file) {
-			//获取文件名称
-			var fileName = file.name;
-			//验证图片格式
-			if (!/.(gif|jpg|jpeg|png|gif|jpg|png)$/.test(fileName)) {
-				console.log("文件格式不正确");
-				return true;
-			}
-			//验证excell表格式
-			/*  if(!/.(xls|xlsx)$/.test(fileName)){
-			 	alert("文件格式不正确");
-			 	return true;
-			 } */
- 
-			//获取文件大小
-			var fileSize = file.size;
-			if (fileSize > 1024 * 1024) {
-				alert("文件不得大于一兆")
-				return true;
-			}
-			return false;
-		}
- 
-		//获取图片地址
-		function getUrl(file) {
-			var url = null;
-			if (window.createObjectURL != undefined) {
-				url = window.createObjectURL(file);
-			} else if (window.URL != undefined) {
-				url = window.URL.createObjectURL(file);
-			} else if (window.webkitURL != undefined) {
-				url = window.webkitURL.createObjectURL(file);
-			}
-			return url;
-		}
 		
 	});
+//获取图片地址
+function getUrl(file) {
+	var url = null;
+	if (window.createObjectURL != undefined) {
+		url = window.createObjectURL(file);
+	} else if (window.URL != undefined) {
+		url = window.URL.createObjectURL(file);
+	} else if (window.webkitURL != undefined) {
+		url = window.webkitURL.createObjectURL(file);
+	}
+	return url;
+}
 
 function deleteImage(elm){
 	$(elm).prev().attr("src", "../images/nopic.jpg");
@@ -120,8 +83,58 @@ function deleteImage(elm){
 }
 
 function deleteMultiImage(elm){
-	$(elm).parent().remove();
+	var fileSrc = $(elm).prev().attr("name");
+	var photosArray = toArray($("#personalimages").val());
+	$.each(photosArray, function(index, photo) {
+		if(myTrim(fileSrc) == myTrim(photo)){
+			photosArray.remove(photo);
+			$(elm).parent().remove();
+		}
+	});
+	$("#personalimages").val(photosArray.toString());
+	if(personImages!=undefined && personImages.length>0){
+		$.each(personImages, function(index, file) {
+			if(fileSrc == file.name){
+				personImages.remove(file);
+				$(elm).parent().remove();
+			}
+		});
+	}
 }
+
+function myTrim(x) {
+    return x.replace(/^\s+|\s+$/gm,'');
+}
+
+function myStartWith(val,flag){
+	if(val.indexOf(flag)==0){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function toArray(val){
+	if(myStartWith(val,"[")){
+		return val.substring(val.indexOf("[")+1, val.lastIndexOf("]")).split(",");
+	}else{
+		return val.split(",");
+	}
+}
+
+Array.prototype.indexOf = function(val) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == val) return i;
+	}
+	return -1;
+};
+
+Array.prototype.remove = function(val) {
+	var index = this.indexOf(val);
+	if (index > -1) {
+		this.splice(index, 1);
+	}
+};
 
 function save(){
 	 var cardLogo = $("#cardLogo").val();
@@ -155,8 +168,8 @@ function save(){
 	 if(m.get("shareimage")!=undefined){
 		 form.append("shareimageKey", m.get("shareimage"));
 	 }
-	 if(m.get("personalimage")!=undefined){
-		 $.each(m.get("personalimage"), function(i, file){
+	 if(personImages!=undefined && personImages.length>0){
+		 $.each(personImages, function(i, file){
 			 form.append('filesKey', file);
 		 });
 	 }

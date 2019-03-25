@@ -189,7 +189,12 @@ function cancel(){
 								<input type="hidden" id="personalimages" th:value="${card == null}?'':${card.photo }" value="photo">
 							</span>
 						</div>
-						<div class="input-group multi-img-details" id="personalimagediv"></div>				
+						<div class="input-group multi-img-details" id="personalimagediv">
+							<div th:each="photo,iterStat : ${photos}" class='input-group multi-item' style='margin-top:.5em;'>
+								<img src="../images/nopic.jpg" th:src="'/'+${photo}" th:name="${photo}" class="img-responsive img-thumbnail" width="150">
+								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
+							</div>
+						</div>				
 					</div>
 				</div>
 				<div class="form-group">
