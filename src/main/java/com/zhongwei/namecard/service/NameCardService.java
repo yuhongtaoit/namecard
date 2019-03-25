@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,24 +80,36 @@ public class NameCardService {
 			this.fileUploadService.deleteFile(oldCard.getTemplateImg());
 			card.setTemplateImg(this.fileUploadService.uploadForSingleFile(request, response, style2bgimage));
 		}
-		List<String> photoList = Arrays.asList(card.getPhoto().substring(card.getPhoto().indexOf("[")+1, card.getPhoto().lastIndexOf("]")).split(","));
-		List<String> oldPhotoList = Arrays.asList(oldCard.getPhoto().substring(oldCard.getPhoto().indexOf("[")+1, oldCard.getPhoto().lastIndexOf("]")).split(","));
+		List<String> photoList = Arrays.asList(this.toArray(card.getPhoto()));
+		List<String> oldPhotoList = Arrays.asList(this.toArray(oldCard.getPhoto()));
 		if(personalimage==null || personalimage.length<=0) {
 			this.removeNotExistFile(photoList, oldPhotoList);
 		}else {
+			List<String> newPhotoPaths = new ArrayList<String>();
 			this.removeNotExistFile(photoList, oldPhotoList);
 			List<String> newPersonalImagePaths = this.fileUploadService.uploadForMultiFile(request, response, personalimage);
-			photoList.addAll(newPersonalImagePaths);
-			card.setPhoto(photoList.toString());
+			for(String photo : photoList) {
+				newPhotoPaths.add(photo);
+			}
+			newPhotoPaths.addAll(newPersonalImagePaths);
+			card.setPhoto(newPhotoPaths.toString());
 		}
-		this.cardMapper.updateByPrimaryKey(card);
+		this.cardMapper.updateByPrimaryKeyWithBLOBs(card);
 		return message;
+	}
+	
+	private String[] toArray(String value) {
+		if(value.startsWith("[")) {
+			return value.substring(value.indexOf("[")+1, value.lastIndexOf("]")).split(",");
+		}else {
+			return value.split(",");
+		}
 	}
 	
 	private List<String> removeNotExistFile(List<String> files,List<String> oldFiles) {
 		for(String oldFile : oldFiles) {
 			if(!files.contains(oldFile)) {
-				this.fileUploadService.deleteFile(oldFile);
+				this.fileUploadService.deleteFile(oldFile.trim());
 			}
 		}
 		return files;

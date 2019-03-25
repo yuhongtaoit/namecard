@@ -21,10 +21,6 @@
 <script src="../js/fileupload/myfileupload.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
-img{
-  width:200px;
-  height:200px;
-}
 .multi-img-details .multi-item {
     height: 150px;
     max-width: 150px;
@@ -56,7 +52,7 @@ function cancel(){
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">
-							<img src="../images/nopic.jpg" th:src="${card == null}?'':'/'+${card.cardLogo }" id="logoimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail">
+							<img src="../images/nopic.jpg" th:src="${card == null}?'':'/'+${card.cardLogo }" id="logoimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
 							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 						</div>				
 						</div>
@@ -165,7 +161,7 @@ function cancel(){
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">
-							<img src="../images/nopic.jpg" th:src="${card == null}?'':'/'+${card.shareImg }" id="shareimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail">
+							<img src="../images/nopic.jpg" th:src="${card == null}?'':'/'+${card.shareImg }" id="shareimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
 							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 						</div>				
 					</div>
@@ -186,12 +182,12 @@ function cancel(){
 							<span class="input-group-btn">
 								<label for="personalimage" class="btn btn-primary ng-binding">上传图片</label>
 								<input type="file" id="personalimage" multiple name="personalimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
-								<input type="hidden" id="personalimages" th:value="${card == null}?'':${card.photo }" value="photo">
+								<input type="hidden" id="photo" name="photo" th:value="${card == null}?'':${card.photo }" value="photo">
 							</span>
 						</div>
 						<div class="input-group multi-img-details" id="personalimagediv">
 							<div th:each="photo,iterStat : ${photos}" class='input-group multi-item' style='margin-top:.5em;'>
-								<img src="../images/nopic.jpg" th:src="'/'+${photo}" th:name="${photo}" class="img-responsive img-thumbnail" width="150">
+								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(photo)}" th:name="${photo}" class="img-responsive img-thumbnail" width="150" height="150">
 								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
 							</div>
 						</div>				

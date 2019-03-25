@@ -45,7 +45,7 @@ public class NameCardController {
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
 			CardWithBLOBs card = cardMapper.selectByPrimaryKey(id);
-			List<String> photoList = Arrays.asList(card.getPhoto().substring(card.getPhoto().indexOf("[")+1, card.getPhoto().lastIndexOf("]")).split(","));
+			List<String> photoList = Arrays.asList(this.toArray(card.getPhoto()));
 			model.addAttribute("card", card);
 			model.addAttribute("photos", photoList);
 		}
@@ -67,6 +67,14 @@ public class NameCardController {
 			}
 		}
 		return this.nameCardService.createNameCard(logoimage, shareimage, style2bgimage, personalimage, request, response, card);
+	}
+	
+	private String[] toArray(String value) {
+		if(value.startsWith("[")) {
+			return value.substring(value.indexOf("[")+1, value.lastIndexOf("]")).split(",");
+		}else {
+			return value.split(",");
+		}
 	}
 	
 }

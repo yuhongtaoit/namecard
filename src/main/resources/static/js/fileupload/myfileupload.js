@@ -6,7 +6,7 @@ $(function() {
 	        singleFileUploads: false,
 			acceptFileTypes : /(gif|jpe?g|png)$/i,//验证图片格式
 			maxNumberOfFiles : 1,//最大上传文件数目
-			maxFileSize : 1000000, // 文件上限1MB
+			maxFileSize : 10000000, // 文件上限1MB
 			minFileSize : 100,//文件下限  100b
 			messages : {//文件错误信息
 				acceptFileTypes : '文件类型不匹配',
@@ -84,21 +84,21 @@ function deleteImage(elm){
 
 function deleteMultiImage(elm){
 	var fileSrc = $(elm).prev().attr("name");
-	var photosArray = toArray($("#personalimages").val());
-	$.each(photosArray, function(index, photo) {
-		if(myTrim(fileSrc) == myTrim(photo)){
-			photosArray.remove(photo);
+	var photosArray = toArray($("#photo").val());
+	for(var i=0;i<photosArray.length;i++){
+		if(myTrim(fileSrc) == myTrim(photosArray[i])){
+			photosArray.splice(i--, 1);
 			$(elm).parent().remove();
 		}
-	});
-	$("#personalimages").val(photosArray.toString());
+	}
+	$("#photo").val(photosArray.toString());
 	if(personImages!=undefined && personImages.length>0){
-		$.each(personImages, function(index, file) {
-			if(fileSrc == file.name){
-				personImages.remove(file);
+		for(var i=0;i<personImages.length;i++){
+			if(myTrim(fileSrc) == myTrim(personImages[i].name)){
+				personImages.splice(i--, 1);
 				$(elm).parent().remove();
 			}
-		});
+		}
 	}
 }
 
@@ -140,7 +140,7 @@ function save(){
 	 var cardLogo = $("#cardLogo").val();
 	 var shareImg = $("#shareImg").val();
 	 var templateImg = $("#templateImg").val();
-	 var personalimages = $("#personalimages").val();
+	 var personalimages = $("#photo").val();
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("logoimage");
 	 form.delete("shareimage");
