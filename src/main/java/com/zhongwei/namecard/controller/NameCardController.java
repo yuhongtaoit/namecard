@@ -20,6 +20,7 @@ import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.entity.Card;
 import com.zhongwei.namecard.entity.CardExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.NameCardService;
 
 @Controller
@@ -31,6 +32,9 @@ public class NameCardController {
 	
 	@Autowired
 	private NameCardService nameCardService;
+	
+	@Autowired
+	private FileUploadService fileUploadService;
 	
 	@RequestMapping("/getNamecardList")
 	public String getUsers(Model model) {
@@ -68,6 +72,29 @@ public class NameCardController {
 		}
 		return this.nameCardService.createNameCard(logoimage, shareimage, style2bgimage, personalimage, request, response, card);
 	}
+	
+	@RequestMapping(value="/delete")
+    @Transactional
+    public @ResponseBody CommonMessage delete(Integer id) {
+		CommonMessage message = new CommonMessage();
+		if(id!=null && id>0){
+			CardWithBLOBs card = cardMapper.selectByPrimaryKey(id);
+			String[] photoPaths = this.toArray(card.getPhoto());
+			for(String photo : photoPaths) {
+				this.fileUploadService.deleteFile(photo.trim());
+			}
+			this.fileUploadService.deleteFile(card.getCardLogo().trim());
+			this.fileUploadService.deleteFile(card.getShareImg().trim());
+			this.fileUploadService.deleteFile(card.getTemplateImg().trim());
+			cardMapper.deleteByPrimaryKey(id);
+			message.setSuccess(true);
+			message.setMessage("删除成功！");
+		}else{
+			message.setSuccess(false);
+			message.setMessage("删除失败！");
+		}
+		return message;
+    }
 	
 	private String[] toArray(String value) {
 		if(value.startsWith("[")) {

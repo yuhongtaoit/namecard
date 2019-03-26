@@ -49,11 +49,7 @@ body{
 var winWidth = window.screen.width-400;
 var winHeight = window.screen.height-150;
 function add(){
-	window.open("/namecard/edit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
-}
-
-function getRoles(userId){
-	window.open("/user/getRoles?userId="+userId,"关联角色","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+	window.open("/shop/edit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
 function update(){
@@ -65,10 +61,10 @@ function update(){
 		}
 	}
 	var uuid = document.getElementById("id"+index).innerText;
-	window.open("/namecard/edit?id="+uuid,"修改用户","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+	window.open("/shop/edit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
-function deleteCard(){
+function deleteUser(){
 	var flag = confirm("确定删除本条数据？");
 	if(!flag){
 		return;
@@ -82,7 +78,7 @@ function deleteCard(){
 	}
 	var uuid = document.getElementById("id"+index).innerText;
 	$.ajax({
-	    url:'/namecard/delete',
+	    url:'/user/delete',
 	    type:'POST', //GET
 	    async:true,    //或false,是否异步
 	    data:{
@@ -94,7 +90,7 @@ function deleteCard(){
 			if(json.success){
 				$.ajax({
 		             type: "GET",
-		             url: "/namecard/getNamecardList",
+		             url: "/user/getUserList",
 		             async:false,
 		             success: function(data){
 		            	 $("#mainList", window.document).html(data);
@@ -116,7 +112,7 @@ function deleteCard(){
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteCard()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteUser()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
 			</div>
 			<table class="table">
 				<thead>
@@ -128,28 +124,41 @@ function deleteCard(){
 							显示顺序
 						</th>
 						<th>
-							职位
+							名称
 						</th>
 						<th>
-							姓名
+							图片
 						</th>
 						<th>
-							电话
+							分类
+						</th>
+						<th>
+							商品库存
+						</th>
+						<th>
+							销售量
 						</th>
 						<th>
 							状态
 						</th>
+						<th>
+							分销状态
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-					 <tr th:each="card,iterStat : ${cards}"> 
+					 <tr th:each="shop,iterStat : ${shops}"> 
 					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
-					     <td style="vertical-align: middle;display: none;" th:text="${card.id}" th:id="'id'+${iterStat.count}"></td>
-					     <td style="vertical-align: middle" th:text="${card.sort}"></td>
-					     <td style="vertical-align: middle" th:text="${card.roleName}"></td>
-					     <td style="vertical-align: middle" th:text="${card.cardName}"></td>
-					     <td style="vertical-align: middle" th:text="${card.cardTel}"></td>
-					     <td style="vertical-align: middle" th:text="${card.status}"></td>
+					     <td style="vertical-align: middle;display: none;" th:text="${shop.id}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.sort}"></td>
+					     <!-- <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td> -->
+					     <td style="vertical-align: middle" th:text="${shop.shopName}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.gimg}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.typeid}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.shopsNum}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.saleNum}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.isShow}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.fxType}"></td>
 					 </tr>
 				</tbody>
 			</table>
