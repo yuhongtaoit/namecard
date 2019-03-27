@@ -6,7 +6,7 @@ $(function() {
 	        singleFileUploads: false,
 			acceptFileTypes : /(gif|jpe?g|png)$/i,//验证图片格式
 			maxNumberOfFiles : 1,//最大上传文件数目
-			maxFileSize : 10000000, // 文件上限1MB
+			maxFileSize : 10000000000, // 文件上限1MB
 			minFileSize : 100,//文件下限  100b
 			messages : {//文件错误信息
 				acceptFileTypes : '文件类型不匹配',

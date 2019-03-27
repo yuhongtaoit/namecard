@@ -1,7 +1,9 @@
 package com.zhongwei.namecard.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,89 +16,98 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zhongwei.namecard.common.CommonMessage;
-import com.zhongwei.namecard.dao.CardMapper;
+import com.zhongwei.namecard.dao.CardShopsMapper;
 import com.zhongwei.namecard.entity.CardShopsWithBLOBs;
-import com.zhongwei.namecard.entity.CardWithBLOBs;
 
 @Service
 public class ShopService {
 	
 	@Autowired
-	private CardMapper cardMapper;
-	
-	@Autowired
 	private FileUploadService fileUploadService;
 	
+	@Autowired
+	private CardShopsMapper shopMapper;
+	
 	@Transactional
-	public CommonMessage createNameCard(MultipartFile logoimage, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
-			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card) {
+	public CommonMessage updateShop(MultipartFile gimage, MultipartFile[] topPicImage, MultipartFile[] cpBsImage,
+			HttpServletRequest request, HttpServletResponse response, CardShopsWithBLOBs shop,
+			CardShopsWithBLOBs oldShop) {
 		CommonMessage message = new CommonMessage();
-		String logoImagePath = fileUploadService.uploadForSingleFile(request, response, logoimage);
-		String shareImagePath = fileUploadService.uploadForSingleFile(request, response, shareimage);
-		String style2bgImagePath = fileUploadService.uploadForSingleFile(request, response, style2bgimage);
-		List<String> personalImagePaths = fileUploadService.uploadForMultiFile(request, response, personalimage);
-		this.setCardDefaultValue(card);
-		card.setCardLogo(logoImagePath);
-		card.setShareImg(shareImagePath);
-		card.setTemplateImg(style2bgImagePath);
-		card.setPhoto(personalImagePaths.toString());
-		card.setTotalPicNum(personalimage.length+3);
 		try {
-			cardMapper.insert(card);
+			this.setShopDefaultValue(shop);
+			if(gimage==null && !StringUtils.isEmpty(shop.getGimg())) {
+				shop.setGimg(oldShop.getGimg());
+			}else {
+				this.fileUploadService.deleteFile(oldShop.getGimg());
+				shop.setGimg(this.fileUploadService.uploadForSingleFile(request, response, gimage));
+			}
+			List<String> topPicList = Arrays.asList(this.toArray(shop.getTopPic()));
+			List<String> oldTopPicList = Arrays.asList(this.toArray(oldShop.getTopPic()));
+			if(topPicImage==null || topPicImage.length<=0) {
+				this.removeNotExistFile(topPicList, oldTopPicList);
+			}else {
+				List<String> newTopPicPaths = new ArrayList<String>();
+				this.removeNotExistFile(topPicList, oldTopPicList);
+				List<String> newTopPicImagePaths = this.fileUploadService.uploadForMultiFile(request, response, topPicImage);
+				for(String topPic : topPicList) {
+					newTopPicPaths.add(topPic);
+				}
+				newTopPicPaths.addAll(newTopPicImagePaths);
+				shop.setTopPic(newTopPicPaths.toString());
+			}
+			List<String> cpBsList = Arrays.asList(this.toArray(shop.getCpBsImg()));
+			List<String> oldCpBsList = Arrays.asList(this.toArray(oldShop.getCpBsImg()));
+			if(cpBsImage==null || cpBsImage.length<=0) {
+				this.removeNotExistFile(cpBsList, oldCpBsList);
+			}else {
+				List<String> newCpBsPaths = new ArrayList<String>();
+				this.removeNotExistFile(cpBsList, oldCpBsList);
+				List<String> newCpBsImagePaths = this.fileUploadService.uploadForMultiFile(request, response, cpBsImage);
+				for(String cpBs : cpBsList) {
+					newCpBsPaths.add(cpBs);
+				}
+				newCpBsPaths.addAll(newCpBsImagePaths);
+				shop.setTopPic(newCpBsPaths.toString());
+			}
+			this.shopMapper.updateByPrimaryKeyWithBLOBs(shop);
 			message.setSuccess(true);
 			message.setMessage("保存成功！");
 			return message;
 		} catch (Exception e) {
-			fileUploadService.deleteFile(style2bgImagePath);
-			fileUploadService.deleteFile(shareImagePath);
-			fileUploadService.deleteFile(logoImagePath);
-			for(String path : personalImagePaths) {
+			message.setSuccess(false);
+			message.setMessage("保存失败！");
+			return message;
+		}
+	}
+
+	@Transactional
+	public CommonMessage createShop(MultipartFile gimage, MultipartFile[] topPicImage, MultipartFile[] cpBsImage,
+			HttpServletRequest request, HttpServletResponse response, CardShopsWithBLOBs shop) {
+		CommonMessage message = new CommonMessage();
+		String gimagePath = fileUploadService.uploadForSingleFile(request, response, gimage);
+		List<String> topPicImagePaths = fileUploadService.uploadForMultiFile(request, response, topPicImage);
+		List<String> cpBsImagePaths = fileUploadService.uploadForMultiFile(request, response, cpBsImage);
+		this.setShopDefaultValue(shop);
+		shop.setGimg(gimagePath);
+		shop.setTopPic(topPicImagePaths.toString());
+		shop.setCpBsImg(cpBsImagePaths.toString());
+		try {
+			shopMapper.insert(shop);
+			message.setSuccess(true);
+			message.setMessage("保存成功！");
+			return message;
+		} catch (Exception e) {
+			fileUploadService.deleteFile(gimagePath);
+			for(String path : topPicImagePaths) {
+				fileUploadService.deleteFile(path);
+			}
+			for(String path : cpBsImagePaths) {
 				fileUploadService.deleteFile(path);
 			}
 			message.setSuccess(false);
 			message.setMessage("保存失败！");
 			return message;
 		}
-	}
-	
-	public CommonMessage updateNameCard(MultipartFile logoimage, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
-			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card, CardWithBLOBs oldCard) {
-		CommonMessage message = new CommonMessage();
-		this.setCardDefaultValue(card);
-		if(logoimage==null && !StringUtils.isEmpty(card.getCardLogo())) {
-			card.setCardLogo(oldCard.getCardLogo());
-		}else {
-			this.fileUploadService.deleteFile(oldCard.getCardLogo());
-			card.setCardLogo(this.fileUploadService.uploadForSingleFile(request, response, logoimage));
-		}
-		if(shareimage==null && !StringUtils.isEmpty(card.getShareImg())) {
-			card.setShareImg(oldCard.getShareImg());
-		}else {
-			this.fileUploadService.deleteFile(oldCard.getShareImg());
-			card.setShareImg(this.fileUploadService.uploadForSingleFile(request, response, shareimage));
-		}
-		if(style2bgimage==null && !StringUtils.isEmpty(card.getTemplateImg())) {
-			card.setTemplateImg(oldCard.getTemplateImg());
-		}else {
-			this.fileUploadService.deleteFile(oldCard.getTemplateImg());
-			card.setTemplateImg(this.fileUploadService.uploadForSingleFile(request, response, style2bgimage));
-		}
-		List<String> photoList = Arrays.asList(this.toArray(card.getPhoto()));
-		List<String> oldPhotoList = Arrays.asList(this.toArray(oldCard.getPhoto()));
-		if(personalimage==null || personalimage.length<=0) {
-			this.removeNotExistFile(photoList, oldPhotoList);
-		}else {
-			List<String> newPhotoPaths = new ArrayList<String>();
-			this.removeNotExistFile(photoList, oldPhotoList);
-			List<String> newPersonalImagePaths = this.fileUploadService.uploadForMultiFile(request, response, personalimage);
-			for(String photo : photoList) {
-				newPhotoPaths.add(photo);
-			}
-			newPhotoPaths.addAll(newPersonalImagePaths);
-			card.setPhoto(newPhotoPaths.toString());
-		}
-		this.cardMapper.updateByPrimaryKeyWithBLOBs(card);
-		return message;
 	}
 	
 	private String[] toArray(String value) {
@@ -116,52 +127,23 @@ public class ShopService {
 		return files;
 	}
 	
-	private CardWithBLOBs setCardDefaultValue(CardWithBLOBs card) {
-		card.setAddress(card.getAddress()==null?"":card.getAddress());
-		card.setAvatarUrl(card.getAvatarUrl()==null?"":card.getAvatarUrl());
-		card.setBrowseHeadimgNum(card.getBrowseHeadimgNum()==null?0:card.getBrowseHeadimgNum());
-		card.setCardId(card.getCardId()==null?"":card.getCardId());
-		card.setCardInstr(card.getCardInstr()==null?"":card.getCardInstr());
-		card.setCardLogo(card.getCardLogo()==null?"":card.getCardLogo());
-		card.setCardName(card.getCardName()==null?"":card.getCardName());
-		card.setCardTel(card.getCardTel()==null?"":card.getCardTel());
-		card.setCompanyName(card.getCompanyName()==null?"":card.getCompanyName());
-		card.setDetailedAddress(card.getDetailedAddress()==null?"":card.getDetailedAddress());
-		card.setEmail(card.getEmail()==null?"":card.getEmail());
-		card.setErrmsg(card.getErrmsg()==null?"":card.getErrmsg());
-		card.setIdentify(card.getIdentify()==null?"":card.getIdentify());
-		card.setIsSendcardId(card.getIsSendcardId()==null?0:card.getIsSendcardId());
-		card.setLastUpdateStarTime(card.getLastUpdateStarTime()==null?"":card.getLastUpdateStarTime());
-		card.setPhone(card.getPhone()==null?"":card.getPhone());
-		card.setPhoto(card.getPhoto()==null?"":card.getPhoto());
-		card.setRoleName(card.getRoleName()==null?"":card.getRoleName());
-		card.setSeeNum(card.getSeeNum()==null?0:card.getSeeNum());
-		card.setShareImg(card.getShareImg()==null?"":card.getShareImg());
-		card.setShareNum(card.getShareNum()==null?0:card.getShareNum());
-		card.setShareTitle(card.getShareTitle()==null?"":card.getShareTitle());
-		card.setSignatureCount(card.getSignatureCount()==null?0:card.getSignatureCount());
-		card.setSort(card.getSort()==null?0:card.getSort());
-		card.setSourceName(card.getSourceName()==null?"":card.getSourceName());
-		card.setTemplateImg(card.getTemplateImg()==null?"":card.getTemplateImg());
-		card.setThumbsNum(card.getThumbsNum()==null?0:card.getThumbsNum());
-		card.setTotalPicNum(card.getTotalPicNum()==null?0:card.getTotalPicNum());
-		card.setUniacid(card.getUniacid()==null?0:card.getUniacid());
-		card.setUserid(card.getUserid()==null?"":card.getUserid());
-		card.setWeixinid(card.getWeixinid()==null?"":card.getWeixinid());
-		card.setZdMsg(card.getZdMsg()==null?"":card.getZdMsg());
-		return card;
-	}
-
-	public CommonMessage updateShop(MultipartFile gimage, MultipartFile[] topPicImage, MultipartFile[] cpBsImage,
-			HttpServletRequest request, HttpServletResponse response, CardShopsWithBLOBs shop,
-			CardShopsWithBLOBs oldShop) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public CommonMessage createShop(MultipartFile gimage, MultipartFile[] topPicImage, MultipartFile[] cpBsImage,
-			HttpServletRequest request, HttpServletResponse response, CardShopsWithBLOBs shop) {
-		// TODO Auto-generated method stub
-		return null;
+	private CardShopsWithBLOBs setShopDefaultValue(CardShopsWithBLOBs shop) {
+		shop.setAddtime(shop.getAddtime()==null?"":shop.getAddtime());
+		shop.setCpBsContent(shop.getCpBsContent()==null?"":shop.getCpBsContent());
+		shop.setCpBsImg(shop.getCpBsImg()==null?"":shop.getCpBsImg());
+		shop.setCpBsName(shop.getCpBsName()==null?"":shop.getCpBsName());
+		shop.setFxPrice(shop.getFxPrice()==null?BigDecimal.ZERO:shop.getFxPrice());
+		shop.setGimg(shop.getGimg()==null?"":shop.getGimg());
+		shop.setPrice(shop.getPrice()==null?BigDecimal.ZERO:shop.getPrice());
+		shop.setSaleNum(shop.getSaleNum()==null?0:shop.getSaleNum());
+		shop.setShopName(shop.getShopName()==null?"":shop.getShopName());
+		shop.setShopsNum(shop.getShopsNum()==null?0:shop.getShopsNum());
+		shop.setSort(shop.getSort()==null?0:shop.getSort());
+		shop.setSpec(shop.getSpec()==null?new HashMap<String, Object>():shop.getSpec());
+		shop.setSpecid(shop.getSpecid()==null?0:shop.getSpecid());
+		shop.setTopPic(shop.getTopPic()==null?"":shop.getTopPic());
+		shop.setTypeid(shop.getTypeid()==null?0:shop.getTypeid());
+		shop.setUniacid(shop.getUniacid()==null?2:shop.getUniacid());
+		return shop;
 	}
 }

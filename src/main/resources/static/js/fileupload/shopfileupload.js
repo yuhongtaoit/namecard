@@ -2,7 +2,7 @@ var m = new Map();
 var topPicImages = new Array();
 var cpBsImages = new Array();
 $(function() {
-		$('#gimage,#topPicImage,#cpBsImage).fileupload({
+		$('#gimage,#topPicImage,#cpBsImage').fileupload({
 			autoUpload : false,
 	        singleFileUploads: false,
 			acceptFileTypes : /(gif|jpe?g|png)$/i,//验证图片格式

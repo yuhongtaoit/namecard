@@ -61,41 +61,49 @@ public class NameCardService {
 	public CommonMessage updateNameCard(MultipartFile logoimage, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card, CardWithBLOBs oldCard) {
 		CommonMessage message = new CommonMessage();
-		this.setCardDefaultValue(card);
-		if(logoimage==null && !StringUtils.isEmpty(card.getCardLogo())) {
-			card.setCardLogo(oldCard.getCardLogo());
-		}else {
-			this.fileUploadService.deleteFile(oldCard.getCardLogo());
-			card.setCardLogo(this.fileUploadService.uploadForSingleFile(request, response, logoimage));
-		}
-		if(shareimage==null && !StringUtils.isEmpty(card.getShareImg())) {
-			card.setShareImg(oldCard.getShareImg());
-		}else {
-			this.fileUploadService.deleteFile(oldCard.getShareImg());
-			card.setShareImg(this.fileUploadService.uploadForSingleFile(request, response, shareimage));
-		}
-		if(style2bgimage==null && !StringUtils.isEmpty(card.getTemplateImg())) {
-			card.setTemplateImg(oldCard.getTemplateImg());
-		}else {
-			this.fileUploadService.deleteFile(oldCard.getTemplateImg());
-			card.setTemplateImg(this.fileUploadService.uploadForSingleFile(request, response, style2bgimage));
-		}
-		List<String> photoList = Arrays.asList(this.toArray(card.getPhoto()));
-		List<String> oldPhotoList = Arrays.asList(this.toArray(oldCard.getPhoto()));
-		if(personalimage==null || personalimage.length<=0) {
-			this.removeNotExistFile(photoList, oldPhotoList);
-		}else {
-			List<String> newPhotoPaths = new ArrayList<String>();
-			this.removeNotExistFile(photoList, oldPhotoList);
-			List<String> newPersonalImagePaths = this.fileUploadService.uploadForMultiFile(request, response, personalimage);
-			for(String photo : photoList) {
-				newPhotoPaths.add(photo);
+		try {
+			this.setCardDefaultValue(card);
+			if(logoimage==null && !StringUtils.isEmpty(card.getCardLogo())) {
+				card.setCardLogo(oldCard.getCardLogo());
+			}else {
+				this.fileUploadService.deleteFile(oldCard.getCardLogo());
+				card.setCardLogo(this.fileUploadService.uploadForSingleFile(request, response, logoimage));
 			}
-			newPhotoPaths.addAll(newPersonalImagePaths);
-			card.setPhoto(newPhotoPaths.toString());
+			if(shareimage==null && !StringUtils.isEmpty(card.getShareImg())) {
+				card.setShareImg(oldCard.getShareImg());
+			}else {
+				this.fileUploadService.deleteFile(oldCard.getShareImg());
+				card.setShareImg(this.fileUploadService.uploadForSingleFile(request, response, shareimage));
+			}
+			if(style2bgimage==null && !StringUtils.isEmpty(card.getTemplateImg())) {
+				card.setTemplateImg(oldCard.getTemplateImg());
+			}else {
+				this.fileUploadService.deleteFile(oldCard.getTemplateImg());
+				card.setTemplateImg(this.fileUploadService.uploadForSingleFile(request, response, style2bgimage));
+			}
+			List<String> photoList = Arrays.asList(this.toArray(card.getPhoto()));
+			List<String> oldPhotoList = Arrays.asList(this.toArray(oldCard.getPhoto()));
+			if(personalimage==null || personalimage.length<=0) {
+				this.removeNotExistFile(photoList, oldPhotoList);
+			}else {
+				List<String> newPhotoPaths = new ArrayList<String>();
+				this.removeNotExistFile(photoList, oldPhotoList);
+				List<String> newPersonalImagePaths = this.fileUploadService.uploadForMultiFile(request, response, personalimage);
+				for(String photo : photoList) {
+					newPhotoPaths.add(photo);
+				}
+				newPhotoPaths.addAll(newPersonalImagePaths);
+				card.setPhoto(newPhotoPaths.toString());
+			}
+			this.cardMapper.updateByPrimaryKeyWithBLOBs(card);
+			message.setSuccess(true);
+			message.setMessage("保存成功！");
+			return message;
+		} catch (Exception e) {
+			message.setSuccess(false);
+			message.setMessage("保存失败！");
+			return message;
 		}
-		this.cardMapper.updateByPrimaryKeyWithBLOBs(card);
-		return message;
 	}
 	
 	private String[] toArray(String value) {

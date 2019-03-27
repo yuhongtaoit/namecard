@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardShopsMapper;
 import com.zhongwei.namecard.entity.CardShopsExample;
 import com.zhongwei.namecard.entity.CardShopsWithBLOBs;
-import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.ShopService;
 
@@ -48,9 +48,11 @@ public class ShopController {
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
 			CardShopsWithBLOBs shop = shopMapper.selectByPrimaryKey(id);
-//			List<String> photoList = Arrays.asList(this.toArray(card.getPhoto()));
+			List<String> topPicsList = Arrays.asList(this.toArray(shop.getTopPic()));
+			List<String> cpBsImgsList = Arrays.asList(this.toArray(shop.getCpBsImg()));
 			model.addAttribute("shop", shop);
-//			model.addAttribute("photos", photoList);
+			model.addAttribute("topPics", topPicsList);
+			model.addAttribute("cpBsImgs", cpBsImgsList);
 		}
 		return "shopedit";
 	}
@@ -70,6 +72,31 @@ public class ShopController {
 		}
 		return this.shopService.createShop(gimage, topPicImage, cpBsImage, request, response, shop);
 	}
+	
+	@RequestMapping(value="/delete")
+    @Transactional
+    public @ResponseBody CommonMessage delete(Integer id) {
+		CommonMessage message = new CommonMessage();
+		if(id!=null && id>0){
+			CardShopsWithBLOBs shop = shopMapper.selectByPrimaryKey(id);
+			String[] topPicPaths = this.toArray(shop.getTopPic());
+			for(String topPic : topPicPaths) {
+				this.fileUploadService.deleteFile(topPic.trim());
+			}
+			String[] cpBsPaths = this.toArray(shop.getCpBsImg());
+			for(String cpBs : cpBsPaths) {
+				this.fileUploadService.deleteFile(cpBs.trim());
+			}
+			this.fileUploadService.deleteFile(shop.getGimg().trim());
+			shopMapper.deleteByPrimaryKey(id);
+			message.setSuccess(true);
+			message.setMessage("删除成功！");
+		}else{
+			message.setSuccess(false);
+			message.setMessage("删除失败！");
+		}
+		return message;
+    }
 	
 	private String[] toArray(String value) {
 		if(value.startsWith("[")) {

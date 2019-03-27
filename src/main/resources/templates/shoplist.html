@@ -64,7 +64,7 @@ function update(){
 	window.open("/shop/edit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
-function deleteUser(){
+function deleteShop(){
 	var flag = confirm("确定删除本条数据？");
 	if(!flag){
 		return;
@@ -78,7 +78,7 @@ function deleteUser(){
 	}
 	var uuid = document.getElementById("id"+index).innerText;
 	$.ajax({
-	    url:'/user/delete',
+	    url:'/shop/delete',
 	    type:'POST', //GET
 	    async:true,    //或false,是否异步
 	    data:{
@@ -90,7 +90,7 @@ function deleteUser(){
 			if(json.success){
 				$.ajax({
 		             type: "GET",
-		             url: "/user/getUserList",
+		             url: "/shop/getShopList",
 		             async:false,
 		             success: function(data){
 		            	 $("#mainList", window.document).html(data);
@@ -110,9 +110,27 @@ function deleteUser(){
 <body>
 <div class="container">
 	<div class="row clearfix">
-		<div class="col-md-12 column">
+		<!-- <div class="col-md-2 column" style="width: 140px">
+		<br><br>
+			<ul class="nav sidebar-menu">
+                 <li class="active">
+                     <a href="index.html">
+                         <i class="menu-icon glyphicon glyphicon-home"></i>
+                         <span class="menu-text">商品分组</span>
+                     </a>
+                 </li>
+                 <li>
+                     <a href="databoxes.html">
+                         <i class="menu-icon glyphicon glyphicon-tasks"></i>
+                         <span class="menu-text">商品属性</span>
+                     </a>
+                 </li>
+			</ul>	
+		</div> -->
+		<div class="col-md-10 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteUser()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 管理分类</button><button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 管理属性</button>
 			</div>
 			<table class="table">
 				<thead>
@@ -153,12 +171,21 @@ function deleteUser(){
 					     <td style="vertical-align: middle" th:text="${shop.sort}"></td>
 					     <!-- <td style="vertical-align: middle" th:text="${user.passWord}">Otto</td> -->
 					     <td style="vertical-align: middle" th:text="${shop.shopName}"></td>
-					     <td style="vertical-align: middle" th:text="${shop.gimg}"></td>
+					     <td style="vertical-align: middle">
+					     	<img src="" th:src="${shop == null}?'':'/'+${shop.gimg }" style="max-width: 48px; max-height: 48px; border: 1px dotted gray">
+					     </td>
 					     <td style="vertical-align: middle" th:text="${shop.typeid}"></td>
 					     <td style="vertical-align: middle" th:text="${shop.shopsNum}"></td>
 					     <td style="vertical-align: middle" th:text="${shop.saleNum}"></td>
-					     <td style="vertical-align: middle" th:text="${shop.isShow}"></td>
-					     <td style="vertical-align: middle" th:text="${shop.fxType}"></td>
+					     <td style="vertical-align: middle" th:switch="${shop.isShow}">
+					     	<span th:case=1 class="label label-success">已上架</span>
+					     	<span th:case=0 class="label label-danger">未上架</span>
+					     </td>
+					     <td style="vertical-align: middle" th:switch="${shop.fxType}">
+					     	<span th:case=0 class="label label-danger">关闭</span>
+					     	<span th:case=1 class="label label-success">全局</span>
+					     	<span th:case=2 class="label label-success">自定义</span>
+					     </td>
 					 </tr>
 				</tbody>
 			</table>
