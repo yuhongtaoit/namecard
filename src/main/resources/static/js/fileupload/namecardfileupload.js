@@ -162,7 +162,7 @@ function save(){
 		 alert('请上传背景图片');
 		 return;
 	 }
-	 if(m.get("personalimage")!=undefined){
+	 if(m.get("logoimage")!=undefined){
 		 form.append("logoimageKey", m.get("logoimage"));
 	 }
 	 if(m.get("shareimage")!=undefined){

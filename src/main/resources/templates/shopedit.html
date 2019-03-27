@@ -18,7 +18,7 @@
 <script src="../js/fileupload/jquery.fileupload-validate.js"></script>
 <script src="../js/fileupload/jquery.fileupload-ui.js"></script>
 <script src="../js/fileupload/main.js"></script>
-<script src="../js/fileupload/myfileupload.js"></script>
+<script src="../js/fileupload/shopfileupload.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 .multi-img-details .multi-item {
@@ -40,17 +40,18 @@ function cancel(){
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<form action="" method="post" class="form-horizontal form" id="form">
+				<input type="hidden" id="id" name="id" th:value="${shop == null}?'':${shop.id}"/>
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">排序</label>
 					<div class="col-xs-12 col-sm-8">
-						<input type="text" name="goods[sort]" class="form-control" value="">
+						<input type="text" name="sort" id="sort" class="form-control" value="" th:value="${shop == null}?'':${shop.sort }">
 					</div>
 				</div>
 		
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品名称</label>
 					<div class="col-xs-12 col-sm-8">
-						<input type="text" name="goods[shop_name]" class="form-control" value="">
+						<input type="text" name="shopName" id="shopName" class="form-control" value="" th:value="${shop == null}?'':${shop.shopName }">
 					</div>
 				</div>
 		
@@ -58,14 +59,14 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品缩略图</label>
 					<div class="col-sm-8">
 						<div class="input-group ">
-							<input type="text" readonly="readonly" th:value="${card == null}?'':${card.shareImg }" name="shareImg" id="shareImg" value="" class="form-control" autocomplete="off">
+							<input type="text" readonly="readonly" th:value="${shop == null}?'':${shop.gimg }" name="gimg" id="gimg" value="" class="form-control" autocomplete="off">
 							<span class="input-group-btn">
-								<label for="shareimage" class="btn btn-primary ng-binding">上传图片</label>
-								<input type="file" id="shareimage" name="shareimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+								<label for="gimage" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="gimage" name="gimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 							</span>
 						</div>
 						<div class="input-group " style="margin-top:.5em;">
-							<img src="../images/nopic.jpg" th:src="${card == null}?'':'/'+${card.shareImg }" id="shareimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+							<img src="../images/nopic.jpg" th:src="${shop == null}?'':'/'+${shop.gimg }" id="gimgview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
 							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 						</div>				
 					</div>
@@ -92,7 +93,7 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品库存</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="goods[shops_num]" class="form-control" value="">
+							<input type="text" name="shopsNum" id="shopsNum" class="form-control" value="" th:value="${shop == null}?'':${shop.shopsNum }">
 							<span class="input-group-addon">件</span>
 						</div>
 					</div>
@@ -102,7 +103,7 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品销量</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="goods[sale_num]" class="form-control" value="">
+							<input type="text" name="saleNum" id="saleNum" class="form-control" value="" th:value="${shop == null}?'':${shop.saleNum }">
 							<span class="input-group-addon">件</span>
 						</div>
 					</div>
@@ -112,7 +113,7 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">价格</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="goods[price]" class="form-control" value="">
+							<input type="text" name="price" id="price" class="form-control" value="" th:value="${shop == null}?'':${shop.price }">
 							<span class="input-group-addon">元</span>
 						</div>
 					</div>
@@ -123,14 +124,14 @@ function cancel(){
 						<div class="input-group">
 							<input type="text" class="form-control" readonly="readonly" value="" placeholder="批量上传图片" autocomplete="off">
 							<span class="input-group-btn">
-								<label for="personalimage" class="btn btn-primary ng-binding">上传图片</label>
-								<input type="file" id="personalimage" multiple name="personalimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
-								<input type="hidden" id="photo" name="photo" th:value="${card == null}?'':${card.photo }" value="photo">
+								<label for="topPicImage" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="topPicImage" multiple name="topPicImage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+								<input type="hidden" id="topPic" name="topPic" th:value="${shop == null}?'':${shop.topPic }" value="topPic">
 							</span>
 						</div>
-						<div class="input-group multi-img-details" id="personalimagediv">
-							<div th:each="photo,iterStat : ${photos}" class='input-group multi-item' style='margin-top:.5em;'>
-								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(photo)}" th:name="${photo}" class="img-responsive img-thumbnail" width="150" height="150">
+						<div class="input-group multi-img-details" id="topPicImagediv">
+							<div th:each="topPic,iterStat : ${topPics}" class='input-group multi-item' style='margin-top:.5em;'>
+								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(topPic)}" th:name="${topPic}" class="img-responsive img-thumbnail" width="150" height="150">
 								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
 							</div>
 						</div>	
@@ -144,14 +145,14 @@ function cancel(){
 						<div class="input-group">
 							<input type="text" class="form-control" readonly="readonly" value="" placeholder="批量上传图片" autocomplete="off">
 							<span class="input-group-btn">
-								<label for="personalimage" class="btn btn-primary ng-binding">上传图片</label>
-								<input type="file" id="personalimage" multiple name="personalimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
-								<input type="hidden" id="photo" name="photo" th:value="${card == null}?'':${card.photo }" value="photo">
+								<label for="cpBsImage" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="cpBsImage" multiple name="cpBsImage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+								<input type="hidden" id="cpBsImg" name="cpBsImg" th:value="${shop == null}?'':${shop.cpBsImg }" value="photo">
 							</span>
 						</div>
-						<div class="input-group multi-img-details" id="personalimagediv">
-							<div th:each="photo,iterStat : ${photos}" class='input-group multi-item' style='margin-top:.5em;'>
-								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(photo)}" th:name="${photo}" class="img-responsive img-thumbnail" width="150" height="150">
+						<div class="input-group multi-img-details" id="cpBsImagediv">
+							<div th:each="cpBsImg,iterStat : ${cpBsImgs}" class='input-group multi-item' style='margin-top:.5em;'>
+								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(cpBsImg)}" th:name="${cpBsImg}" class="img-responsive img-thumbnail" width="150" height="150">
 								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
 							</div>
 						</div>	
@@ -163,10 +164,10 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">状态</label>
 					<div class="col-xs-12 col-sm-8">
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[is_show]" value="0" checked="checked"> 下架
+							<input type="radio" name="isShow" value="0" checked="checked" th:checked="(${shop == null}?0:${shop.isShow }) == 0"> 下架
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[is_show]" value="1"> 上架
+							<input type="radio" name="isShow" value="1" th:checked="(${shop == null}?0:${shop.isShow }) == 1"> 上架
 						</label>
 					</div>
 				</div>
@@ -175,13 +176,13 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分佣设置</label>
 					<div class="col-xs-12 col-sm-8">
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[fx_type]" value="0" checked="checked"> 关闭
+							<input type="radio" name="fxType" value="0" checked="checked" th:checked="(${shop == null}?0:${shop.fxType }) == 0"> 关闭
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[fx_type]" value="1"> 全局
+							<input type="radio" name="fxType" value="1" th:checked="(${shop == null}?0:${shop.fxType }) == 1"> 全局
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[fx_type]" value="2"> 自定义
+							<input type="radio" name="fxType" value="2" th:checked="(${shop == null}?0:${shop.fxType }) == 2"> 自定义
 						</label>
 					</div>
 				</div>
@@ -190,10 +191,10 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否显示价格</label>
 					<div class="col-xs-12 col-sm-8">
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[no_show_price]" value="0" checked="checked">是
+							<input type="radio" name="noShowPrice" value="0" checked="checked" th:checked="(${shop == null}?0:${shop.noShowPrice }) == 0">是
 						</label>
 						<label class="radio radio-inline">
-							<input type="radio" name="goods[no_show_price]" value="1">否
+							<input type="radio" name="noShowPrice" value="1" th:checked="(${shop == null}?0:${shop.noShowPrice }) == 1">否
 						</label>
 					</div>
 				</div>
@@ -202,17 +203,18 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">自定义佣金</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="goods[fx_price]" class="form-control" value="">
+							<input type="text" name="fxPrice" id="fxPrice" class="form-control" value="" th:value="${shop == null}?'':${shop.fxPrice }">
 							<span class="input-group-addon">元</span>
 						</div>
 					</div>
 				</div>
 					
-				<div class="form-group col-sm-12">
-					<input type="hidden" name="id" value="">
-					<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1">
-					<input type="hidden" name="token" value="2450a41f">
-				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-13">
+						<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+						<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+					</div>
+				 </div>
 			</form>
 		</div>
 	</div>
