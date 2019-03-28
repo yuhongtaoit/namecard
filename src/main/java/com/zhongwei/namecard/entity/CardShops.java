@@ -11,6 +11,8 @@ public class CardShops {
     private Integer typeid;
 
     private Integer specid;
+    
+    private String typeName;
 
     private Integer saleNum;
 
@@ -70,7 +72,15 @@ public class CardShops {
         this.specid = specid;
     }
 
-    public Integer getSaleNum() {
+    public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public Integer getSaleNum() {
         return saleNum;
     }
 

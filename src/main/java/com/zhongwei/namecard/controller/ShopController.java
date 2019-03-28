@@ -17,8 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardShopsMapper;
+import com.zhongwei.namecard.dao.ShopsCategoryMapper;
+import com.zhongwei.namecard.dao.ShopsSpecMapper;
 import com.zhongwei.namecard.entity.CardShopsExample;
 import com.zhongwei.namecard.entity.CardShopsWithBLOBs;
+import com.zhongwei.namecard.entity.ShopsCategory;
+import com.zhongwei.namecard.entity.ShopsCategoryExample;
+import com.zhongwei.namecard.entity.ShopsSpec;
+import com.zhongwei.namecard.entity.ShopsSpecExample;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.ShopService;
 
@@ -33,11 +39,20 @@ public class ShopController {
 	private FileUploadService fileUploadService;
 	
 	@Autowired
+	private ShopsCategoryMapper categoryMapper;
+	
+	@Autowired
+	private ShopsSpecMapper propertyMapper;
+	
+	@Autowired
 	private ShopService shopService;
 	
 	@RequestMapping("/getShopList")
 	public String getShops(Model model) {
 		List<CardShopsWithBLOBs> shopList = shopMapper.selectByExampleWithBLOBs(new CardShopsExample());
+		for(CardShopsWithBLOBs shop : shopList) {
+			shop.setTypeName(this.categoryMapper.selectByPrimaryKey(shop.getTypeid()).getTitle());
+		}
 		model.addAttribute("shops", shopList);
 		return "shoplist";
 	}
@@ -45,6 +60,12 @@ public class ShopController {
 	@RequestMapping("/edit")
 	public String editShop(HttpServletRequest request, HttpServletResponse response, Model model){
 		String idStr = request.getParameter("id");
+		ShopsCategoryExample categoryExample = new ShopsCategoryExample();
+		categoryExample.createCriteria().andEnabledNotEqualTo(false);
+		List<ShopsCategory> categorys = this.categoryMapper.selectByExample(categoryExample);
+		ShopsSpecExample propertyExample = new ShopsSpecExample();
+		propertyExample.createCriteria().andEnabledNotEqualTo(false);
+		List<ShopsSpec> propertys = this.propertyMapper.selectByExample(propertyExample);
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
 			CardShopsWithBLOBs shop = shopMapper.selectByPrimaryKey(id);
@@ -53,6 +74,12 @@ public class ShopController {
 			model.addAttribute("shop", shop);
 			model.addAttribute("topPics", topPicsList);
 			model.addAttribute("cpBsImgs", cpBsImgsList);
+			model.addAttribute("categorys", categorys);
+			model.addAttribute("propertys", propertys);
+		}else {
+			model.addAttribute("shop", new CardShopsWithBLOBs());
+			model.addAttribute("categorys", categorys);
+			model.addAttribute("propertys", propertys);
 		}
 		return "shopedit";
 	}

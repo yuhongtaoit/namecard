@@ -165,7 +165,7 @@ function shopProperty(){
 					     <td style="vertical-align: middle">
 					     	<img src="" th:src="${shop == null}?'':'/'+${shop.gimg }" style="max-width: 48px; max-height: 48px; border: 1px dotted gray">
 					     </td>
-					     <td style="vertical-align: middle" th:text="${shop.typeid}"></td>
+					     <td style="vertical-align: middle" th:text="${shop.typeName}"></td>
 					     <td style="vertical-align: middle" th:text="${shop.shopsNum}"></td>
 					     <td style="vertical-align: middle" th:text="${shop.saleNum}"></td>
 					     <td style="vertical-align: middle" th:switch="${shop.isShow}">
