@@ -105,32 +105,23 @@ function deleteShop(){
 	    }
 	})
 }
+
+function shopCategory(){
+	window.open("/shopCategory/getCategoryList","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function shopProperty(){
+	window.open("/shopProperty/getPropertyList","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
 </script>
 </head>
 <body>
 <div class="container">
 	<div class="row clearfix">
-		<!-- <div class="col-md-2 column" style="width: 140px">
-		<br><br>
-			<ul class="nav sidebar-menu">
-                 <li class="active">
-                     <a href="index.html">
-                         <i class="menu-icon glyphicon glyphicon-home"></i>
-                         <span class="menu-text">商品分组</span>
-                     </a>
-                 </li>
-                 <li>
-                     <a href="databoxes.html">
-                         <i class="menu-icon glyphicon glyphicon-tasks"></i>
-                         <span class="menu-text">商品属性</span>
-                     </a>
-                 </li>
-			</ul>	
-		</div> -->
 		<div class="col-md-10 column">
 			<div class="btn-group">
 				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
-				 <button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 管理分类</button><button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 管理属性</button>
+				 <button class="btn btn-default" type="button" onclick="shopCategory()"><em class="glyphicon glyphicon-align-left"></em> 管理分类</button><button class="btn btn-default" type="button" onclick="shopProperty()"><em class="glyphicon glyphicon-th"></em> 管理属性</button>
 			</div>
 			<table class="table">
 				<thead>

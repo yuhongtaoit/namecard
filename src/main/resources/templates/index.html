@@ -69,6 +69,12 @@ function namecard(){
 		  $('#mainList').html(response);
 	});
 }
+
+function officialWebsite(){
+	$( "#mainList" ).load( "/website/getBasicSet", function( response, status, xhr ) {
+		  $('#mainList').html(response);
+	});
+}
 </script>
 </head>
 <body>
@@ -82,6 +88,7 @@ function namecard(){
 					 <a class="navbar-brand" href="#" onclick="roleList()">角色管理</a>
 					 <a class="navbar-brand" href="#" onclick="namecard()">名片管理</a>
 					 <a class="navbar-brand" href="#" onclick="shop()">商城管理</a>
+					 <a class="navbar-brand" href="#" onclick="officialWebsite()">官网管理</a>
 				</div>
 			</nav>
 			<div class="jumbotron" id="mainList">

@@ -59,7 +59,7 @@ public class ShopController {
 	
 	@RequestMapping(value= {"/save"},consumes= {"multipart/form-data" })
 	@Transactional
-	public @ResponseBody CommonMessage saveCard(
+	public @ResponseBody CommonMessage saveShop(
 			@RequestParam(name="gimageKey",required=false) MultipartFile gimage, 
 			@RequestParam(name="topPicFilesKey",required=false) MultipartFile[] topPicImage,
 			@RequestParam(name="cpBsFilesKey",required=false) MultipartFile[] cpBsImage,

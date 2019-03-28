@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+
+<script src="../js/fileupload/jquery.ui.widget.js"></script>
+<script src="../js/fileupload/jquery.iframe-transport.js"></script>
+<script src="../js/fileupload/jquery.fileupload.js"></script>
+<script src="../js/fileupload/jquery.fileupload-process.js"></script>
+<script src="../js/fileupload/jquery.fileupload-image.js"></script>
+<script src="../js/fileupload/jquery.fileupload-audio.js"></script>
+<script src="../js/fileupload/jquery.fileupload-video.js"></script>
+<script src="../js/fileupload/jquery.fileupload-validate.js"></script>
+<script src="../js/fileupload/jquery.fileupload-ui.js"></script>
+<script src="../js/fileupload/main.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+
+function save(){
+	 var form = new FormData(document.querySelector("form"));
+	 $.ajax({
+	     url:"/shopProperty/save",
+	     type:"post",
+	     data:form,
+	     processData:false,
+	     contentType:false,
+	     success:function(data){
+	         var json = eval(data);
+				if(json.success){
+					$.ajax({
+			             type: "GET",
+			             url: "/shopProperty/getPropertyList",
+			             async:false,
+			             success: function(data){
+			            	 $("#propertyListDiv", window.opener.document).html(data);
+			             }
+			         });
+					alert(json.message);
+					window.close();
+				}else{
+					alert(json.message);
+					window.close();
+				}
+	     },
+	     error:function(e){
+	         alert("错误！！");
+	     }
+	 });        
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form action="" method="post" class="form-horizontal form" id="form">
+				<input type="hidden" id="id" name="id" th:value="${property == null}?'':${property.id}"/>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">排序</label>
+					<div class="col-xs-12 col-sm-8">
+						<input type="text" name="sort" id="sort" class="form-control" value="" th:value="${property == null}?'':${property.sort }">
+					</div>
+				</div>
+		
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">属性名称</label>
+					<div class="col-xs-12 col-sm-8">
+						<input type="text" name="title" id="title" class="form-control" value="" th:value="${property == null}?'':${property.title }">
+					</div>
+				</div>
+		
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">属性设置</label>
+					<div class="col-sm-8">
+						<textarea class="form-control" rows="3" id="specContent" name="specContent" placeholder="属性以英文逗号分隔" th:text="${property == null}?'':${property.specContent }"></textarea>
+					</div>
+				</div>
+		
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否显示</label>
+					<div class="col-xs-12 col-sm-8">
+						<label class="radio radio-inline">
+							<input type="radio" name="enabled" value="1" checked="checked" th:checked="(${property == null}?0:${property.enabled }) == true">是
+						</label>
+						<label class="radio radio-inline">
+							<input type="radio" name="enabled" value="0" th:checked="(${property == null}?0:${property.enabled }) == false">否
+						</label>
+					</div>
+				</div>
+					
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-13">
+						<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+						<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+					</div>
+				 </div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>
