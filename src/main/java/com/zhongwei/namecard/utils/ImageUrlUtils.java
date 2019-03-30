@@ -12,7 +12,9 @@ public class ImageUrlUtils {
 	}
 	
 	public static String[] unserialize(String str) {
-		str.replaceAll("[", "").replaceAll("]", "");
+		if(str.startsWith("[")) {
+			str.replaceAll("\\[", "").replaceAll("\\]", "");
+		}
 		if(!StringUtils.hasText(str)) {
 			return new String[0];
 		}
