@@ -264,8 +264,8 @@ public class CardDetailController {
 				memUser.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
 				memUser.setAddtime(String.valueOf(System.currentTimeMillis()));
 				memUser.setUpdatetime("");
-				memUser.setSourceId(share_id);///intval($_GPC["share_id"]) ? intval($_GPC["share_id"]) : 0;******
-				memUser.setSendCardid(send_cardid);// intval($_GPC["send_cardid"]) ? intval($_GPC["send_cardid"]) : 0; 888888
+				memUser.setSourceId(share_id);
+				memUser.setSendCardid(send_cardid);
 				memUser.setCanTake(new BigDecimal("0.00"));
 				memUser.setTotalBroker(new BigDecimal("0.00"));
 				memUser.setHasTaken(new BigDecimal("0.00"));
@@ -410,7 +410,7 @@ public class CardDetailController {
 					friend.setIsup(isupinfo.getStatus());
 				}
 				if(StringUtils.hasText(friend.getAllImg())) {
-					friend.setAllImgarr(friend.getAllImg().split(","));  //******String转数组
+					friend.setAllImgarr(ImageUrlUtils.unserialize(friend.getAllImg()));
 				}
 				friend.setTimeStr(DataUtils.millisToString(friend.getTime()));
 				friend.setHeadImg(ImageUrlUtils.getAbsolutelyURL(friend.getHeadImg()));
@@ -623,22 +623,22 @@ public class CardDetailController {
 		navFooterList.add(map2);
 		navFooterList.add(map3);
 		
+		data.putAll(info.cardToMap(info));
 		data.put("nav_footer", navFooterList);
 		data.put("footer_nav", footerNavList);
 		data.put("isAuthorize", isAuthorize);
 		data.put("GetCustomMobile", getCustomMobile);
 		data.put("titles", titles);
 		data.put("hmd_status", member.getHmdStatus());
-		data.put("share_id", share_id);//****** intval($_GPC["share_id"]) ? intval($_GPC["share_id"]) : 0;
-		data.put("card_logo", ImageUrlUtils.getAbsolutelyURL(info.getCardLogo()));
-		data.put("template_img", ImageUrlUtils.getAbsolutelyURL(info.getTemplateImg()));
-		data.put("share_img", ImageUrlUtils.getAbsolutelyURL(info.getShareImg()));
+		data.put("share_id", share_id);
+		data.put("cardLogo", ImageUrlUtils.getAbsolutelyURL(info.getCardLogo()));
+		data.put("templateImg", ImageUrlUtils.getAbsolutelyURL(info.getTemplateImg()));
+		data.put("shareImg", ImageUrlUtils.getAbsolutelyURL(info.getShareImg()));
 		if(StringUtils.hasText(cardSet.getCompanyLogo())) {
 			cardSet.setCompanyLogo(ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()));
 			cardSet.setShopBg(ImageUrlUtils.getAbsolutelyURL(cardSet.getShopBg()));
 		}
 		data.put("card", cardSet);
-		data.putAll(info.cardToMap(info));
 		
 		data.put("message", message);
 		data.put("errno", errno);
@@ -804,8 +804,8 @@ public class CardDetailController {
 				memUser.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
 				memUser.setAddtime(String.valueOf(System.currentTimeMillis()));
 				memUser.setUpdatetime("");
-				memUser.setSourceId(share_id);///******intval($_GPC["share_id"]) ? intval($_GPC["share_id"]) : 0;******
-				memUser.setSendCardid(send_cardid);// intval($_GPC["send_cardid"]) ? intval($_GPC["send_cardid"]) : 0; 888888
+				memUser.setSourceId(share_id);
+				memUser.setSendCardid(send_cardid);
 				memUser.setCanTake(new BigDecimal("0.00"));
 				memUser.setTotalBroker(new BigDecimal("0.00"));
 				memUser.setHasTaken(new BigDecimal("0.00"));
