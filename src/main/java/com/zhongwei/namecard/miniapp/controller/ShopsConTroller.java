@@ -386,6 +386,10 @@ public class ShopsConTroller {
 		return result;
 	}
 	
+	public void receivePayCallBack() {
+		
+	}
+	
 	@RequestMapping("/shopsOrderList")
 	public Map<String, Object> shopsOrderList(int uniacid, Integer card_id,
 			String sessionId, HttpServletRequest request){
