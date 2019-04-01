@@ -53,7 +53,12 @@ function cancel(){
 					 <a href="#">最新活动列表</a>
 				</li>
 			</ul>
-			<div id="mainContent">
+			<div id="mainContent" class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						基本设置
+					</h3>
+				</div>
 				<form action="" method="post" class="form-horizontal form" id="form">
 					<input type="hidden" id="id" name="id" th:value="${shop == null}?'':${shop.id}"/>
 					<div class="form-group">

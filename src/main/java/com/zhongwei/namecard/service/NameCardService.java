@@ -152,7 +152,7 @@ public class NameCardService {
 		card.setTemplateImg(card.getTemplateImg()==null?"":card.getTemplateImg());
 		card.setThumbsNum(card.getThumbsNum()==null?0:card.getThumbsNum());
 		card.setTotalPicNum(card.getTotalPicNum()==null?0:card.getTotalPicNum());
-		card.setUniacid(card.getUniacid()==null?0:card.getUniacid());
+		card.setUniacid(card.getUniacid()==null?2:card.getUniacid());
 		card.setUserid(card.getUserid()==null?"":card.getUserid());
 		card.setWeixinid(card.getWeixinid()==null?"":card.getWeixinid());
 		card.setZdMsg(card.getZdMsg()==null?"":card.getZdMsg());

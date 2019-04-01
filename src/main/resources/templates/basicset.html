@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+
+<script src="../js/fileupload/jquery.ui.widget.js"></script>
+<script src="../js/fileupload/jquery.iframe-transport.js"></script>
+<script src="../js/fileupload/jquery.fileupload.js"></script>
+<script src="../js/fileupload/jquery.fileupload-process.js"></script>
+<script src="../js/fileupload/jquery.fileupload-image.js"></script>
+<script src="../js/fileupload/jquery.fileupload-audio.js"></script>
+<script src="../js/fileupload/jquery.fileupload-video.js"></script>
+<script src="../js/fileupload/jquery.fileupload-validate.js"></script>
+<script src="../js/fileupload/jquery.fileupload-ui.js"></script>
+<script src="../js/fileupload/main.js"></script>
+<script src="../js/fileupload/basicsetfileupload.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						公司基本设置
+					</h3>
+				</div>
+				<div class="panel-body">
+					<form action="" method="post" id="form" class="form-horizontal" role="form">
+						  <div class="form-group">
+							<label for="title" class="col-sm-2 control-label">公司名称</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="companyName" name="companyName" th:value="${cardSet == null}?'':${cardSet.companyName }" placeholder="请输入公司名称" value="承德万正科技有限公司">
+							</div>
+						  </div>
+						  
+						  <div class="form-group">
+							<label for="lastname" class="col-sm-2 control-label">公司logo</label>
+							<div class="col-sm-8">
+								<div class="input-group ">
+									<input type="text" name="company_logo" value="images/6/2018/11/hgScUMM9GiVS9baMC4mgg92dn990va.jpg" class="form-control" autocomplete="off">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+									</span>
+								</div>
+								<div class="input-group " style="margin-top:.5em;">
+									<img src="https://mp.chengdecanyin.com/attachment/images/6/2018/11/hgScUMM9GiVS9baMC4mgg92dn990va.jpg" onerror="this.src='./resource/images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+									<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+								</div>				
+							</div>
+						  </div>
+						  
+						 <div class="form-group">
+							<label for="title" class="col-sm-2 control-label">公司电话</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="companyTel" name="companyTel" th:value="${cardSet == null}?'':${cardSet.companyTel }" placeholder="请输入公司电话" value="0314-2255525">
+							</div>
+						  </div>
+						  
+						<div class="form-group">
+							<label for="title" class="col-sm-2 control-label">公司地址</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="companyAddr" name="companyAddr" th:value="${cardSet == null}?'':${cardSet.companyAddr }" placeholder="请输入公司地址" value="承德市双桥区翠桥路安业大厦A1301商业">
+							</div>
+						</div>
+						  
+						<div class="form-group">
+							<label for="title" class="col-sm-2 control-label">地址:纬度</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="lat" name="lat" th:value="${cardSet == null}?'40.9684028503':${cardSet.lat }" placeholder="请输入地址:纬度" value="40.9684028503">
+							 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
+							</span></span></div>
+						</div>
+						  
+						<div class="form-group">
+							<label for="title" class="col-sm-2 control-label">地址:经度</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="lng" name="lng" th:value="${cardSet == null}?'117.9361003014':${cardSet.lng }" placeholder="请输入地址:经度" value="117.9361003014">
+							 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
+							</span></span></div>
+						</div>
+						<div class="form-group">
+							<label for="title" class="col-sm-2 control-label">创建名片个数</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="num" name="num" th:value="${cardSet == null}?'':${cardSet.num }" placeholder="请输入创建名片个数" value="0">
+							</div>
+						</div>
+			  			<div class="form-group">
+							<label for="title" class="col-sm-2 control-label">消息模板id</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="templateId" name="templateId" th:value="${cardSet == null}?'':${cardSet.templateId }" placeholder="请输入消息模板" value="9Ma_IGq00LUr-8lQ-lD2Rmv3amLUaaf0xnuMYTLJ6E8">
+							</div>
+						</div>
+						  
+						<div class="form-group">
+							<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否开启商城</label>
+							<div class="col-xs-12 col-sm-8">
+								<label class="radio radio-inline">
+									<input type="radio" name="openShop" value="0" th:checked="${cardSet == null}?1:${cardSet.openShop } == 0"> 否
+								</label>
+								<label class="radio radio-inline">
+									<input type="radio" name="openShop" value="1" checked="checked" th:checked="${cardSet == null}?1:${cardSet.openShop } == 1"> 是
+								</label>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="lastname" class="col-sm-2 control-label">商城背景图片</label>
+							<div class="col-sm-8">
+								<div class="input-group ">
+									<input type="text" name="shop_bg" value="images/6/2018/12/Vm0x72iR8NLr078x0EmO800R227e02.jpg" class="form-control" autocomplete="off">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+									</span>
+								</div>
+								<div class="input-group " style="margin-top:.5em;">
+									<img src="https://mp.chengdecanyin.com/attachment/images/6/2018/12/Vm0x72iR8NLr078x0EmO800R227e02.jpg" onerror="this.src='./resource/images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+									<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+								</div>				
+							</div>
+							<span class="help-block">700px * 300px</span>
+						  </div>
+						  
+						  
+						  <div class="form-group">
+							<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否开启红包</label>
+							<div class="col-xs-12 col-sm-8">
+								<label class="radio radio-inline">
+									<input type="radio" name="openRedpack" value="0" checked="checked" th:checked="${cardSet == null}?0:${cardSet.openRedpack } == 0"> 否
+								</label>
+								<label class="radio radio-inline">
+									<input type="radio" name="openRedpack" value="1" th:checked="${cardSet == null}?0:${cardSet.openRedpack } == 1"> 是
+								</label>
+							</div>
+						  </div>
+						
+						 <div class="form-group">
+							<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">企业红包金额</label>
+							<div class="col-xs-12 col-sm-8">
+								<div class="input-group">
+									<input type="text" name="redpackMin" id="redpackMin" class="form-control" value="0.00" th:value="${cardSet == null}?'':${cardSet.redpackMin }">
+									<span class="input-group-addon">到</span>	
+								<input type="text" name="redpackMax" id="redpackMax" class="form-control" value="0.00" th:value="${cardSet == null}?'':${cardSet.redpackMax }">
+								<span class="input-group-addon">元之间</span>
+								</div>	
+							</div>
+						 </div>
+						 <div class="form-group">
+							<div class="col-sm-offset-2 col-sm-13">
+								<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+								<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+							</div>
+						 </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

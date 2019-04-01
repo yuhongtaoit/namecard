@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+
+function getBasicSet(){
+	$( "#mainContent" ).load( "/basic/getBasicSet", function( response, status, xhr ) {
+		  $('#mainContent').html(response);
+	});
+	$('#basicSet').attr("class","active");
+	$('#bottomDH').attr("class","");
+	$('#wxCertificate').attr("class","");
+}
+
+function updateBottomDH(){
+	$( "#mainContent" ).load( "/basic/updateBottomDH", function( response, status, xhr ) {
+		  $('#mainContent').html(response);
+	});
+	$('#basicSet').attr("class","");
+	$('#bottomDH').attr("class","active");
+	$('#wxCertificate').attr("class","");
+}
+</script>
+</head>
+<body>
+<script type="text/javascript">
+getBasicSet();
+</script>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<ul class="nav nav-tabs">
+				<li id="basicSet" class="active">
+					 <a onclick="getBasicSet()">基础设置</a>
+				</li>
+				<li id="bottomDH">
+					 <a href="#" onclick="updateBottomDH()">修改底部导航</a>
+				</li>
+				<li id="wxCertificate">
+					 <a href="#">微信证书上传</a>
+				</li>
+			</ul>
+			<div id="mainContent" class="panel panel-default">
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
