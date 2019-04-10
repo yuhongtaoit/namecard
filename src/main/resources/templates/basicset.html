@@ -88,7 +88,7 @@ function cancel(){
 						<div class="form-group">
 							<label for="title" class="col-sm-2 control-label">地址:纬度</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="lat" name="lat" th:value="${cardSet == null}?'40.9684028503':${cardSet.lat }" placeholder="请输入地址:纬度" value="40.9684028503">
+							  <input type="text" class="form-control" id="lat" name="lat" th:value="${cardSet == null || cardSet.lat == ''}?'40.9684028503':${cardSet.lat }" placeholder="请输入地址:纬度" value="40.9684028503">
 							 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
 							</span></span></div>
 						</div>
@@ -96,7 +96,7 @@ function cancel(){
 						<div class="form-group">
 							<label for="title" class="col-sm-2 control-label">地址:经度</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="lng" name="lng" th:value="${cardSet == null}?'117.9361003014':${cardSet.lng }" placeholder="请输入地址:经度" value="117.9361003014">
+							  <input type="text" class="form-control" id="lng" name="lng" th:value="${cardSet == null || cardSet.lng == ''}?'117.9361003014':${cardSet.lng }" placeholder="请输入地址:经度" value="117.9361003014">
 							 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
 							</span></span></div>
 						</div>
