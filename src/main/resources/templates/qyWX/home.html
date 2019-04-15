@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>我</title>
+    <link rel="stylesheet" type="text/css" href="../css/weui.min.css">
+    <script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+</head>
+<style type="text/css">
+body {background-color: #F3F3F3;width: 100%;overflow-x: hidden;}
+.container{padding-bottom: 100px;}
+.tabbar{position: fixed;bottom: 0;}
+.card_box{width: 90%;background-color: #f2c507;border-radius: 5px;margin-top: 15px;margin-left: auto;margin-right: auto;}
+.card_content{width: 90%;margin-left: auto;margin-right: auto;padding: 20px 0;}
+.title{display:flex;flex-direction: row;justify-content: space-between;align-items: flex-start;}
+.title span{overflow: hidden;text-overflow:ellipsis;white-space: nowrap; max-width:270px;}
+.title img{width: 45px;height: 45px;}
+
+.editor{width: 15px;height: 15px;padding-left: 10px;}
+.color_g{color: #616161;padding-top: 2px;}
+.card_desc{margin-top: 15px;}
+</style>
+<body>
+    <div class="container">
+	
+		<div class="card_box">
+        	<div class="card_content">
+        		<div class="title" style="position:relative">
+                    <img th:src="@{${card_info.cardLogo}}" class="avater btn-editor" style="position:absolute; right:0px;border-radius:50%">
+	        	</div>
+	        	<div class="card_desc">
+	        		<h3 style="color: ##4F4F52;"><span class="name" title="名字" th:text="${card_info['cardName']}"></span></h3>              
+	        		<p class="color_g f12"><span class="position" title="职位" th:text="${card_info['roleName']}"></p>
+	        		<p class="color_g f12">电话：<span class="phone" title="电话" th:text="${card_info['cardTel']}"></span></p>
+	        	</div>
+        	</div>
+        </div>
+		
+		
+		<div class="weui-panel__bd" style="margin-top: 15px;">
+            <div class="weui-media-box weui-media-box_small-appmsg">
+	            <div class="weui-cells">
+
+                    <a th:href="@{${projectRootPath} + 'home/myEdit'}" class="weui-cell weui-cell_access" >
+                        <div class="weui-cell__hd"><img src="../qyImages/bj.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-sign">修改资料</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+
+	            </div>
+            </div>
+        </div>
+		
+        <div class="weui-panel__bd" style="margin-top: 15px;">
+            <div class="weui-media-box weui-media-box_small-appmsg">
+	            <div class="weui-cells">
+					
+					 <a th:href="@{${projectRootPath} + 'home/myEwm'}" class="weui-cell weui-cell_access" >
+                        <div class="weui-cell__hd"><img src="../qyImages/110.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-sign">我的二维码</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+					
+
+                    <a th:href="@{${projectRootPath} + 'home/myPhoto'}" class="weui-cell weui-cell_access" >
+                        <div class="weui-cell__hd"><img src="../qyImages/zp.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-photo">照片墙</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+	            </div>
+            </div>
+        </div>
+       
+    </div>
+   <div class="weui-tabbar tabbar">
+	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'}"  class="weui-tabbar__item">
+		<img src="../qyImages/tabbar/9_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" >雷达</p>
+	</a>
+	<!--a class="weui-tabbar__item a_msg_list">
+		<span style="display: inline-block;position: relative;">
+			<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/12_no.png" alt="" class="weui-tabbar__icon">
+			<span class="weui-badge hide" style="position: absolute;top: -2px;right: -13px;">0</span>
+		</span>
+		<p class="weui-tabbar__label">消息</p>
+	</a-->
+	<a th:href="@{${projectRootPath} + 'client/client'}" class="weui-tabbar__item">
+		<img src="../qyImages/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">客户</p>
+	</a>
+	<a th:href="@{${projectRootPath} + 'friend/friend'}" class="weui-tabbar__item">
+		<img src="../qyImages/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">动态</p>
+	</a>
+	<a th:href="@{${projectRootPath} + 'home/home'}" class="weui-tabbar__item">
+		<img src="../qyImages/tabbar/18.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" style="color:#f2c507;">我</p>
+	</a>
+</div>
+
+    <script type="text/javascript" src="../js/qyjs/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../js/qyjs/weui.min.js"></script>
+</body>
+</html>

@@ -27,7 +27,6 @@ import com.zhongwei.namecard.dao.CardFormMapper;
 import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.dao.CardMemberMapper;
 import com.zhongwei.namecard.dao.CardSetMapper;
-import com.zhongwei.namecard.dao.MemberMapper;
 import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.AccountWxappExample;
 import com.zhongwei.namecard.entity.ActReport;
@@ -43,8 +42,6 @@ import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
-import com.zhongwei.namecard.entity.Member;
-import com.zhongwei.namecard.entity.MemberExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
 import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.HttpClientUtils;
@@ -206,8 +203,7 @@ public class StafferController {
 		chatList = memberMapper.selectByExample(memberExample);
 		CardMember chatInfo = chatList.size() > 0 ? chatList.get(0) : new CardMember();
 		CardChatExample chatExample = new CardChatExample();
-		chatExample.createCriteria().andUniacidEqualTo(uniacid).andOpenidEqualTo(openid).andStypeEqualTo(1).andCardIdEqualTo(card_id).andAddtimeGreaterThanOrEqualTo(String.valueOf((System.currentTimeMillis()-(24 * 3600 * 1000))));//****StypeEqualTo(1)条件不该传吧
-//		chatExample.createCriteria().andUniacidEqualTo(uniacid).andOpenidEqualTo(openid).andCardIdEqualTo(card_id).andAddtimeGreaterThanOrEqualTo(String.valueOf((System.currentTimeMillis()-(24 * 3600 * 1000))));//****StypeEqualTo(1)条件不该传吧
+		chatExample.createCriteria().andUniacidEqualTo(uniacid).andOpenidEqualTo(openid).andStypeEqualTo(1).andCardIdEqualTo(card_id).andAddtimeGreaterThanOrEqualTo(String.valueOf((System.currentTimeMillis()-(24 * 3600 * 1000))));
 		List<CardChat> msg = chatMapper.selectByExample(chatExample);
 		card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));
 		model.addAttribute("card", card);
