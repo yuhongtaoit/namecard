@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+
+<script src="../js/fileupload/jquery.ui.widget.js"></script>
+<script src="../js/fileupload/jquery.iframe-transport.js"></script>
+<script src="../js/fileupload/jquery.fileupload.js"></script>
+<script src="../js/fileupload/jquery.fileupload-process.js"></script>
+<script src="../js/fileupload/jquery.fileupload-image.js"></script>
+<script src="../js/fileupload/jquery.fileupload-audio.js"></script>
+<script src="../js/fileupload/jquery.fileupload-video.js"></script>
+<script src="../js/fileupload/jquery.fileupload-validate.js"></script>
+<script src="../js/fileupload/jquery.fileupload-ui.js"></script>
+<script src="../js/fileupload/main.js"></script>
+<script src="../js/fileupload/dynamicfileupload.js"></script>
+<script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+var ue = UE.getEditor('content',{
+    toolbars: [
+      [
+        'fontfamily', //字体
+        'fontsize', //字号
+        'undo', //撤销
+        'redo', //重做
+        '|',
+        'emotion', //表情
+        'forecolor', //字体颜色
+        'backcolor', //背景色
+        'bold', //加粗
+        'underline', //下划线
+        'strikethrough', //删除线
+        '|',
+        'justifyleft', //居左对齐
+        'justifyright', //居右对齐
+        'justifycenter', //居中对齐
+        '|',
+        'link', //超链接
+        'unlink', //取消链接
+        'simpleupload', //单图上传
+        'insertimage', //多图上传
+        //'music', //音乐
+        //'insertvideo', //视频
+        'removeformat', //清除格式
+        'formatmatch', //格式刷
+        'source', //源代码
+      ]
+    ],
+    enableAutoSave:false,
+    autoHeightEnabled: true,
+    autoFloatEnabled: true,
+    scaleEnabled:true//滚动条
+  });
+UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+UE.Editor.prototype.getActionUrl = function(action) {
+    // 这里很重要，很重要，很重要，要和配置中的imageActionName值一样
+    if (action == 'uploadimage') { 
+        // 这里调用后端我们写的图片上传接口
+        return '/uploadImageData';
+    } else {
+        return this._bkGetActionUrl.call(this, action);
+    }
+} 
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form action="" method="post" id="form" class="form-horizontal" role="form">
+				 <input type="hidden" id="id" name="id" th:value="${friend == null}?'':${friend.id}"/>
+				 <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">活动标题</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="title" name="title" th:value="${friend == null}?'':${friend.title}" placeholder="请输入活动标题" value="">
+					</div>
+				 </div>
+				 
+				 <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">缩略图片</label>
+					<div class="col-sm-8">
+						<div class="input-group ">
+							<input type="text" readonly="readonly" th:value="${friend == null}?'':${friend.headImg }" name="headImg" id="headImg" value="" class="form-control" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="gimage" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="gimage" name="gimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+							</span>
+						</div>
+						<div class="input-group " style="margin-top:.5em;">
+							<img src="../images/nopic.jpg" th:src="${friend == null}?'':'/'+${friend.headImg }" id="gimgview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+						</div>				
+					</div>
+					<span class="help-block">640px * 无限制</span>
+				 </div>
+				 <div class="form-group" style="">
+					<label for="lastname" class="col-sm-2 control-label">活动介绍</label>
+					<div class="col-sm-10" style="">
+						<textarea name="content" id="content" th:text="${friend == null}?'':${friend.content }" style="width: 800px; height: 400px; margin: 0 auto;"></textarea>
+					</div>
+			    </div>
+				 
+				  <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-13">
+						<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+						<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+					</div>
+				 </div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>
