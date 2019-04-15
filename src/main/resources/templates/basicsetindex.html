@@ -39,6 +39,15 @@ function updateBottomDH(){
 	$('#bottomDH').attr("class","active");
 	$('#wxCertificate').attr("class","");
 }
+
+function uploadCert(){
+	$( "#mainContent" ).load( "/basic/uploadCert", function( response, status, xhr ) {
+		  $('#mainContent').html(response);
+	});
+	$('#basicSet').attr("class","");
+	$('#bottomDH').attr("class","");
+	$('#wxCertificate').attr("class","active");
+}
 </script>
 </head>
 <body>
@@ -56,7 +65,7 @@ getBasicSet();
 					 <a href="#" onclick="updateBottomDH()">修改底部导航</a>
 				</li>
 				<li id="wxCertificate">
-					 <a href="#">微信证书上传</a>
+					 <a href="#" onclick="uploadCert()">微信证书上传</a>
 				</li>
 			</ul>
 			<div id="mainContent" class="panel panel-default">

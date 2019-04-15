@@ -1,13 +1,13 @@
 var m = new Map();
-var topPicImages = new Array();
-var cpBsImages = new Array();
+var personImages = new Array();
+var flag=true;
 $(function() {
-		$('#gimage,#topPicImage,#cpBsImage').fileupload({
+		$('#logoimage,#shopBgImage').fileupload({
 			autoUpload : false,
 	        singleFileUploads: false,
 			acceptFileTypes : /(gif|jpe?g|png)$/i,//验证图片格式
 			maxNumberOfFiles : 1,//最大上传文件数目
-			maxFileSize : 10000000, // 文件上限1MB
+			maxFileSize : 10000000000, // 文件上限1MB
 			minFileSize : 100,//文件下限  100b
 			messages : {//文件错误信息
 				acceptFileTypes : '文件类型不匹配',
@@ -17,37 +17,22 @@ $(function() {
 		})
 		//图片添加完成后触发的事件
 		.on("fileuploadadd", function(e, data) {
-			//获取图片路径并显示
-			var inputName = data.fileInput[0].attributes.name.nodeValue;
-			if(inputName=='gimage'){
-				var url = getUrl(data.files[0]);
-				$("#gimg").val(data.files[0].name);
-				m.set("gimage",data.files[0]);
-				$("#gimgview").attr("src", url);
-			}else if(inputName=='topPicImage'){
-				m.set("topPicImage",data.files);
-				var imageHtml="";
-				 $.each(data.files, function(index, file) {
-					 topPicImages.push(file);
-					 var url = getUrl(file);
-					 imageHtml += "<div class='input-group multi-item' style='margin-top:.5em;'>"+
-						"<img src="+url+" name="+file.name+" class='img-responsive img-thumbnail'>"+
-						"<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteTopPicImage(this)'>×</em>"+
-						"</div>"
-					});
-				 $("#topPicImagediv").append(imageHtml);
-			}else if(inputName=='cpBsImage'){
-				m.set("cpBsImage",data.files);
-				var imageHtml="";
-				 $.each(data.files, function(index, file) {
-					 cpBsImages.push(file);
-					 var url = getUrl(file);
-					 imageHtml += "<div class='input-group multi-item' style='margin-top:.5em;'>"+
-						"<img src="+url+" name="+file.name+" class='img-responsive img-thumbnail'>"+
-						"<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteCpBsImage(this)'>×</em>"+
-						"</div>"
-					});
-				 $("#cpBsImagediv").append(imageHtml);
+			if(flag){
+				alert(111555);
+				//获取图片路径并显示
+				var inputName = data.fileInput[0].attributes.name.nodeValue;
+				if(inputName=='logoimage'){
+					var url = getUrl(data.files[0]);
+					$("#companyLogo").val(data.files[0].name);
+					m.set("logoimage",data.files[0]);
+					$("#logoimageview").attr("src", url);
+				}else if(inputName=='shopBgImage'){
+					var url = getUrl(data.files[0]);
+					$("#shopBg").val(data.files[0].name);
+					m.set("shopBgImage",data.files[0]);
+					$("#shopBgImageView").attr("src", url);
+				}
+				flag=false;
 			}
 			
 		})
@@ -80,49 +65,13 @@ function getUrl(file) {
 	return url;
 }
 
+function resetFlag(){
+	flag=true;
+}
+
 function deleteImage(elm){
 	$(elm).prev().attr("src", "../images/nopic.jpg");
 	$(elm).parent().prev().find("input").val("");
-}
-
-function deleteTopPicImage(elm){
-	var fileSrc = $(elm).prev().attr("name");
-	var topPicsArray = toArray($("#topPic").val());
-	for(var i=0;i<topPicsArray.length;i++){
-		if(myTrim(fileSrc) == myTrim(topPicsArray[i])){
-			topPicsArray.splice(i--, 1);
-			$(elm).parent().remove();
-		}
-	}
-	$("#topPic").val('['+topPicsArray.toString()+']');
-	if(topPicImages!=undefined && topPicImages.length>0){
-		for(var i=0;i<topPicImages.length;i++){
-			if(myTrim(fileSrc) == myTrim(topPicImages[i].name)){
-				topPicImages.splice(i--, 1);
-				$(elm).parent().remove();
-			}
-		}
-	}
-}
-
-function deleteCpBsImage(elm){
-	var fileSrc = $(elm).prev().attr("name");
-	var cpBsImgArray = toArray($("#cpBsImg").val());
-	for(var i=0;i<cpBsImgArray.length;i++){
-		if(myTrim(fileSrc) == myTrim(cpBsImgArray[i])){
-			cpBsImgArray.splice(i--, 1);
-			$(elm).parent().remove();
-		}
-	}
-	$("#cpBsImg").val('['+cpBsImgArray.toString()+']');
-	if(cpBsImages!=undefined && cpBsImages.length>0){
-		for(var i=0;i<cpBsImages.length;i++){
-			if(myTrim(fileSrc) == myTrim(cpBsImages[i].name)){
-				cpBsImages.splice(i--, 1);
-				$(elm).parent().remove();
-			}
-		}
-	}
 }
 
 function myTrim(x) {
@@ -160,40 +109,27 @@ Array.prototype.remove = function(val) {
 };
 
 function save(){
-	 var gimg = $("#gimg").val();
-	 var topPic = $("#topPic").val();
-	 var cpBsImg = $("#cpBsImg").val();
+	 var companyLogo = $("#companyLogo").val();
+	 var shopBg = $("#shopBg").val();
 	 var form = new FormData(document.querySelector("form"));
-	 form.delete("gimage");
-	 form.delete("topPicImage");
-	 form.delete("cpBsImage");
-	 if(m.get("gimage")==undefined && gimg==''){
-		 alert('请上传商品缩略图');
+	 form.delete("logoimage");
+	 form.delete("shopBgImage");
+	 if(m.get("logoimage")==undefined && companyLogo==''){
+		 alert('请上传公司logo');
 		 return;
 	 }
-	 if(m.get("topPicImage")==undefined && topPic==''){
-		 alert('请上传首页轮播图片');
+	 if(m.get("shopBgImage")==undefined && shopBg==''){
+		 alert('请上传商城背景图片');
 		 return;
 	 }
-	 if(m.get("cpBsImage")==undefined && cpBsImg==''){
-		 alert('请上传商品介绍图片');
-		 return;
+	 if(m.get("logoimage")!=undefined){
+		 form.append("logoimageKey", m.get("logoimage"));
 	 }
-	 if(m.get("gimage")!=undefined){
-		 form.append("gimageKey", m.get("gimage"));
-	 }
-	 if(topPicImages!=undefined && topPicImages.length>0){
-		 $.each(topPicImages, function(i, file){
-			 form.append('topPicFilesKey', file);
-		 });
-	 }
-	 if(cpBsImages!=undefined && cpBsImages.length>0){
-		 $.each(cpBsImages, function(i, file){
-			 form.append('cpBsFilesKey', file);
-		 });
+	 if(m.get("shopBgImage")!=undefined){
+		 form.append("shopBgImageKey", m.get("shopBgImage"));
 	 }
 	 $.ajax({
-	     url:"/shop/save",
+	     url:"/basic/basicSetSave",
 	     type:"post",
 	     data:form,
 	     processData:false,
@@ -204,7 +140,7 @@ function save(){
 				if(json.success){
 					$.ajax({
 			             type: "GET",
-			             url: "/shop/getShopList",
+			             url: "/basic/getBasicSet",
 			             async:false,
 			             success: function(data){
 			            	 $("#mainList", window.opener.document).html(data);

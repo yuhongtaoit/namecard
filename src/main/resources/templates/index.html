@@ -77,7 +77,7 @@ function namecard(){
 }
 
 function officialWebsite(){
-	$( "#mainList" ).load( "/website/getBasicSet", function( response, status, xhr ) {
+	$( "#mainList" ).load( "/website/index", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
 }

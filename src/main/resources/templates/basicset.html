@@ -48,6 +48,7 @@ function cancel(){
 				</div>
 				<div class="panel-body">
 					<form action="" method="post" id="form" class="form-horizontal" role="form">
+						<input type="hidden" id="id" name="id" th:value="${cardSet == null}?'':${cardSet.id}"/>	
 						  <div class="form-group">
 							<label for="title" class="col-sm-2 control-label">公司名称</label>
 							<div class="col-sm-8">
@@ -59,13 +60,14 @@ function cancel(){
 							<label for="lastname" class="col-sm-2 control-label">公司logo</label>
 							<div class="col-sm-8">
 								<div class="input-group ">
-									<input type="text" name="company_logo" value="images/6/2018/11/hgScUMM9GiVS9baMC4mgg92dn990va.jpg" class="form-control" autocomplete="off">
+									<input type="text" readonly="readonly" th:value="${cardSet == null}?'':${cardSet.companyLogo }" name="companyLogo" id="companyLogo" value="" class="form-control" autocomplete="off">
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+										<label for="logoimage" class="btn btn-primary ng-binding" onclick="resetFlag()">上传图片</label>
+										<input type="file" id="logoimage" name="logoimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 									</span>
 								</div>
 								<div class="input-group " style="margin-top:.5em;">
-									<img src="https://mp.chengdecanyin.com/attachment/images/6/2018/11/hgScUMM9GiVS9baMC4mgg92dn990va.jpg" onerror="this.src='./resource/images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+									<img src="../images/nopic.jpg" th:src="${cardSet == null}?'':'/'+${cardSet.companyLogo }" id="logoimageview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
 									<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 								</div>				
 							</div>
@@ -129,13 +131,14 @@ function cancel(){
 							<label for="lastname" class="col-sm-2 control-label">商城背景图片</label>
 							<div class="col-sm-8">
 								<div class="input-group ">
-									<input type="text" name="shop_bg" value="images/6/2018/12/Vm0x72iR8NLr078x0EmO800R227e02.jpg" class="form-control" autocomplete="off">
+									<input type="text" readonly="readonly" th:value="${cardSet == null}?'':${cardSet.shopBg }" name="shopBg" id="shopBg" value="" class="form-control" autocomplete="off">
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" onclick="showImageDialog(this);">选择图片</button>
+										<label for="shopBgImage" class="btn btn-primary ng-binding" onclick="resetFlag()">上传图片</label>
+										<input type="file" id="shopBgImage" name="shopBgImage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 									</span>
 								</div>
 								<div class="input-group " style="margin-top:.5em;">
-									<img src="https://mp.chengdecanyin.com/attachment/images/6/2018/12/Vm0x72iR8NLr078x0EmO800R227e02.jpg" onerror="this.src='./resource/images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+									<img src="../images/nopic.jpg" th:src="${cardSet == null}?'':'/'+${cardSet.shopBg }" id="shopBgImageView" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
 									<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 								</div>				
 							</div>
