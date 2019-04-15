@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="jquery/jquery-form.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+html{
+	height: 100%;
+}
+
+body{
+	width: 100%;
+	height: 100%;
+	padding:0;
+	margin:0;
+    background: url("images/login_bg.jpg") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+}
+
+.container{
+    display:table;
+    height:100%;
+}
+
+.row{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:left;
+    margin-right:-4px;
+}
+</style>
+
+<script type="text/javascript">
+var winWidth = window.screen.width-400;
+var winHeight = window.screen.height-150;
+function add(){
+	window.open("/website/advEdit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function update(){
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	var uuid = document.getElementById("id"+index).innerText;
+	window.open("/website/advEdit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function deleteAdv(){
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	var uuid = document.getElementById("id"+index).innerText;
+	$.ajax({
+	    url:'/website/advDelete',
+	    type:'POST', //GET
+	    async:true,    //或false,是否异步
+	    data:{
+	    	'id':uuid
+	    },
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    success:function(data,textStatus,jqXHR){
+	    	var json = eval(data);
+			if(json.success){
+				$.ajax({
+		             type: "GET",
+		             url: "/website/getAdvList",
+		             async:false,
+		             success: function(data){
+		            	 $("#mainContent", window.document).html(data);
+		             }
+		         });
+				alert(json.message);
+				window.close();
+			}
+	    },
+	    error:function(xhr,textStatus){
+	    	alert(JSON.parse(msg).msg);
+	    }
+	})
+}
+
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column ">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						轮播管理
+					</h3>
+				</div>
+				<div class="btn-group">
+					 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteAdv()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								选择
+							</th>
+							<th>
+								图片
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						 <tr th:each="cardAdv,iterStat : ${cardAdvList}"> 
+						 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
+						     <td style="vertical-align: middle;display: none;" th:text="${cardAdv.id}" th:id="'id'+${iterStat.count}"></td>
+						     <td style="vertical-align: middle">
+						     	<img src="" th:src="${cardAdv == null}?'':'/'+${cardAdv.images }" style="max-width: 48px; max-height: 48px; border: 1px dotted gray">
+						     </td>
+						 </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

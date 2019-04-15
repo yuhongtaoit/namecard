@@ -51,7 +51,8 @@ public class ShopController {
 	public String getShops(Model model) {
 		List<CardShopsWithBLOBs> shopList = shopMapper.selectByExampleWithBLOBs(new CardShopsExample());
 		for(CardShopsWithBLOBs shop : shopList) {
-			shop.setTypeName(this.categoryMapper.selectByPrimaryKey(shop.getTypeid())==null? "":this.categoryMapper.selectByPrimaryKey(shop.getTypeid()).getTitle());
+			ShopsCategory category = this.categoryMapper.selectByPrimaryKey(shop.getTypeid());
+			shop.setTypeName(category==null?"":category.getTitle());
 		}
 		model.addAttribute("shops", shopList);
 		return "shoplist";

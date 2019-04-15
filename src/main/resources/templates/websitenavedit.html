@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+
+<script src="../js/fileupload/jquery.ui.widget.js"></script>
+<script src="../js/fileupload/jquery.iframe-transport.js"></script>
+<script src="../js/fileupload/jquery.fileupload.js"></script>
+<script src="../js/fileupload/jquery.fileupload-process.js"></script>
+<script src="../js/fileupload/jquery.fileupload-image.js"></script>
+<script src="../js/fileupload/jquery.fileupload-audio.js"></script>
+<script src="../js/fileupload/jquery.fileupload-video.js"></script>
+<script src="../js/fileupload/jquery.fileupload-validate.js"></script>
+<script src="../js/fileupload/jquery.fileupload-ui.js"></script>
+<script src="../js/fileupload/main.js"></script>
+<script src="../js/fileupload/websitenavfileupload.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form action="" method="post" id="form" class="form-horizontal" role="form">
+				 <input type="hidden" id="id" name="id" th:value="${cardNav == null}?'':${cardNav.id}"/>
+				 <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">标题</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="title" name="title" th:value="${cardNav == null}?'':${cardNav.title}" placeholder="请输入活动标题" value="">
+					</div>
+				 </div>
+				 
+				 <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">缩略图片</label>
+					<div class="col-sm-8">
+						<div class="input-group ">
+							<input type="text" readonly="readonly" th:value="${cardNav == null}?'':${cardNav.images }" name="images" id="images" value="" class="form-control" autocomplete="off">
+							<span class="input-group-btn">
+								<label for="gimage" class="btn btn-primary ng-binding">上传图片</label>
+								<input type="file" id="gimage" name="gimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+							</span>
+						</div>
+						<div class="input-group " style="margin-top:.5em;">
+							<img src="../images/nopic.jpg" th:src="${cardNav == null}?'':'/'+${cardNav.images }" id="gimgview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+							<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+						</div>				
+					</div>
+					<span class="help-block">150*150px</span>
+				 </div>
+				
+				 <div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">链接类型</label>
+						<div class="col-xs-12 col-sm-8">
+							<label class="radio radio-inline">
+								<input type="radio" name="linktype" value="new" checked="checked" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'new'"> 文章
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="linktype" value="miniProgram" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'miniProgram'"> 小程序
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="linktype" value="openaddress" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'openaddress'"> 导航
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="linktype" value="new_web" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'new_web'"> web页面
+							</label>
+						</div>
+				 </div>
+				  
+				  <div class="form-group">
+					 <label for="newid" class="col-sm-2 control-label">选择文章:</label>
+						<select class="xizn" id="newid" name="newid">
+							<option value="0">请选择</option>
+							 
+								<option value="5">联系我们</option>
+							 
+								<option value="6">案例持续更新</option>
+							 
+								<option value="7">服务案例</option>
+							 
+								<option value="8">智能名片</option>
+							 
+								<option value="9">定制开发</option>
+							 
+								<option value="10">网络推广</option>
+								
+						</select>
+				  </div>
+				  
+				  <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转网址:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="pathWeb" name="pathWeb" th:value="${cardNav == null}?'':${cardNav.pathWeb}" placeholder="请输入跳转网址" value="">
+						</div>
+						<span class="help-block">需要配置业务域名</span>
+				  </div>
+				  
+				   <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转小程序路径:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="path" name="path" th:value="${cardNav == null}?'':${cardNav.path}" placeholder="请输入跳转小程序路径" value="">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+				  </div>
+				 
+				  <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转的小程序appid:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="appid" name="appid" th:value="${cardNav == null}?'':${cardNav.appid}" placeholder="请输入跳转的小程序appid" value="">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+				  </div>
+				  
+				  <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-13">
+						<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+						<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+					</div>
+				 </div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

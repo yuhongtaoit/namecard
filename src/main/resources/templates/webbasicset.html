@@ -2,12 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="../jquery/jquery-form.js"></script>
-<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
-
 <script src="../js/fileupload/jquery.ui.widget.js"></script>
 <script src="../js/fileupload/jquery.iframe-transport.js"></script>
 <script src="../js/fileupload/jquery.fileupload.js"></script>
@@ -18,7 +12,7 @@
 <script src="../js/fileupload/jquery.fileupload-validate.js"></script>
 <script src="../js/fileupload/jquery.fileupload-ui.js"></script>
 <script src="../js/fileupload/main.js"></script>
-<script src="../js/fileupload/shopfileupload.js"></script>
+<script src="../js/fileupload/webbasicsetfileupload.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 .multi-img-details .multi-item {
@@ -39,27 +33,24 @@ function cancel(){
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
-			<ul class="nav nav-tabs">
-				<li class="active">
-					 <a href="#">基础设置</a>
-				</li>
-				<li>
-					 <a href="#">轮播列表</a>
-				</li>
-				<li>
-					 <a href="#">导航列表</a>
-				</li>
-				<li>
-					 <a href="#">最新活动列表</a>
-				</li>
-			</ul>
-			<div id="mainContent">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						基本设置
+					</h3>
+				</div>
 				<form action="" method="post" class="form-horizontal form" id="form">
-					<input type="hidden" id="id" name="id" th:value="${shop == null}?'':${shop.id}"/>
+					<input type="hidden" id="id" name="id" th:value="${cardWeb == null}?'':${cardWeb.id}"/>
 					<div class="form-group">
 						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">企业小视频</label>
 						<div class="col-xs-12 col-sm-8">
-							<input type="text" name="sort" id="sort" class="form-control" value="" th:value="${shop == null}?'':${shop.sort }">
+							<div class="input-group">
+								<input type="text" readonly="readonly" th:value="${cardWeb == null}?'':${cardWeb.video }" name="video" id="video" value="" class="form-control" autocomplete="off">
+								<span class="input-group-btn">
+									<label for="videoContent" class="btn btn-primary ng-binding" onclick="resetFlag()">上传视频</label>
+									<input type="file" id="videoContent" name="videoContent" accept="video/*" style="display: none">
+								</span>
+							</div>
 						</div>
 					</div>
 					
@@ -67,10 +58,10 @@ function cancel(){
 						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否腾讯视频</label>
 						<div class="col-xs-12 col-sm-8">
 							<label class="radio radio-inline">
-								<input type="radio" name="noShowPrice" value="0" checked="checked" th:checked="(${shop == null}?0:${shop.noShowPrice }) == 0">是
+								<input type="radio" name="txVideo" value="0" checked="checked" th:checked="(${cardWeb == null}?0:${cardWeb.txVideo }) == 0">是
 							</label>
 							<label class="radio radio-inline">
-								<input type="radio" name="noShowPrice" value="1" th:checked="(${shop == null}?0:${shop.noShowPrice }) == 1">否
+								<input type="radio" name="txVideo" value="1" th:checked="(${cardWeb == null}?0:${cardWeb.txVideo }) == 1">否
 							</label>
 						</div>
 					</div>
@@ -80,14 +71,14 @@ function cancel(){
 						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">视频封面图片</label>
 						<div class="col-sm-8">
 							<div class="input-group ">
-								<input type="text" readonly="readonly" th:value="${shop == null}?'':${shop.gimg }" name="gimg" id="gimg" value="" class="form-control" autocomplete="off">
+								<input type="text" readonly="readonly" th:value="${cardWeb == null}?'':${cardWeb.images }" name="images" id="images" value="" class="form-control" autocomplete="off">
 								<span class="input-group-btn">
-									<label for="gimage" class="btn btn-primary ng-binding">上传图片</label>
-									<input type="file" id="gimage" name="gimage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
+									<label for="videoImages" class="btn btn-primary ng-binding" onclick="resetFlag()">上传图片</label>
+									<input type="file" id="videoImages" name="videoImages" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
 								</span>
 							</div>
 							<div class="input-group " style="margin-top:.5em;">
-								<img src="../images/nopic.jpg" th:src="${shop == null}?'':'/'+${shop.gimg }" id="gimgview" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
+								<img src="../images/nopic.jpg" th:src="${cardWeb == null}?'':'/'+${cardWeb.images }" id="videoImagesView" onerror="this.src='../images/nopic.jpg'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150">
 								<em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
 							</div>				
 						</div>
@@ -95,13 +86,13 @@ function cancel(){
 			
 					<div class="form-group">
 						<label class="col-xs-12 col-sm-3 col-md-2 control-label">企业介绍图片</label>
-						<div class="col-sm-10">
+						<div class="col-xs-12 col-sm-8">
 							<div class="input-group">
 								<input type="text" class="form-control" readonly="readonly" value="" placeholder="批量上传图片" autocomplete="off">
 								<span class="input-group-btn">
-									<label for="cpBsImage" class="btn btn-primary ng-binding">上传图片</label>
+									<label for="cpBsImage" class="btn btn-primary ng-binding" onclick="resetFlag()">上传图片</label>
 									<input type="file" id="cpBsImage" multiple name="cpBsImage" accept="image/gif, image/jpg, image/jpeg, image/bmp, image/png, image/ico" style="display: none">
-									<input type="hidden" id="cpBsImg" name="cpBsImg" th:value="${shop == null}?'':${shop.cpBsImg }" value="photo">
+									<input type="hidden" id="cpBsContent" name="cpBsContent" th:value="${cardWeb == null}?'':${cardWeb.cpBsContent }" value="photo">
 								</span>
 							</div>
 							<div class="input-group multi-img-details" id="cpBsImagediv">
@@ -110,7 +101,6 @@ function cancel(){
 									<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
 								</div>
 							</div>	
-							<span class="help-block">商品详情幻灯片，建议宽400px</span>		
 						</div>
 					</div>
 						

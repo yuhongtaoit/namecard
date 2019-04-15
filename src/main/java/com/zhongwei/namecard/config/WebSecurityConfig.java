@@ -58,12 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/", "/miniapp/**", "/error/**", "/staffer/**","/member/**","/interact/**","/client/**", "/friend/**", "/home/**", 
-        		"/qyImages/**","/css/**","/js/**","/jquery/**","/bootstrap/**","/images/**","/attachment/**", "/js/**" ,"/favicon.ico");
+        		"/qyImages/**","/css/**","/js/**","/jquery/**","/bootstrap/**","/images/**","/attachment/**", "/js/**" , "/ueditor/**" ,"/favicon.ico");
     }
  
     /**定义安全策略*/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()       //配置安全策略
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
