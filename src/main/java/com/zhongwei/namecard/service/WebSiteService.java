@@ -258,7 +258,7 @@ public class WebSiteService {
 				this.fileUploadService.deleteFile(oldCardNews.getHeadImg());
 				cardNews.setHeadImg(this.fileUploadService.uploadForSingleFile(request, response, gimage));
 			}
-			this.cardNewsMapper.updateByPrimaryKey(cardNews);
+			this.cardNewsMapper.updateByPrimaryKeyWithBLOBs(cardNews);
 			message.setSuccess(true);
 			message.setMessage("保存成功！");
 			return message;
@@ -294,7 +294,7 @@ public class WebSiteService {
 		cardNews.setHeadImg(cardNews.getHeadImg()==null?"":cardNews.getHeadImg());
 		cardNews.setSort(cardNews.getSort()==null?0:cardNews.getSort());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		cardNews.setTime(cardNews.getTime()==null?Integer.valueOf(String.valueOf(new Date().getTime())):cardNews.getTime());
+		cardNews.setTime(cardNews.getTime()==null?0:cardNews.getTime());
 		cardNews.setTimeStr(cardNews.getTimeStr()==null?sdf.format(new Date()):cardNews.getTimeStr());
 		cardNews.setTitle(cardNews.getTitle()==null?"":cardNews.getTitle());
 		cardNews.setUniacid(cardNews.getUniacid()==null?2:cardNews.getUniacid());

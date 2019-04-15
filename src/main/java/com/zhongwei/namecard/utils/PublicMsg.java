@@ -3,6 +3,7 @@ package com.zhongwei.namecard.utils;
 public class PublicMsg {
 	
 	public final static String UEDITOR_CONFIG = "{\n" +
+			"    \"basePath\": \"E:/\",\n" +
             "    \"imageActionName\": \"uploadimage\",\n" +
             "    \"imageFieldName\": \"upfile\",\n" +
             "    \"imageMaxSize\": 2048000,\n" +
@@ -10,7 +11,7 @@ public class PublicMsg {
             "    \"imageCompressEnable\": true,\n" +
             "    \"imageCompressBorder\": 1600,\n" +
             "    \"imageInsertAlign\": \"none\",\n" +
-            "    \"imageUrlPrefix\": \"\",\n" +
+            "    \"imageUrlPrefix\": \"http://localhost:8080\",\n" +
             "    \"imagePathFormat\": \"/ueditor/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}\",\n" +
             "\n" +
             "    \"scrawlActionName\": \"uploadscrawl\",\n" +
