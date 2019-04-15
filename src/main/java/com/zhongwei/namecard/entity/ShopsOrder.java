@@ -29,11 +29,11 @@ public class ShopsOrder {
 
     private BigDecimal allPrice;
 
-    private Integer addtime;
+    private String addtime;
 
     private Integer shopsNum;
 
-    private Boolean paid;
+    private int paid;
 
     private Boolean hxstatus;
 
@@ -161,11 +161,11 @@ public class ShopsOrder {
         this.allPrice = allPrice;
     }
 
-    public Integer getAddtime() {
+    public String getAddtime() {
         return addtime;
     }
 
-    public void setAddtime(Integer addtime) {
+    public void setAddtime(String addtime) {
         this.addtime = addtime;
     }
 
@@ -177,11 +177,11 @@ public class ShopsOrder {
         this.shopsNum = shopsNum;
     }
 
-    public Boolean getPaid() {
+    public int getPaid() {
         return paid;
     }
 
-    public void setPaid(Boolean paid) {
+    public void setPaid(int paid) {
         this.paid = paid;
     }
 

@@ -478,4 +478,25 @@
       avatar = #{avatar,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectReportAI" resultType="map" >
+  	SELECT uniacid,footertype,addtime,openId,act_id,card_id,count('*') as Total 
+  	 FROM ims_dbs_masclwlcard_act_report
+  	  WHERE 
+  	  uniacid = #{uniacid,jdbcType=INTEGER} 
+  	  and addtime BETWEEN #{startTime,jdbcType=VARCHAR} AND #{endTime,jdbcType=VARCHAR}
+  	  and act_id='657' 
+  	  and card_id=#{card_id,jdbcType=INTEGER} 
+  	  and  openId=#{openId,jdbcType=VARCHAR} 
+  	  group by footertype 
+  </select>
+  <select id="selectReportAct" resultType="map" >
+  	SELECT act_content,addtime,openId,card_id,nickname,avatarUrl,count(*) AS nums
+  	 FROM ims_dbs_masclwlcard_act_report
+  	  WHERE 
+  	  uniacid = #{uniacid,jdbcType=INTEGER} 
+  	  and addtime BETWEEN #{startTime,jdbcType=VARCHAR} AND #{endTime,jdbcType=VARCHAR}
+  	  and card_id=#{card_id,jdbcType=INTEGER} 
+  	  group by openId  ORDER BY nums DESC 
+  </select>
 </mapper>

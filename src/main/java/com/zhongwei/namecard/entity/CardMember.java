@@ -59,6 +59,10 @@ public class CardMember {
 
     private Integer sendCardid;
     
+    private String now_status;
+    
+    private String Source_name;
+    
     public Map<String, Object> cardMemberToMap(CardMember cardMember){
     	Map<String, Object> result = new HashMap<String, Object>();
     	result.put("id", cardMember.getId());
@@ -301,8 +305,25 @@ public class CardMember {
     public Integer getSendCardid() {
         return sendCardid;
     }
-
+    
     public void setSendCardid(Integer sendCardid) {
         this.sendCardid = sendCardid;
     }
+    
+	public String getNow_status() {
+		return now_status;
+	}
+	
+	public void setNow_status(String now_status) {
+		this.now_status = now_status;
+	}
+	
+	public String getSource_name() {
+		return Source_name;
+	}
+	
+	public void setSource_name(String source_name) {
+		Source_name = source_name;
+	}
+	
 }

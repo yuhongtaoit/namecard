@@ -145,7 +145,7 @@ public class HttpClientUtils {
      * @param map 参数map
      * @return 响应
      */
-    public static String getMap(String url,Map<String,String> map){
+    public static JSONObject getMap(String url,Map<String,String> map){
         String result = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -164,7 +164,8 @@ public class HttpClientUtils {
                 HttpEntity entity = response.getEntity();
                 result = entityToString(entity);
             }
-            return result;
+            JSONObject jsonObject = JSONObject.fromObject(result);
+            return jsonObject;
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -192,7 +193,7 @@ public class HttpClientUtils {
      * @param map 参数
      * @return 返回值
      */
-    public static String postMap(String url,Map<String,String> map) {
+    public static JSONObject postMap(String url,Map<String,String> map) {
         String result = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
@@ -210,7 +211,8 @@ public class HttpClientUtils {
                 HttpEntity entity = response.getEntity();
                 result = entityToString(entity);
             }
-            return result;
+            JSONObject jsonObject = JSONObject.fromObject(result);
+            return jsonObject;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -238,7 +240,7 @@ public class HttpClientUtils {
      * @param jsonString json字符串
      * @return 响应
      */
-    public static String postJson(String url,String jsonString) {
+    public static JSONObject postJson(String url,String jsonString) {
         String result = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
@@ -251,7 +253,8 @@ public class HttpClientUtils {
                 HttpEntity entity = response.getEntity();
                 result = entityToString(entity);
             }
-            return result;
+            JSONObject jsonObject = JSONObject.fromObject(result);
+            return jsonObject;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {

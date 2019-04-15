@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DataUtils {
+public class DateUtils {
 	
 	
 	/**
@@ -25,6 +25,15 @@ public class DataUtils {
 	public static String getCurrTime() {
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMddHHmmSSsss");
 		long nowTime = System.currentTimeMillis();
+		GregorianCalendar gc = new GregorianCalendar(); 
+		gc.setTimeInMillis(nowTime);
+		String dateStr = dateformat.format(gc.getTime());
+		return dateStr;
+	}
+	
+	public static String StringToFormat(String time) {
+		SimpleDateFormat dateformat = new SimpleDateFormat("yy年MM月dd日  HH时");
+		long nowTime = Long.valueOf(time);
 		GregorianCalendar gc = new GregorianCalendar(); 
 		gc.setTimeInMillis(nowTime);
 		String dateStr = dateformat.format(gc.getTime());

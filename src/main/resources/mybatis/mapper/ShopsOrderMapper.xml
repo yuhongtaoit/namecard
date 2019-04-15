@@ -14,7 +14,7 @@
     <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="all_price" property="allPrice" jdbcType="DECIMAL" />
-    <result column="addtime" property="addtime" jdbcType="INTEGER" />
+    <result column="addtime" property="addtime" jdbcType="VARCHAR" />
     <result column="shops_num" property="shopsNum" jdbcType="INTEGER" />
     <result column="paid" property="paid" jdbcType="BIT" />
     <result column="hxstatus" property="hxstatus" jdbcType="BIT" />
@@ -160,7 +160,7 @@
       #{orderid,jdbcType=VARCHAR}, #{staffid,jdbcType=INTEGER}, #{shopsId,jdbcType=INTEGER}, 
       #{cardId,jdbcType=INTEGER}, #{shareid,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, 
       #{transactionId,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{allPrice,jdbcType=DECIMAL}, 
-      #{addtime,jdbcType=INTEGER}, #{shopsNum,jdbcType=INTEGER}, #{paid,jdbcType=BIT}, 
+      #{addtime,jdbcType=VARCHAR}, #{shopsNum,jdbcType=INTEGER}, #{paid,jdbcType=BIT}, 
       #{hxstatus,jdbcType=BIT}, #{hxname,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
       #{shopName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{newSpec,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
@@ -283,7 +283,7 @@
         #{allPrice,jdbcType=DECIMAL},
       </if>
       <if test="addtime != null" >
-        #{addtime,jdbcType=INTEGER},
+        #{addtime,jdbcType=VARCHAR},
       </if>
       <if test="shopsNum != null" >
         #{shopsNum,jdbcType=INTEGER},
@@ -369,7 +369,7 @@
         all_price = #{record.allPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.addtime != null" >
-        addtime = #{record.addtime,jdbcType=INTEGER},
+        addtime = #{record.addtime,jdbcType=VARCHAR},
       </if>
       <if test="record.shopsNum != null" >
         shops_num = #{record.shopsNum,jdbcType=INTEGER},
@@ -426,7 +426,7 @@
       transaction_id = #{record.transactionId,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       all_price = #{record.allPrice,jdbcType=DECIMAL},
-      addtime = #{record.addtime,jdbcType=INTEGER},
+      addtime = #{record.addtime,jdbcType=VARCHAR},
       shops_num = #{record.shopsNum,jdbcType=INTEGER},
       paid = #{record.paid,jdbcType=BIT},
       hxstatus = #{record.hxstatus,jdbcType=BIT},
@@ -457,7 +457,7 @@
       transaction_id = #{record.transactionId,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       all_price = #{record.allPrice,jdbcType=DECIMAL},
-      addtime = #{record.addtime,jdbcType=INTEGER},
+      addtime = #{record.addtime,jdbcType=VARCHAR},
       shops_num = #{record.shopsNum,jdbcType=INTEGER},
       paid = #{record.paid,jdbcType=BIT},
       hxstatus = #{record.hxstatus,jdbcType=BIT},
@@ -510,7 +510,7 @@
         all_price = #{allPrice,jdbcType=DECIMAL},
       </if>
       <if test="addtime != null" >
-        addtime = #{addtime,jdbcType=INTEGER},
+        addtime = #{addtime,jdbcType=VARCHAR},
       </if>
       <if test="shopsNum != null" >
         shops_num = #{shopsNum,jdbcType=INTEGER},
@@ -564,7 +564,7 @@
       transaction_id = #{transactionId,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       all_price = #{allPrice,jdbcType=DECIMAL},
-      addtime = #{addtime,jdbcType=INTEGER},
+      addtime = #{addtime,jdbcType=VARCHAR},
       shops_num = #{shopsNum,jdbcType=INTEGER},
       paid = #{paid,jdbcType=BIT},
       hxstatus = #{hxstatus,jdbcType=BIT},
@@ -592,7 +592,7 @@
       transaction_id = #{transactionId,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       all_price = #{allPrice,jdbcType=DECIMAL},
-      addtime = #{addtime,jdbcType=INTEGER},
+      addtime = #{addtime,jdbcType=VARCHAR},
       shops_num = #{shopsNum,jdbcType=INTEGER},
       paid = #{paid,jdbcType=BIT},
       hxstatus = #{hxstatus,jdbcType=BIT},

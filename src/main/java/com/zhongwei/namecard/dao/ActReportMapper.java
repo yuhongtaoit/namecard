@@ -1,6 +1,7 @@
 package com.zhongwei.namecard.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +33,10 @@ public interface ActReportMapper {
     int updateByPrimaryKeySelective(ActReport record);
 
     int updateByPrimaryKey(ActReport record);
+    
+    List<Map<String, Object>> selectReportAI(@Param("startTime")String startTime, @Param("endTime")String endTime, 
+    		@Param("card_id")int card_id, @Param("uniacid")int uniacid , @Param("openId")String openId);
+    
+    List<Map<String, Object>> selectReportAct(@Param("startTime")String startTime, @Param("endTime")String endTime, 
+    		@Param("card_id")int card_id, @Param("uniacid")int uniacid);
 }

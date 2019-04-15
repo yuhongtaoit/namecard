@@ -1,9 +1,14 @@
 package com.zhongwei.namecard.utils;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhongwei.namecard.dao.AccessTokenMapper;
+import com.zhongwei.namecard.dao.AccountTokenMapper;
+import com.zhongwei.namecard.dao.CardTicketMapper;
 import com.zhongwei.namecard.dao.SetQYMapper;
 import com.zhongwei.namecard.entity.AccessToken;
+import com.zhongwei.namecard.entity.AccountToken;
+import com.zhongwei.namecard.entity.CardTicket;
 import com.zhongwei.namecard.entity.SetQY;
 import com.zhongwei.namecard.entity.SetQYExample;
 
-import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 @Service
@@ -24,19 +32,33 @@ public class QySendUtils {
 	
 	private static Logger log = LoggerFactory.getLogger(QySendUtils.class);
 	
+	@Autowired
+	private SetQYMapper qYMapper;
+	
+	@Autowired
+	private  AccessTokenMapper tokenMapper;
+	
+	@Autowired
+	private AccountTokenMapper atMapper;
+	
+	@Autowired
+	private CardTicketMapper cardTicketMapper;
+	
 	private static SetQYMapper setQYMapper;
 	
 	private static AccessTokenMapper accessTokenMapper;
 	
-	@Autowired
-	public void setSetQYMapper(SetQYMapper setQYMapper) {
-		QySendUtils.setQYMapper = setQYMapper;
-	}
+	private static AccountTokenMapper accountTokenMapper;
 	
-	@Autowired
-	public static void setAccessTokenMapper(AccessTokenMapper accessTokenMapper) {
-		QySendUtils.accessTokenMapper = accessTokenMapper;
-	}
+	private static CardTicketMapper ticketMapper;
+	
+	@PostConstruct
+    public void init() {
+		setQYMapper = qYMapper;
+		accessTokenMapper = tokenMapper;
+		accountTokenMapper = atMapper;
+		ticketMapper = cardTicketMapper;
+    }
 	
 	/**
 	 * 微信企业号向指定成员发送消息。
@@ -54,7 +76,7 @@ public class QySendUtils {
 		list = setQYMapper.selectByExample(new SetQYExample());
 		SetQY setQy = list.size() > 0 ? list.get(0) : new SetQY();
 		
-		String token = getAccessToken(setQy.getCorpid(), setQy.getSecret());
+		String token = getAccessToken(setQy.getCorpid(), setQy.getSecret(), setQy.getUniacid());
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token;
 		Map<String, String> param = new HashMap<String, String>();
 		Map<String, Object> text = new HashMap<String, Object>();
@@ -67,58 +89,142 @@ public class QySendUtils {
 		
 	}
 	
-	public static String getAccessToken(String corpid, String secret) {
+	/**
+	 * CorpID是企业号的标识，每个企业号拥有一个唯一的CorpID；Secret是管理组凭证密钥。
+	 * @param corpid
+	 * @param secret
+	 * @return
+	 */
+	public static String getAccessToken(String corpid, String secret,int uniacid) {
 		AccessToken token = accessTokenMapper.selectByPrimaryKey(secret);
 		if(token == null) {
+			token = new AccessToken();
 			token.setCorpid(corpid);
 			String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + secret;
 			String accessToken = "";
-			JSONObject json = HttpClientUtils.get(url);//******待校验
-			accessToken = json.getString("accessToken");
+			JSONObject json = HttpClientUtils.get(url);
+			accessToken = json.getString("access_token");
 			token.setAccessToken(accessToken);
 			token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
 			token.setSecret(secret);
+			token.setUniacid(uniacid);
 			accessTokenMapper.insert(token);
 			return accessToken;
 		}
 		if(Long.valueOf(token.getValidTime()) > System.currentTimeMillis()) {
 			return token.getAccessToken();
 		}
+		ticketMapper.deleteByPrimaryKey(token.getAccessToken());
 		token.setCorpid(corpid);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + secret;
 		String accessToken = "";
-		JSONObject json = HttpClientUtils.get(url);//******待校验
-		accessToken = json.getString("accessToken");
+		JSONObject json = HttpClientUtils.get(url);
+		accessToken = json.getString("access_token");
 		token.setAccessToken(accessToken);
 		token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
 		accessTokenMapper.updateByPrimaryKey(token);
 		return accessToken;
 	}
 	
-//	/**
-//	 * 获取接口访问凭证
-//	 * 
-//	 * @param corpid 凭证
-//	 * @param corpsecret 密钥
-//	 * @return
-//	 */
-//	public static String getAccessToken(String corpid, String corpsecret) {
-//		String access_token = "";
-//		String requestUrl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + corpsecret;
-//		// 发起GET请求获取凭证
-//		JSONObject jsonObject = HttpClientUtils.httpsRequest(requestUrl, "GET", null);
-// 
-//		if (null != jsonObject) {
-//			try {
-//				access_token = jsonObject.getString("access_token");
-//			} catch (JSONException e) {
-//				access_token = null;
-//				// 获取token失败
-//				log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
-//			}
-//		}
-//		return access_token;
-//	}
+	/**
+	 * appid小程序唯一凭证，每个企业号拥有一个唯一的appid；Secret小程序唯一凭证密钥，即 AppSecret，获取方式同 appid
+	 * @param appid 小程序唯一凭证，即 AppID，可在「微信公众平台 - 设置 - 开发设置」页中获得
+	 * @param secret
+	 * @return
+	 */
+	public static String getAccountToken(String appid, String secret,int uniacid) {
+		AccountToken token = accountTokenMapper.selectByPrimaryKey(secret);
+		if(token == null) {
+			token = new AccountToken();
+			token.setAppid(appid);
+			String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+			String accessToken = "";
+			JSONObject json = HttpClientUtils.get(url);
+			accessToken = json.getString("access_token");
+			token.setAccessToken(accessToken);
+			token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+			token.setSecret(secret);
+			token.setUniacid(uniacid);
+			accountTokenMapper.insert(token);
+			return accessToken;
+		}
+		if(Long.valueOf(token.getValidTime()) > System.currentTimeMillis()) {
+			return token.getAccessToken();
+		}
+		token.setAppid(appid);
+		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+		String accessToken = "";
+		JSONObject json = HttpClientUtils.get(url);
+		accessToken = json.getString("access_token");
+		token.setAccessToken(accessToken);
+		token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+		accountTokenMapper.updateByPrimaryKey(token);
+		return accessToken;
+	}
+	
+	public static String getqyJsapiTicket(String accessToken,int uniacid) {
+		CardTicket ticket = ticketMapper.selectByPrimaryKey(accessToken);
+		if(ticket == null) {
+			ticket = new CardTicket();
+			ticket.setUniacid(uniacid);
+			ticket.setAccessToken(accessToken);
+			ticket.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+			String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + accessToken;
+			String ticketStr = "";
+			JSONObject json = HttpClientUtils.get(url);//******待校验
+			ticketStr = json.getString("ticket");
+			ticket.setTicket(ticketStr);
+			ticketMapper.insert(ticket);
+			return ticketStr;
+		}
+		if(Long.valueOf(ticket.getValidTime()) > System.currentTimeMillis()) {
+			return ticket.getTicket();
+		}
+		ticket.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+		String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + accessToken;
+		String ticketStr = "";
+		JSONObject json = HttpClientUtils.get(url);//******待校验
+		ticketStr = json.getString("ticket");
+		ticket.setTicket(ticketStr);
+		ticketMapper.updateByPrimaryKey(ticket);
+		return null;
+	}
+	
+	public static Map<String, Object> addSign(String corpid, String ticket, String url){
+		Map<String, Object> result = new HashMap<String, Object>();
+		String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+		String nonce_str =  UUID.randomUUID().toString();
+		String string1;
+		String signature = "";
+		string1 = "jsapi_ticket=" + ticket +
+					"&noncestr=" + nonce_str +
+					"&timestamp=" + timestamp +
+					"&url=" + url;
+		try {
+			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+			crypt.reset();
+			crypt.update(string1.getBytes("UTF-8"));
+			signature = byteToHex(crypt.digest());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("url", url);
+		result.put("nonceStr", nonce_str);
+		result.put("timestamp", timestamp);
+		result.put("signature", signature);
+		result.put("appId", corpid);
+		return result;
+	}
 	
 
+	private static String byteToHex(final byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash){
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
+	
 }

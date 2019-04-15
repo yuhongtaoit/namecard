@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.dao.AccountWxappMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.AccountWxapp" >
+    <id column="acid" property="acid" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="encodingaeskey" property="encodingaeskey" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="original" property="original" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="appdomain" property="appdomain" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    acid, uniacid, token, encodingaeskey, level, account, original, `key`, secret, name, 
+    appdomain
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.AccountWxappExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_account_wxapp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ims_account_wxapp
+    where acid = #{acid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_account_wxapp
+    where acid = #{acid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.AccountWxappExample" >
+    delete from ims_account_wxapp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.AccountWxapp" >
+    insert into ims_account_wxapp (acid, uniacid, token, 
+      encodingaeskey, level, account, 
+      original, key, secret, 
+      name, appdomain)
+    values (#{acid,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
+      #{encodingaeskey,jdbcType=VARCHAR}, #{level,jdbcType=TINYINT}, #{account,jdbcType=VARCHAR}, 
+      #{original,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{secret,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{appdomain,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.AccountWxapp" >
+    insert into ims_account_wxapp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="acid != null" >
+        acid,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="encodingaeskey != null" >
+        encodingaeskey,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="original != null" >
+        original,
+      </if>
+      <if test="key != null" >
+        key,
+      </if>
+      <if test="secret != null" >
+        secret,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="appdomain != null" >
+        appdomain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="acid != null" >
+        #{acid,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="encodingaeskey != null" >
+        #{encodingaeskey,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="original != null" >
+        #{original,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null" >
+        #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null" >
+        #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="appdomain != null" >
+        #{appdomain,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.AccountWxappExample" resultType="java.lang.Integer" >
+    select count(*) from ims_account_wxapp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_account_wxapp
+    <set >
+      <if test="record.acid != null" >
+        acid = #{record.acid,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.token != null" >
+        token = #{record.token,jdbcType=VARCHAR},
+      </if>
+      <if test="record.encodingaeskey != null" >
+        encodingaeskey = #{record.encodingaeskey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=TINYINT},
+      </if>
+      <if test="record.account != null" >
+        account = #{record.account,jdbcType=VARCHAR},
+      </if>
+      <if test="record.original != null" >
+        original = #{record.original,jdbcType=VARCHAR},
+      </if>
+      <if test="record.key != null" >
+        key = #{record.key,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secret != null" >
+        secret = #{record.secret,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appdomain != null" >
+        appdomain = #{record.appdomain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_account_wxapp
+    set acid = #{record.acid,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      token = #{record.token,jdbcType=VARCHAR},
+      encodingaeskey = #{record.encodingaeskey,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=TINYINT},
+      account = #{record.account,jdbcType=VARCHAR},
+      original = #{record.original,jdbcType=VARCHAR},
+      key = #{record.key,jdbcType=VARCHAR},
+      secret = #{record.secret,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      appdomain = #{record.appdomain,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.AccountWxapp" >
+    update ims_account_wxapp
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="encodingaeskey != null" >
+        encodingaeskey = #{encodingaeskey,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="original != null" >
+        original = #{original,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null" >
+        key = #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null" >
+        secret = #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="appdomain != null" >
+        appdomain = #{appdomain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where acid = #{acid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.AccountWxapp" >
+    update ims_account_wxapp
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      encodingaeskey = #{encodingaeskey,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+      account = #{account,jdbcType=VARCHAR},
+      original = #{original,jdbcType=VARCHAR},
+      key = #{key,jdbcType=VARCHAR},
+      secret = #{secret,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      appdomain = #{appdomain,jdbcType=VARCHAR}
+    where acid = #{acid,jdbcType=INTEGER}
+  </update>
+</mapper>

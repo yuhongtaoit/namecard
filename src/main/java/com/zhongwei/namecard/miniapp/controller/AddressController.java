@@ -62,10 +62,17 @@ public class AddressController {
 		}
 		int update = 0;
 		ShopsAddress find = addressMapper.selectByPrimaryKey(address_id);
+		data.put("info", find);
+		data.put("info_is_status", find.getIsStatus());
 		if(find.getIsStatus() > 0) {
 			find.setIsStatus(0);
 			update = addressMapper.updateByPrimaryKey(find);
 		}else {
+			ShopsAddress record = new ShopsAddress();
+			record.setIsStatus(0);
+			ShopsAddressExample example = new ShopsAddressExample();
+			example.createCriteria().andUniacidEqualTo(uniacid).andOpenidEqualTo(find.getOpenid());
+			addressMapper.updateByExampleSelective(record, example);
 			find.setIsStatus(1);
 			update = addressMapper.updateByPrimaryKey(find);
 		}
@@ -74,8 +81,6 @@ public class AddressController {
 		}else {
 			error = 1;
 		}
-		data.put("info", find);
-		data.put("info_is_status", find.getIsStatus());
 		data.put("error", error);
 		result.put("data", data);
 		return result;
@@ -107,7 +112,7 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/addAddress")
-	public Map<String, Object> addAddress(int uniacid, String sessionId ,String userName, String telNumber, String provinceName,
+	public Map<String, Object> addAddress(int uniacid, String sessionId ,String username, String telNumber, String provinceName,
 			String cityName, String countyName, String detailInfo, HttpServletRequest request){
 		Map<String, Object> data = new HashMap<>();
 		Map<String, Object> result = new HashMap<>();
@@ -131,17 +136,51 @@ public class AddressController {
 		address.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
 		address.setAddtime(String.valueOf(System.currentTimeMillis()));
 		address.setUpdatetime("");
-		address.setUsername(userName);
+		address.setUsername(username);
 		address.setTelNumber(telNumber);
 		address.setProvinceName(provinceName);
 		address.setCityName(cityName);
 		address.setDetailInfo(detailInfo);
+		address.setAid(1);
+		address.setErrMsg("0");
+		address.setPostalCode("0");
+		address.setCountyName("0");
+		address.setIsStatus(0);
+		address.setNationalCode("");
 		int insert = addressMapper.insert(address);
 		if(insert > 0) {
 			data.put("error", 0);
 		}else {
 			data.put("error", address);
 		}
+		result.put("data", data);
+		return result;
+	}
+	
+	@RequestMapping("/editAddress")
+	public Map<String, Object> editAddress(int uniacid, String sessionId ,String username, String telNumber, String provinceName,
+			String cityName, String countyName, String detailInfo, Integer address_id, HttpServletRequest request){
+		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();
+		String message = "返回消息";
+		int error = 0;
+		data.put("message", message);
+		data.put("error", error);
+		
+		if(address_id == null) {
+			return data;
+		}
+		ShopsAddress address = addressMapper.selectByPrimaryKey(address_id);
+		address.setUsername(username);
+		address.setTelNumber(telNumber);
+		address.setProvinceName(provinceName);
+		address.setCityName(cityName);
+		address.setCountyName(countyName);
+		address.setDetailInfo(detailInfo);
+		error = addressMapper.updateByPrimaryKeyWithBLOBs(address);
+		data.put("info", address);
+		data.put("info_is_status", address.getIsStatus());
+		data.put("error", error);
 		result.put("data", data);
 		return result;
 	}

@@ -270,8 +270,8 @@ public class CardController {
 				memUser.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
 				memUser.setAddtime(String.valueOf(System.currentTimeMillis()));
 				memUser.setUpdatetime("");
-				memUser.setSourceId(share_id);///intval($_GPC["share_id"]) ? intval($_GPC["share_id"]) : 0;******
-				memUser.setSendCardid(send_cardid);// intval($_GPC["send_cardid"]) ? intval($_GPC["send_cardid"]) : 0; 888888
+				memUser.setSourceId(share_id);
+				memUser.setSendCardid(send_cardid);
 				memUser.setCanTake(new BigDecimal("0.00"));
 				memUser.setTotalBroker(new BigDecimal("0.00"));
 				memUser.setHasTaken(new BigDecimal("0.00"));

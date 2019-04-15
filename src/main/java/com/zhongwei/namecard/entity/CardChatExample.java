@@ -834,7 +834,7 @@ public class CardChatExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsSendEqualTo(Boolean value) {
+        public Criteria andIsSendEqualTo(int value) {
             addCriterion("is_send =", value, "isSend");
             return (Criteria) this;
         }
@@ -954,7 +954,7 @@ public class CardChatExample {
             return (Criteria) this;
         }
 
-        public Criteria andStypeEqualTo(Boolean value) {
+        public Criteria andStypeEqualTo(int value) {
             addCriterion("stype =", value, "stype");
             return (Criteria) this;
         }
@@ -1074,7 +1074,7 @@ public class CardChatExample {
             return (Criteria) this;
         }
 
-        public Criteria andSendFromidEqualTo(Byte value) {
+        public Criteria andSendFromidEqualTo(int value) {
             addCriterion("send_fromid =", value, "sendFromid");
             return (Criteria) this;
         }

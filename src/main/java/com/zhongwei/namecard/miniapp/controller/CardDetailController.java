@@ -64,7 +64,7 @@ import com.zhongwei.namecard.entity.Member;
 import com.zhongwei.namecard.entity.MemberExample;
 import com.zhongwei.namecard.entity.ShopsCategory;
 import com.zhongwei.namecard.entity.ShopsCategoryExample;
-import com.zhongwei.namecard.utils.DataUtils;
+import com.zhongwei.namecard.utils.DateUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
 import com.zhongwei.namecard.utils.SendCashUtils;
@@ -412,7 +412,7 @@ public class CardDetailController {
 				if(StringUtils.hasText(friend.getAllImg())) {
 					friend.setAllImgarr(ImageUrlUtils.unserialize(friend.getAllImg()));
 				}
-				friend.setTimeStr(DataUtils.millisToString(friend.getTime()));
+				friend.setTimeStr(DateUtils.millisToString(friend.getTime()));
 				friend.setHeadImg(ImageUrlUtils.getAbsolutelyURL(friend.getHeadImg()));
 			}
 		}
@@ -480,7 +480,7 @@ public class CardDetailController {
 		
 		if(newsList.size() > 0) {
 			for(CardNews news : newsList) {
-				news.setTimeStr(DataUtils.millisToString(news.getTime()));
+				news.setTimeStr(DateUtils.millisToString(news.getTime()));
 				news.setHeadImg(ImageUrlUtils.getAbsolutelyURL(news.getHeadImg()));
 			}
 		}
@@ -618,10 +618,20 @@ public class CardDetailController {
 		map3.put("web_url", footer.getWebUrl());
 		map3.put("web_path", footer.getWebPath());
 		
+		Map<String, Object> map4 = new HashMap<String, Object>();
+		map4.put("name", "我的");
+		map4.put("icon", footer.getWebImgNo());
+		map4.put("selectIcon", footer.getWebImg());
+		map4.put("web_type", footer.getWebType());
+		map4.put("web_appid", footer.getWebAppid());
+		map4.put("web_url", footer.getWebUrl());
+		map4.put("web_path", footer.getWebPath());
+		
 		navFooterList.add(map0);
 		navFooterList.add(map1);
 		navFooterList.add(map2);
 		navFooterList.add(map3);
+		navFooterList.add(map4);
 		
 		data.putAll(info.cardToMap(info));
 		data.put("nav_footer", navFooterList);

@@ -106,9 +106,9 @@ public class ChatController {
 		}
 		List<CardChat> msg = new ArrayList<CardChat>();
 		CardChatExample chatExample = new CardChatExample();
-		chatExample.createCriteria().andUniacidEqualTo(uniacid).
-		andOpenidEqualTo(openId).andTypeEqualTo(1).andCardIdEqualTo(card_id)
-		.andAddtimeGreaterThanOrEqualTo(String.valueOf(System.currentTimeMillis()-(24 * 3600 * 100)));
+		chatExample.createCriteria().andUniacidEqualTo(uniacid)
+								.andOpenidEqualTo(openId).andTypeEqualTo(1).andCardIdEqualTo(card_id)
+								.andAddtimeGreaterThanOrEqualTo(String.valueOf(System.currentTimeMillis()-(24 * 3600 * 100)));
 		msg = cardChatMapper.selectByExample(chatExample);
 		
 		card.setCardLogo(ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()));

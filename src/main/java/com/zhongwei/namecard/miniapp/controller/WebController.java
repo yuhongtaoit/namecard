@@ -45,9 +45,9 @@ public class WebController {
 			return result;
 		}
 		CardWeb web = webList.size() > 0 ? webList.get(0) : new CardWeb();
-		if(web.getTxVideo() > 0) {
+//		if(web.getTxVideo() > 0) {  *******
 			web.setVideo(ImageUrlUtils.getAbsolutelyURL(web.getVideo()));
-		}
+//		}
 		data.putAll(web.cardWebToMap(web));
 		result.put("data", data);
 		return result;

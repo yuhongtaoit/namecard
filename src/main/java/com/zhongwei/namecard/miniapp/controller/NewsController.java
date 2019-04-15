@@ -20,7 +20,7 @@ public class NewsController {
 	private CardNewsMapper cardNewsMapper;
 	
 	@RequestMapping("/newsDetail")
-	public Map<String, Object> webGet(int uniacid, String sessionId, Integer news_id, HttpServletRequest request){
+	public Map<String, Object> newsDetail(int uniacid, String sessionId, Integer news_id, HttpServletRequest request){
 		Map<String, Object> data = new HashMap<>();
 		Map<String, Object> result = new HashMap<>();
 		String message = "返回消息";

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.dao.SetFxMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.SetFx" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="open_fx" property="openFx" jdbcType="BIT" />
+    <result column="fx_price" property="fxPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uniacid, open_fx, fx_price
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.SetFxExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_set_fx
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_set_fx
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ims_dbs_masclwlcard_set_fx
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.SetFxExample" >
+    delete from ims_dbs_masclwlcard_set_fx
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.SetFx" >
+    insert into ims_dbs_masclwlcard_set_fx (id, uniacid, open_fx, 
+      fx_price)
+    values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{openFx,jdbcType=BIT}, 
+      #{fxPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.SetFx" >
+    insert into ims_dbs_masclwlcard_set_fx
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="openFx != null" >
+        open_fx,
+      </if>
+      <if test="fxPrice != null" >
+        fx_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="openFx != null" >
+        #{openFx,jdbcType=BIT},
+      </if>
+      <if test="fxPrice != null" >
+        #{fxPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.SetFxExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_set_fx
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_set_fx
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.openFx != null" >
+        open_fx = #{record.openFx,jdbcType=BIT},
+      </if>
+      <if test="record.fxPrice != null" >
+        fx_price = #{record.fxPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_set_fx
+    set id = #{record.id,jdbcType=INTEGER},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      open_fx = #{record.openFx,jdbcType=BIT},
+      fx_price = #{record.fxPrice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.SetFx" >
+    update ims_dbs_masclwlcard_set_fx
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="openFx != null" >
+        open_fx = #{openFx,jdbcType=BIT},
+      </if>
+      <if test="fxPrice != null" >
+        fx_price = #{fxPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.SetFx" >
+    update ims_dbs_masclwlcard_set_fx
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      open_fx = #{openFx,jdbcType=BIT},
+      fx_price = #{fxPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

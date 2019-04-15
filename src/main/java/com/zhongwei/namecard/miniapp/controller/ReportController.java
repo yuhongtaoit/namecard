@@ -118,7 +118,7 @@ public class ReportController {
 		footer.setWebName(StringUtils.hasText(footer.getWebName()) ? footer.getWebName() : "官网");
 		String content = "";
 		int num = 0;
-		switch(card_id) {
+		switch(act_id) {
 			case 101:
 				content = user.getNickname() + " 已支付";
 				if(cardMember.getPbStatus() == 0) {
@@ -240,7 +240,7 @@ public class ReportController {
 				content = user.getNickname() + "生成了您的海报";
 				break;
 			case 660:
-				content = user.getNickname() + "将你的海报保存了";
+				content = user.getNickname() + "将您的海报保存了";
 				break;
 			case 701:
 				String subject = "客户行为";
@@ -253,10 +253,10 @@ public class ReportController {
 			case 708:
 				String subject1 = "客户行为";
 				String copyStr =  htmlspecialcharsDecode(copytypeStr);
-				if(StringUtils.hasText(copytypeStr)) {
-					String qycontent = user.getNickname() + "发来留言:" + copytypeStr + "\n" + "对话详细:<a href=\"" + url + "\">点击对话</a>";
+				if(StringUtils.hasText(copyStr)) {
+					String qycontent = user.getNickname() + "发来留言:" + copyStr + "\n" + "对话详细:<a href=\"" + url + "\">点击对话</a>";
 					if(cardMember.getPbStatus() == 0) {
-						QySendUtils.qySend(card.getUserid(), content);
+						QySendUtils.qySend(card.getUserid(), qycontent);
 					}
 					sendMessage(subject1, qycontent, card.getEmail());
 					
@@ -268,6 +268,7 @@ public class ReportController {
 					chatUser.setPhone("");
 					chatUser.setGender(user.getGender());
 					chatUser.setName("");
+					chatUser.setFid(0);
 					chatUser.setCity(user.getCity() == null ? "" : user.getCity());
 					chatUser.setProvince(user.getProvince() == null ? "" : user.getProvince());
 					chatUser.setLanguage(user.getLanguage() == null ? "" : user.getLanguage());
@@ -289,6 +290,8 @@ public class ReportController {
 		
 		ActReport reportUser = new ActReport();
 		reportUser.setUniacid(uniacid);
+		reportUser.setFootertype("0");
+		reportUser.setCopytype("0");
 		if(act_id == 655) {
 			reportUser.setCopytype(copytypeStr);
 		}
@@ -303,16 +306,21 @@ public class ReportController {
 		}
 		reportUser.setOpenid(openId);
 		reportUser.setCardId(card_id);
+		reportUser.setUniacid(uniacid);
 		reportUser.setActId(act_id);
 		reportUser.setNickname(user.getNickname() == null ? "" : user.getNickname());
 		reportUser.setPhone("");
 		reportUser.setGender(user.getGender());
 		reportUser.setName("");
+		reportUser.setNum(0);
+		reportUser.setpId(1);
+		reportUser.setStatus(0);
 		reportUser.setCity(user.getCity() == null ? "" : user.getCity());
 		reportUser.setProvince(user.getProvince() == null ? "" : user.getProvince());
 		reportUser.setLanguage(user.getLanguage() == null ? "" : user.getLanguage());
 		reportUser.setAvatarurl(user.getAvatarurl() == null ? "" : user.getAvatarurl());
 		reportUser.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
+		reportUser.setGender(user.getGender());
 		reportUser.setAddtime(String.valueOf(System.currentTimeMillis()));
 		reportUser.setUpdatetime("");
 		reportUser.setActContent(content);

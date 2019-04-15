@@ -87,6 +87,12 @@ function basicSet(){
 		  $('#mainList').html(response);
 	});
 }
+
+function linshi(){
+	$( "#mainList" ).load( "/staffer/stafferIndex?uniacid=2", function( response, status, xhr ) {
+		  $('#mainList').html(response);
+	});
+}
 </script>
 </head>
 <body>
@@ -103,6 +109,7 @@ function basicSet(){
 					 <a class="navbar-brand" href="#" onclick="product()">产品管理</a>
 					 <a class="navbar-brand" href="#" onclick="officialWebsite()">官网管理</a>
 					 <a class="navbar-brand" href="#" onclick="basicSet()">基础设置</a>
+					 <a class="navbar-brand" href="#" onclick="linshi()">临时调试</a>
 				</div>
 			</nav>
 			<div class="jumbotron" id="mainList">

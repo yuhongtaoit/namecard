@@ -13,7 +13,7 @@ import com.zhongwei.namecard.dao.CardFriendMapper;
 import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.entity.CardFriendWithBLOBs;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
-import com.zhongwei.namecard.utils.DataUtils;
+import com.zhongwei.namecard.utils.DateUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 
 @RestController
@@ -49,7 +49,7 @@ public class FriendController {
 		data.putAll(info.friendToMap(info));
 		data.put("card", card);
 		data.put("card_id", card_id);
-		data.put("time", DataUtils.millisToString(info.getTime()));
+		data.put("time", DateUtils.millisToString(info.getTime()));
 		info.setAllImgarr(info.getAllImg().split(","));
 //		if (!empty($info["all_img"])) {   ******
 //			$info["all_imgarr"] = explode(",", $info["all_img"]);

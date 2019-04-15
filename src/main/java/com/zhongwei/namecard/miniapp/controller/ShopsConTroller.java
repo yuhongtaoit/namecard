@@ -11,18 +11,23 @@ import javax.servlet.http.HttpUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.BaseWxPayRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.dao.CardMemberMapper;
 import com.zhongwei.namecard.dao.CardShopsMapper;
+import com.zhongwei.namecard.dao.SetFxMapper;
 import com.zhongwei.namecard.dao.ShopsCategoryMapper;
 import com.zhongwei.namecard.dao.ShopsOrderMapper;
 import com.zhongwei.namecard.dao.ShopsSpecMapper;
@@ -32,13 +37,15 @@ import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardShopsExample;
 import com.zhongwei.namecard.entity.CardShopsWithBLOBs;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.entity.SetFx;
+import com.zhongwei.namecard.entity.SetFxExample;
 import com.zhongwei.namecard.entity.ShopsCategory;
 import com.zhongwei.namecard.entity.ShopsCategoryExample;
 import com.zhongwei.namecard.entity.ShopsOrder;
 import com.zhongwei.namecard.entity.ShopsOrderExample;
 import com.zhongwei.namecard.entity.ShopsSpec;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.DataUtils;
+import com.zhongwei.namecard.utils.DateUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.UserUtils;
 
@@ -69,6 +76,9 @@ public class ShopsConTroller {
 	
 	@Autowired
 	private WxMaProperties wxMaProperties;
+	
+	@Autowired
+	private SetFxMapper setFxMapper;
 	
 	private int pageSize = 8;//每页大小
 	
@@ -112,24 +122,27 @@ public class ShopsConTroller {
 		CardShopsExample shopsExample = new CardShopsExample();
 		shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1).andIdEqualTo(shops_id);
 		shopsList = cardShopsMapper.selectByExampleWithBLOBs(shopsExample);
-		Map<String, Object> shopMap = shops.shopsToMap(shops);
+		Map<String, Object> shopMap = new HashMap<String, Object>();
 		if(shopsList.size() > 0) {
 			shops = shopsList.get(0);
+			shopMap = shops.shopsToMap(shops);
 			shopMap.put("gimg", ImageUrlUtils.getAbsolutelyURL(shops.getGimg()));
 			ShopsSpec shopsSpec = shopsSpecMapper.selectByPrimaryKey(shops.getSpecid());
-			Map<String, Object> specMap = shopsSpec.specToMap(shopsSpec);
-			String[] contents = ImageUrlUtils.unserialize(shopsSpec.getSpecContent());
-			specMap.put("specContent", contents);
-			List<Map<String, Object>> newSpec = new ArrayList<Map<String, Object>>();
-			if(StringUtils.hasText(shopsSpec.getSpecContent())) {
-				for(String str : contents) {
-					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("specContent", str);
-					newSpec.add(map);
+			if(shopsSpec != null) {
+				Map<String, Object> specMap = shopsSpec.specToMap(shopsSpec);
+				String[] contents = ImageUrlUtils.unserialize(shopsSpec.getSpecContent());
+				specMap.put("specContent", contents);
+				List<Map<String, Object>> newSpec = new ArrayList<Map<String, Object>>();
+				if(StringUtils.hasText(shopsSpec.getSpecContent())) {
+					for(String str : contents) {
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put("specContent", str);
+						newSpec.add(map);
+					}
 				}
+				specMap.put("newSpec", newSpec);
+				shopMap.put("spec", specMap);
 			}
-			specMap.put("newSpec", newSpec);
-			shopMap.put("spec", specMap);
 			if(StringUtils.hasText(shops.getCpBsImg())) {
 				String[] imgArray = ImageUrlUtils.unserialize(shops.getCpBsImg());
 				if(imgArray.length > 0) {
@@ -193,7 +206,7 @@ public class ShopsConTroller {
 		
 		List<CardShopsWithBLOBs> shopList = new ArrayList<CardShopsWithBLOBs>();
 		CardShopsExample shopsExample = new CardShopsExample();
-		PageHelper.startPage(pindex, pageSize);
+		Page page = PageHelper.startPage(pindex, pageSize);
 		if(classifyCode > 0) {
 			shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1).andTypeidEqualTo(classifyCode);
 			shopsExample.setOrderByClause("sort DESC");
@@ -232,11 +245,11 @@ public class ShopsConTroller {
 			}
 		}
 		
-		shopsExample = new CardShopsExample();
-		shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1);
-		int total = cardShopsMapper.countByExample(shopsExample);
+//		shopsExample = new CardShopsExample();
+//		shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1);
+//		int total = cardShopsMapper.countByExample(shopsExample);
 		data.put("shops", shopsMapList);
-		data.put("total", total);
+		data.put("total", page.getTotal());
 		result.put("data", data);
 		return result;
 	}
@@ -363,31 +376,141 @@ public class ShopsConTroller {
 			result.put("data", data);
 			return result;
 		}
-		
+		if(shopInfo.getPrice().compareTo(new BigDecimal(0.01)) == -1) {
+			data.put("message", "金额不得少于0.01");
+			data.put("error", 1);
+			result.put("data", data);
+			return result;
+		}
+		if(card_id == 0) {
+			data.put("message", "缺少名片id");
+			data.put("error", 1);
+			result.put("data", data);
+			return result;
+		}
 		AuthUser user = UserUtils.getUserInfo(request, sessionId);
 		String openId = user.getOpenid();
+		
+		String orderId= "nicecard"+ DateUtils.getCurrTime();
 		//******未完待续
 		WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
-		orderRequest.setBody("支付内容的说明");
+		orderRequest.setBody("微信支付");
 		orderRequest.setAttach("众维广告有限公司");
-		orderRequest.setOutTradeNo("nicecard"+ DataUtils.getCurrTime());
+		orderRequest.setOutTradeNo(orderId);
 		orderRequest.setOpenid(openId);
 		BigDecimal shopNum = new BigDecimal(shops_num);
 //		orderRequest.setTotalFee(shopInfo.getPrice().multiply(shopNum));
 		orderRequest.setTotalFee(BaseWxPayRequest.yuanToFen(shopInfo.getPrice().multiply(shopNum).toString()));
-		orderRequest.setSpbillCreateIp("197.32.4.9");///******必填 APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
+		orderRequest.setSpbillCreateIp(request.getRemoteAddr());///******必填 APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
 		orderRequest.setSignType("MD5");
 		orderRequest.setDeviceInfo("WEB");
 		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
-		orderRequest.setNotifyUrl("");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
-//		orderRequest.setSubOpenid("");//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
-		Object obj = wxPayService.createOrder(orderRequest);
+		orderRequest.setNotifyUrl("http://192.168.0.106:8080/miniapp/payResult");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+		orderRequest.setSubOpenid(openId);//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
+		WxPayMpOrderResult payResult = wxPayService.createOrder(orderRequest);
+		data.put("timeStamp", payResult.getTimeStamp());
+		data.put("nonceStr", payResult.getNonceStr());
+		data.put("package", payResult.getPackageValue());
+		data.put("paySign", payResult.getPaySign());
+		
+		ShopsOrder order = new ShopsOrder();
+		order.setPrice(shopInfo.getPrice());
+		order.setAllPrice(new BigDecimal(BaseWxPayRequest.yuanToFen(shopInfo.getPrice().multiply(new BigDecimal(shops_num)).toString())));
+		order.setUniacid(uniacid);
+		order.setShopName(shopInfo.getShopName());
+		order.setFromUser(openId);
+		order.setName(name);
+		order.setPhone(phone);
+		order.setShopsId(shopInfo.getId());
+		order.setShopsNum(shops_num);
+		order.setAddress(address);
+		order.setCardId(card_id);
+		order.setNewSpec(new_spec);
+		order.setAddtime(String.valueOf(System.currentTimeMillis()));
+		order.setOrderid(orderId);
+		order.setStaffid(0);
+		order.setTransactionId("");
+		order.setPaid(0);
+		order.setNickname(user.getNickname());
+		order.setTpText("");
+		order.setAvatar(user.getAvatar());
+		int insert = shopsOrderMapper.insert(order);
+		if(insert == 0) {
+			data.put("message", "数据录入失败");
+			data.put("error", 1);
+			result.put("data", data);
+			return result;
+		}
+		
 		result.put("data", data);
 		return result;
 	}
 	
-	public void receivePayCallBack() {
-		
+	@RequestMapping("/payResult")
+	public void payResult(@RequestBody String xmlData,HttpServletRequest request, String return_code,Map<String, Object> resultMap) throws WxPayException {
+		WxPayOrderNotifyResult notifyResult = wxPayService.parseOrderNotifyResult(xmlData);
+		System.out.println(notifyResult);
+		if(return_code.equals("SUCCESS")) {
+			String orderId = (String) resultMap.get("out_trade_no");
+			String openId = (String) resultMap.get("openid");
+			List<ShopsOrder> orderList = new ArrayList<ShopsOrder>();
+			ShopsOrderExample orderExample = new ShopsOrderExample();
+			orderExample.createCriteria().andOrderidEqualTo(orderId).andPaidEqualTo(0).andFromUserEqualTo(openId);
+			orderList = shopsOrderMapper.selectByExampleWithBLOBs(orderExample);
+			if(orderList.size() > 0) {
+				ShopsOrder order = orderList.get(0);
+				order.setPaid(1);
+				order.setTransactionId((String) resultMap.get("transaction_id"));
+				shopsOrderMapper.updateByPrimaryKey(order);
+				CardShopsWithBLOBs cardShop = cardShopsMapper.selectByPrimaryKey(order.getShopsId());
+				cardShop.setShopsNum(cardShop.getShopsNum() - order.getShopsNum());
+				if(cardShop.getFxType() == 2) {
+					if(cardShop.getPrice().multiply(new BigDecimal(100)).compareTo(new BigDecimal(1)) != -1) {
+						CardMemberExample cardMemberExample = new CardMemberExample();
+						cardMemberExample.createCriteria().andAidEqualTo(order.getCardId()).andOpenidEqualTo(openId);
+						List<CardMember> memberList = cardMemberMapper.selectByExample(cardMemberExample);
+						if(memberList.size() > 0) {
+							CardMember cardMember = memberList.get(0);
+							if(cardMember.getHmdStatus() == 0) {
+								if(cardMember.getSourceId() > 0) {
+									CardMember member = cardMemberMapper.selectByPrimaryKey(cardMember.getSourceId());
+									if(member != null) {
+										member.setNotInAccount(member.getNotInAccount().add(cardShop.getFxPrice()));
+										cardMemberMapper.updateByPrimaryKey(member);
+									}
+								}
+							}
+						}
+					}
+				}else if(cardShop.getFxType() == 1) {
+					SetFxExample fxExample = new SetFxExample();
+					fxExample.createCriteria().andUniacidEqualTo(cardShop.getUniacid());
+					List<SetFx> fxList = setFxMapper.selectByExample(fxExample);
+					if(fxList.size() > 0) {
+						SetFx setFx = fxList.get(0);
+						if(setFx.getOpenFx() > 0) {
+							if(setFx.getFxPrice().multiply(new BigDecimal(100)).compareTo(new BigDecimal(1)) != -1) {
+								CardMemberExample cardMemberExample = new CardMemberExample();
+								cardMemberExample.createCriteria().andAidEqualTo(order.getCardId()).andOpenidEqualTo(openId);
+								List<CardMember> memberList = cardMemberMapper.selectByExample(cardMemberExample);
+								if(memberList.size() > 0) {
+									CardMember cardMember = memberList.get(0);
+									if(cardMember.getHmdStatus() == 0) {
+										if(cardMember.getSourceId() > 0) {
+											CardMember member = cardMemberMapper.selectByPrimaryKey(cardMember.getSourceId());
+											if(member != null) {
+												member.setNotInAccount(member.getNotInAccount().add(new BigDecimal(setFx.getOpenFx())));
+												cardMemberMapper.updateByPrimaryKey(member);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@RequestMapping("/shopsOrderList")
@@ -419,7 +542,7 @@ public class ShopsConTroller {
 				CardShopsWithBLOBs shops = cardShopsMapper.selectByPrimaryKey(order.getCardId());
 				shops.setGimg(ImageUrlUtils.getAbsolutelyURL(order.getShops().getGimg()));
 				order.setShops(shops);
-				order.setDateline(DataUtils.millisToString(order.getAddtime()));
+				order.setDateline(DateUtils.millisToString(new Long(order.getAddtime())));
 			}
 		}
 		result.put("data", orderList);

@@ -44,6 +44,8 @@ public class ActReport {
     private String province;
 
     private String avatar;
+    
+    private int type;
 
     public Integer getId() {
         return id;
@@ -220,4 +222,12 @@ public class ActReport {
     public void setAvatar(String avatar) {
         this.avatar = avatar == null ? null : avatar.trim();
     }
+    
+    public int getType() {
+		return type;
+	}
+    
+    public void setType(int type) {
+		this.type = type;
+	}
 }

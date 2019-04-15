@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongwei.namecard.dao.AccountTokenMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongwei.namecard.entity.AccountToken" >
+    <id column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="valid_time" property="validTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zhongwei.namecard.entity.AccountToken" extends="BaseResultMap" >
+    <result column="access_token" property="accessToken" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    secret, uniacid, appid, valid_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    access_token
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zhongwei.namecard.entity.AccountTokenExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_account_token
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongwei.namecard.entity.AccountTokenExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ims_dbs_masclwlcard_account_token
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ims_dbs_masclwlcard_account_token
+    where secret = #{secret,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ims_dbs_masclwlcard_account_token
+    where secret = #{secret,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongwei.namecard.entity.AccountTokenExample" >
+    delete from ims_dbs_masclwlcard_account_token
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongwei.namecard.entity.AccountToken" >
+    insert into ims_dbs_masclwlcard_account_token (secret, uniacid, appid, 
+      valid_time, access_token)
+    values (#{secret,jdbcType=VARCHAR}, #{uniacid,jdbcType=INTEGER}, #{appid,jdbcType=VARCHAR}, 
+      #{validTime,jdbcType=VARCHAR}, #{accessToken,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongwei.namecard.entity.AccountToken" >
+    insert into ims_dbs_masclwlcard_account_token
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="secret != null" >
+        secret,
+      </if>
+      <if test="uniacid != null" >
+        uniacid,
+      </if>
+      <if test="appid != null" >
+        appid,
+      </if>
+      <if test="validTime != null" >
+        valid_time,
+      </if>
+      <if test="accessToken != null" >
+        access_token,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="secret != null" >
+        #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="uniacid != null" >
+        #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="validTime != null" >
+        #{validTime,jdbcType=VARCHAR},
+      </if>
+      <if test="accessToken != null" >
+        #{accessToken,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongwei.namecard.entity.AccountTokenExample" resultType="java.lang.Integer" >
+    select count(*) from ims_dbs_masclwlcard_account_token
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ims_dbs_masclwlcard_account_token
+    <set >
+      <if test="record.secret != null" >
+        secret = #{record.secret,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uniacid != null" >
+        uniacid = #{record.uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="record.appid != null" >
+        appid = #{record.appid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validTime != null" >
+        valid_time = #{record.validTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessToken != null" >
+        access_token = #{record.accessToken,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ims_dbs_masclwlcard_account_token
+    set secret = #{record.secret,jdbcType=VARCHAR},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      valid_time = #{record.validTime,jdbcType=VARCHAR},
+      access_token = #{record.accessToken,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ims_dbs_masclwlcard_account_token
+    set secret = #{record.secret,jdbcType=VARCHAR},
+      uniacid = #{record.uniacid,jdbcType=INTEGER},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      valid_time = #{record.validTime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongwei.namecard.entity.AccountToken" >
+    update ims_dbs_masclwlcard_account_token
+    <set >
+      <if test="uniacid != null" >
+        uniacid = #{uniacid,jdbcType=INTEGER},
+      </if>
+      <if test="appid != null" >
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="validTime != null" >
+        valid_time = #{validTime,jdbcType=VARCHAR},
+      </if>
+      <if test="accessToken != null" >
+        access_token = #{accessToken,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where secret = #{secret,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhongwei.namecard.entity.AccountToken" >
+    update ims_dbs_masclwlcard_account_token
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      appid = #{appid,jdbcType=VARCHAR},
+      valid_time = #{validTime,jdbcType=VARCHAR},
+      access_token = #{accessToken,jdbcType=LONGVARCHAR}
+    where secret = #{secret,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongwei.namecard.entity.AccountToken" >
+    update ims_dbs_masclwlcard_account_token
+    set uniacid = #{uniacid,jdbcType=INTEGER},
+      appid = #{appid,jdbcType=VARCHAR},
+      valid_time = #{validTime,jdbcType=VARCHAR}
+    where secret = #{secret,jdbcType=VARCHAR}
+  </update>
+</mapper>
