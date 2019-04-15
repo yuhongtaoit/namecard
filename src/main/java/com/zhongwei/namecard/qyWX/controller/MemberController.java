@@ -25,7 +25,6 @@ import com.zhongwei.namecard.entity.ActReport;
 import com.zhongwei.namecard.entity.ActReportExample;
 import com.zhongwei.namecard.entity.Card;
 import com.zhongwei.namecard.entity.CardExample;
-import com.zhongwei.namecard.entity.CardMember;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
 import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.QyUtils;

@@ -57,7 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     //在这里配置哪些页面不需要认证
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/", "/miniapp/**", "/error/**", "/jquery/**","/bootstrap/**","/images/**","/attachment/**", "/js/**" ,"/favicon.ico");
+        web.ignoring().antMatchers("/", "/miniapp/**", "/error/**", "/staffer/**","/member/**","/interact/**","/client/**", "/friend/**", "/home/**", 
+        		"/qyImages/**","/css/**","/js/**","/jquery/**","/bootstrap/**","/images/**","/attachment/**", "/js/**" ,"/favicon.ico");
     }
  
     /**定义安全策略*/

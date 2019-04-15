@@ -1,6 +1,7 @@
 package com.zhongwei.namecard.miniapp.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix="wx.miniapp.configs")
 public class WxMaProperties {
@@ -22,6 +23,8 @@ public class WxMaProperties {
 	private String subMchId;
 	
 	private String keyPath;
+	
+	private String projectRootPath;
 
 	public String getAppid() {
 		return appid;
@@ -93,6 +96,14 @@ public class WxMaProperties {
 
 	public void setKeyPath(String keyPath) {
 		this.keyPath = keyPath;
+	}
+	
+	public String getProjectRootPath() {
+		return projectRootPath;
+	}
+	
+	public void setProjectRootPath(String projectRootPath) {
+		this.projectRootPath = projectRootPath;
 	}
 	
 }

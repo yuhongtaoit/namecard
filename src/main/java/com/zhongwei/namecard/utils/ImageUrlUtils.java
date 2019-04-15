@@ -38,7 +38,12 @@ public class ImageUrlUtils {
 			return new String[0];
 		}
 		str = str.substring(1, str.length() -1);
-		return str.split(",");
+		String arr[] = str.split(",");
+		String arr2[] = new String[arr.length];
+		for(int i = 0; i< arr.length; i++) {
+			arr2[i] = arr[i].trim();
+		}
+		return arr2;
 	}
 
 }
