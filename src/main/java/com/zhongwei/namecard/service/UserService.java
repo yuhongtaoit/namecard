@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("查找用户：" + username);
-        User user = userDao.getByUserName(username).get(0);
+        User user = userDao.getByUserName(username);
         if(user == null)
         {
             throw new UsernameNotFoundException("没有该用户");

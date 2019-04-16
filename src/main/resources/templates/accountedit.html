@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+<title>智慧名片后台管理</title>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+function save(){
+	var name = document.getElementById("name").value;
+	var id = document.getElementById("uuid").value;
+	var original = document.getElementById("original").value;
+	var key = document.getElementById("key").value;
+	var secret = document.getElementById("secret").value;
+	var encodingaeskey = document.getElementById("encodingaeskey").value;
+	var token = document.getElementById("token").value;
+	var level = document.getElementById("level").value;
+	$.post("/account/saveAccount",
+			{
+				'name':name,
+				'acid':id,
+				'original':original,
+				'key':key,
+				'secret':secret,
+				'encodingaeskey':encodingaeskey,
+				'token':token,
+				'level':level
+			},
+			function(data){
+				var json = eval(data);
+				if(json.success){
+					$.ajax({
+			             type: "GET",
+			             url: "/account/getAccountList",
+			             async:false,
+			             success: function(data){
+			            	 $("#mainList", window.opener.document).html(data);
+			             }
+			         });
+					alert(json.message);
+					window.close();
+				}else{
+					alert(json.message);
+					window.close();
+				}
+			},
+			"json");
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<form role="form" action="/user/save" id="userinfo">
+				<input type="hidden" id="uuid" name="uuid" th:value="${account == null}?'':${account.acid}"/>
+				<div class="form-group">
+					 <label for="exampleInputEmail1">商户名称</label><input type="text" class="form-control" id="name" name="name" th:value="${account == null}?'':${account.name }"/>
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">原始ID</label><input type="text" class="form-control" id="original" name="original" th:value="${account == null}?'':${account.original }" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">AppId</label><input type="text" class="form-control" id="key" name="key" th:value="${account == null}?'':${account.key }" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">AppSecret</label><input type="text" class="form-control" id="secret" name="secret" th:value="${account == null}?'':${account.secret }" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">消息密钥</label><input type="text" class="form-control" id="encodingaeskey" name="encodingaeskey" th:value="${account == null}?'':${account.encodingaeskey }" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">Token</label><input type="text" class="form-control" id="token" name="token" th:value="${account == null}?'':${account.token }" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">版本号</label><input type="text" class="form-control" id="level" name="level" th:value="${account == null}?'':${account.level }" />
+				</div>
+				<div align="center">
+					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+					<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

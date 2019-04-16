@@ -107,10 +107,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.entity.AccountWxapp" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="acid" parameterType="com.zhongwei.namecard.entity.AccountWxapp" >
     insert into ims_account_wxapp (acid, uniacid, token, 
       encodingaeskey, level, account, 
-      original, key, secret, 
+      original, `key`, secret, 
       name, appdomain)
     values (#{acid,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
       #{encodingaeskey,jdbcType=VARCHAR}, #{level,jdbcType=TINYINT}, #{account,jdbcType=VARCHAR}, 
@@ -298,7 +298,7 @@
       level = #{level,jdbcType=TINYINT},
       account = #{account,jdbcType=VARCHAR},
       original = #{original,jdbcType=VARCHAR},
-      key = #{key,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
       secret = #{secret,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       appdomain = #{appdomain,jdbcType=VARCHAR}

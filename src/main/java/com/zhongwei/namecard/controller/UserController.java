@@ -99,6 +99,7 @@ public class UserController {
 		if(user!=null && user.getId()!=null){
 			User oldUser = this.userDao.getOne(user.getId());
 			if(oldUser!=null && oldUser.getId()!=0){
+				User testUser = this.userDao.getByUserName(user.getUserName());
 				this.userDao.update(user);
 				message.setSuccess(true);
 				message.setMessage("保存成功！");

@@ -13,7 +13,7 @@ public interface UserMapper {
 	
 	User getOne(Integer id);
 	
-	List<User> getByUserName(String userName);
+	User getByUserName(String userName);
 
 	void insert(User user);
 
