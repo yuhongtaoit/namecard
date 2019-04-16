@@ -16,6 +16,8 @@ public class UserDetailsEntity implements UserDetails{
 	
     private String passWord;
     
+    private Integer uniacid;
+    
     private List<Role> roles;
  
     public void setRoles(List<Role> roles) {
@@ -34,6 +36,7 @@ public class UserDetailsEntity implements UserDetails{
     public UserDetailsEntity(User user, List<Role> roles) {
         this.userName = user.getUserName();
         this.passWord = user.getPassWord();
+        this.uniacid = user.getUniacid();
         this.roles = roles;
     }
  
@@ -55,6 +58,10 @@ public class UserDetailsEntity implements UserDetails{
 	@Override
 	public String getPassword() {
 		return passWord;
+	}
+	
+	public Integer getUniacid() {
+		return uniacid;
 	}
 
 	@Override

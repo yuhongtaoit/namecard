@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,10 +97,10 @@ public class UserController {
 	@Transactional
 	public @ResponseBody CommonMessage saveUser(HttpServletRequest request, HttpServletResponse response, User user){
 		CommonMessage message = new CommonMessage();
+		User testUser = this.userDao.getByUserName(user.getUserName());
 		if(user!=null && user.getId()!=null){
 			User oldUser = this.userDao.getOne(user.getId());
 			if(oldUser!=null && oldUser.getId()!=0){
-				User testUser = this.userDao.getByUserName(user.getUserName());
 				if(testUser!=null && testUser.getId()!=oldUser.getId()) {
 					message.setSuccess(false);
 					message.setMessage("用户名已存在！");
@@ -115,11 +116,45 @@ public class UserController {
 				return message;
 			}
 		}
+		if(testUser!=null) {
+			message.setSuccess(false);
+			message.setMessage("用户名已存在！");
+			return message;
+		}
 		user.setPassWord(BCrypt.hashpw("123456", BCrypt.gensalt()));
 		this.userDao.insert(user);
 		message.setSuccess(true);
 		message.setMessage("保存成功！");
 		return message;
+	}
+	
+	@RequestMapping("/toUpdatePassword")
+	public String toUpdatePassword(HttpServletRequest request, HttpServletResponse response, Model model, Principal principal){
+		return "editpassword";
+	}
+	
+	@RequestMapping("/updatePassword")
+	public @ResponseBody CommonMessage updatePassword(HttpServletRequest request, HttpServletResponse response, String password, Model model, Principal principal){
+		CommonMessage message = new CommonMessage();
+		User user = this.userDao.getByUserName(principal.getName());
+		try {
+			if(user!=null) {
+				user.setPassWord(BCrypt.hashpw(password, BCrypt.gensalt()));
+				this.userDao.update(user);
+				message.setSuccess(true);
+				message.setMessage("密码修改成功！");
+				return message;
+			}else {
+				message.setSuccess(true);
+				message.setMessage("用户未登录！");
+				return message;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			message.setSuccess(false);
+			message.setMessage("密码修改失败！");
+			return message;
+		}
 	}
 	
     @RequestMapping(value="/delete")

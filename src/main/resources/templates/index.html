@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
@@ -106,9 +106,18 @@ function accountManage(){
 	});
 }
 
+function updatePassword(){
+	window.open("/user/toUpdatePassword","修改密码","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+}
+
 </script>
 </head>
 <body>
+<div class="col-md-12 column" style="margin-bottom: 10px">
+	<p style="float: left;margin-left: 20px;margin-top: 10px;color: orange;" th:text="'欢迎您，'+${userName}"></p>
+	<a href="/logout" style="float: right;margin-right: 20px;margin-top: 10px;color: orange;cursor: pointer;">退出登录</a>
+	<a href="javascript:void(0);" onclick="updatePassword()" style="float: right;margin-right: 20px;margin-top: 10px;color: orange;cursor: pointer;">修改密码</a>
+</div>
 <div class="container">
 	<br/>
 	<div class="row clearfix">

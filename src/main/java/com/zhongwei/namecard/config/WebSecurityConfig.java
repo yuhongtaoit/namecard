@@ -103,7 +103,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-//                        redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/index");
                         httpServletResponse.sendRedirect("/index");
                     }
                 })

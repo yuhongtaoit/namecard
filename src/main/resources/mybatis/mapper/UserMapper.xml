@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="userName" property="userName" jdbcType="VARCHAR" />
         <result column="passWord" property="passWord" jdbcType="VARCHAR" />
+        <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
         <result column="user_sex" property="userSex" jdbcType="VARCHAR"/>
         <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
         <result column="tel" property="tel" jdbcType="VARCHAR" />
@@ -12,7 +13,7 @@
     </resultMap>
     
     <sql id="Base_Column_List" >
-        id, userName, passWord, user_sex, nick_name, tel, email
+        id, userName, passWord, user_sex, nick_name, tel, email, uniacid
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
@@ -39,9 +40,9 @@
     <insert id="insert" parameterType="com.zhongwei.namecard.entity.User" >
        INSERT INTO 
        		users
-       		(userName,passWord,user_sex,nick_name,tel,email) 
+       		(userName,passWord,user_sex,nick_name,tel,email,uniacid) 
        	VALUES
-       		(#{userName}, #{passWord}, #{userSex}, #{nickName},#{tel},#{email})
+       		(#{userName}, #{passWord}, #{userSex}, #{nickName},#{tel},#{email},#{uniacid})
     </insert>
     
     <update id="update" parameterType="com.zhongwei.namecard.entity.User" >
@@ -49,7 +50,9 @@
        		users 
        SET 
        	<if test="userName != null">userName = #{userName},</if>
+       	passWord = #{passWord},
        	user_sex = #{userSex},
+       	uniacid = #{uniacid},
        	nick_name = #{nickName},
        	tel = #{tel},
        	email = #{email}

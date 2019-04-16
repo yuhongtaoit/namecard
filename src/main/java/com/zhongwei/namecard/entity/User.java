@@ -5,12 +5,21 @@ import java.io.Serializable;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	private Integer id;
+	
 	private String userName;
+	
 	private String passWord;
+	
+	private Integer uniacid;
+	
 	private String userSex;
+	
 	private String nickName;
+	
 	private String tel;
+	
 	private String email;
 
 	public Integer getId() {
@@ -35,6 +44,14 @@ public class User implements Serializable {
 
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
+	}
+
+	public Integer getUniacid() {
+		return uniacid;
+	}
+
+	public void setUniacid(Integer uniacid) {
+		this.uniacid = uniacid;
 	}
 
 	public String getUserSex() {
