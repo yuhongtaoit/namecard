@@ -187,12 +187,14 @@ public class CardDetailController {
 				if(zanList.size() > 0) {
 					zanInfo = zanList.get(0);
 				}
+				
 				CardZan zanUser = new CardZan();
 				zanUser.setUniacid(uniacid);
 				zanUser.setOpenid(openId);
 				zanUser.setNickname(user.getNickname() == null ? "" : user.getNickname());
 				zanUser.setPhone("");// php中取值$data["purePhoneNumber"];未找到data中的数据是什么时候放进去的 ******
 				zanUser.setName("");
+				zanUser.setAid(1);
 				zanUser.setGender(user.getGender());
 				zanUser.setCity(user.getCity() == null ? "" : user.getCity());
 				zanUser.setProvince(user.getProvince() == null ? "" : user.getProvince());
@@ -227,6 +229,7 @@ public class CardDetailController {
 				plUser.setPhone("");// php中取值$data["purePhoneNumber"];未找到data中的数据是什么时候放进去的 ******
 				plUser.setGender(user.getGender());
 				plUser.setName("");
+				plUser.setAid(1);
 				plUser.setCity(user.getCity() == null ? "" : user.getCity());
 				plUser.setProvince(user.getProvince() == null ? "" : user.getProvince());
 				plUser.setFid(fid);
@@ -410,7 +413,12 @@ public class CardDetailController {
 					friend.setIsup(isupinfo.getStatus());
 				}
 				if(StringUtils.hasText(friend.getAllImg())) {
-					friend.setAllImgarr(ImageUrlUtils.unserialize(friend.getAllImg()));
+					String arr[] = ImageUrlUtils.unserialize(friend.getAllImg());
+					String arr1[] = new String[arr.length];
+					for(int i = 0; i<arr.length ; i++ ) {
+						arr1[i] = ImageUrlUtils.getAbsolutelyURL(arr[i]);
+					}
+					friend.setAllImgarr(arr1);
 				}
 				friend.setTimeStr(DateUtils.millisToString(friend.getTime()));
 				friend.setHeadImg(ImageUrlUtils.getAbsolutelyURL(friend.getHeadImg()));
@@ -631,7 +639,7 @@ public class CardDetailController {
 		navFooterList.add(map1);
 		navFooterList.add(map2);
 		navFooterList.add(map3);
-		navFooterList.add(map4);
+//		navFooterList.add(map4);
 		
 		data.putAll(info.cardToMap(info));
 		data.put("nav_footer", navFooterList);
