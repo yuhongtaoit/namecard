@@ -8,13 +8,20 @@
     </resultMap>
     
     <sql id="Base_Column_List" >
-        id, url, resource_name
+        id, url, resource_name, type
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap" >
        SELECT 
        <include refid="Base_Column_List" />
 	   FROM resource
+    </select>
+    
+    <select id="getByType" parameterType="java.lang.String" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM resource
+	   WHERE type = #{type}
     </select>
     
     <select id="getResourcesByIds" parameterType="ArrayList" resultMap="BaseResultMap" >

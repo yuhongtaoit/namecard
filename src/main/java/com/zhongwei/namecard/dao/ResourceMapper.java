@@ -11,6 +11,8 @@ public interface ResourceMapper {
 	
 	List<Resource> getAll();
 	
+	List<Resource> getByType(String type);
+	
 	Resource getOne(Integer id);
 	
 	List<Resource> getResourcesByIds(List<Integer> resourceIds);

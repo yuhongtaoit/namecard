@@ -162,6 +162,23 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(value="/resetPassword")
+    @Transactional
+    public @ResponseBody CommonMessage resetPassword(Integer id) {
+		CommonMessage message = new CommonMessage();
+		if(id!=null && id>0){
+			User user = this.userDao.getOne(id);
+			user.setPassWord(BCrypt.hashpw("123456", BCrypt.gensalt()));
+			this.userDao.update(user);
+			message.setSuccess(true);
+			message.setMessage("密码重置成功！\n重置密码为：123456");
+		}else{
+			message.setSuccess(false);
+			message.setMessage("密码重置失败！");
+		}
+		return message;
+    }
+	
     @RequestMapping(value="/delete")
     @Transactional
     public @ResponseBody CommonMessage delete(Integer id) {
@@ -177,6 +194,5 @@ public class UserController {
 		}
 		return message;
     }
-    
     
 }

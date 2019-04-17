@@ -54,6 +54,27 @@ function getRoles(userId){
 	window.open("/user/getRoles?userId="+userId,"关联角色","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
+function resetPassword(userId){
+	$.ajax({
+	    url:'/user/resetPassword',
+	    type:'POST', //GET
+	    async:true,    //或false,是否异步
+	    data:{
+	    	'id':userId
+	    },
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    success:function(data,textStatus,jqXHR){
+	    	var json = eval(data);
+			if(json.success){
+				alert(json.message);
+			}
+	    },
+	    error:function(xhr,textStatus){
+	    	alert(JSON.parse(msg).msg);
+	    }
+	})
+}
+
 function update(){
 	var radios = document.getElementsByName("radio");
 	var index;
@@ -149,7 +170,10 @@ function deleteUser(){
 					     <td style="vertical-align: middle" th:text="${user.userSex}"></td>
 					     <td style="vertical-align: middle" th:text="${user.tel}"></td>
 					     <td style="vertical-align: middle" th:text="${user.email}"></td>
-					     <td style="vertical-align: middle"><button class="btn btn-default" type="button" th:onclick="'getRoles('+${user.id}+')'"><em class="glyphicon glyphicon-plus"></em> 关联角色</button></td>
+					     <td style="vertical-align: middle">
+					     	<button class="btn btn-default" type="button" th:onclick="'getRoles('+${user.id}+')'"><em class="glyphicon glyphicon-plus"></em> 关联角色</button>
+					     	<button class="btn btn-default" type="button" th:onclick="'resetPassword('+${user.id}+')'"><em class="glyphicon glyphicon-refresh"></em> 重置密码</button>
+					     </td>
 					 </tr>
 				</tbody>
 			</table>

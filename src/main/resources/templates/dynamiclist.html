@@ -49,7 +49,7 @@ body{
 var winWidth = window.screen.width-400;
 var winHeight = window.screen.height-150;
 function add(){
-	window.open("/friend/dynamicEdit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+	window.open("/friendManage/dynamicEdit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
 function update(){
@@ -61,7 +61,7 @@ function update(){
 		}
 	}
 	var uuid = document.getElementById("id"+index).innerText;
-	window.open("/friend/dynamicEdit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+	window.open("/friendManage/dynamicEdit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
 function deleteAdv(){
@@ -78,7 +78,7 @@ function deleteAdv(){
 	}
 	var uuid = document.getElementById("id"+index).innerText;
 	$.ajax({
-	    url:'/friend/dynamicDelete',
+	    url:'/friendManage/dynamicDelete',
 	    type:'POST', //GET
 	    async:true,    //或false,是否异步
 	    data:{
@@ -90,7 +90,7 @@ function deleteAdv(){
 			if(json.success){
 				$.ajax({
 		             type: "GET",
-		             url: "/friend/getDynamicList",
+		             url: "/friendManage/getDynamicList",
 		             async:false,
 		             success: function(data){
 		            	 $("#mainContent", window.document).html(data);

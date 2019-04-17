@@ -50,10 +50,11 @@ public class RoleController {
 	
 	@RequestMapping("/getResources")
 	public String getResources(HttpServletRequest request, HttpServletResponse response, Model model, Integer roleId){
-		List<Resource> resources = resourceDao.getAll();
+		List<Resource> interfaceResources = resourceDao.getByType("interface");
+		List<Resource> menuResources = resourceDao.getByType("menu");
 		List<Resource> roleResources = resourceService.getResourcesByRoleId(roleId);
-		if(resources!=null && resources.size()>0) {
-			for(Resource resource : resources) {
+		if(interfaceResources!=null && interfaceResources.size()>0) {
+			for(Resource resource : interfaceResources) {
 				if(roleResources!=null && roleResources.size()>0) {
 					for(Resource roleResource : roleResources) {
 						if(resource.getId()==roleResource.getId()) {
@@ -63,7 +64,19 @@ public class RoleController {
 				}
 			}
 		}
-		model.addAttribute("resources", resources);
+		if(menuResources!=null && menuResources.size()>0) {
+			for(Resource resource : menuResources) {
+				if(roleResources!=null && roleResources.size()>0) {
+					for(Resource roleResource : roleResources) {
+						if(resource.getId()==roleResource.getId()) {
+							resource.setFlag(true);
+						}
+					}
+				}
+			}
+		}
+		model.addAttribute("interfaceResources", interfaceResources);
+		model.addAttribute("menuResources", menuResources);
 		model.addAttribute("roleId", roleId);
 		return "selectresources";
 	}

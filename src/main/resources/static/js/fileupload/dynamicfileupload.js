@@ -107,7 +107,7 @@ function save(){
 		 form.append("gimageKey", m.get("gimage"));
 	 }
 	 $.ajax({
-	     url:"/friend/dynamicSave",
+	     url:"/friendManage/dynamicSave",
 	     type:"post",
 	     data:form,
 	     processData:false,
@@ -118,7 +118,7 @@ function save(){
 				if(json.success){
 					$.ajax({
 			             type: "GET",
-			             url: "/friend/getDynamicList",
+			             url: "/friendManage/getDynamicList",
 			             async:false,
 			             success: function(data){
 			            	 $("#mainContent", window.opener.document).html(data);

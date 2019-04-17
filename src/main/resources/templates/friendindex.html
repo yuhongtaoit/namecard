@@ -18,7 +18,7 @@ function cancel(){
 }
 
 function dynamicList(){
-	$( "#mainContent" ).load( "/friend/getDynamicList", function( response, status, xhr ) {
+	$( "#mainContent" ).load( "/friendManage/getDynamicList", function( response, status, xhr ) {
 		  $('#mainContent').html(response);
 	});
 	$('#dynamic').attr("class","active");
@@ -26,7 +26,7 @@ function dynamicList(){
 }
 
 function reviewList(){
-	$( "#mainContent" ).load( "/friend/getReviewList", function( response, status, xhr ) {
+	$( "#mainContent" ).load( "/friendManage/getReviewList", function( response, status, xhr ) {
 		  $('#mainContent').html(response);
 	});
 	$('#dynamic').attr("class","");

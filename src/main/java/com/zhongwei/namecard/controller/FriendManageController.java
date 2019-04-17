@@ -25,7 +25,7 @@ import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.FriendService;
 
 @Controller
-@RequestMapping("/friend")
+@RequestMapping("/friendManage")
 public class FriendManageController {
 	
 	@Autowired

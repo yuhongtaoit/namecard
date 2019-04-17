@@ -120,6 +120,9 @@ function deleteAccount(){
 							选择
 						</th>
 						<th>
+							uniacid
+						</th>
+						<th>
 							商户名称
 						</th>
 						<th>
@@ -134,6 +137,7 @@ function deleteAccount(){
 					 <tr th:each="account,iterStat : ${accountList}"> 
 					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
 					     <td style="vertical-align: middle;display: none;" th:text="${account.acid}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${account.uniacid}"></td>
 					     <td style="vertical-align: middle" th:text="${account.name}"></td>
 					     <td style="vertical-align: middle" th:text="${account.level}"></td>
 					     <td style="vertical-align: middle" th:text="${account.original}"></td>

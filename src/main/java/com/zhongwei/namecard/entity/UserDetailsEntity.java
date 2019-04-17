@@ -19,6 +19,8 @@ public class UserDetailsEntity implements UserDetails{
     private Integer uniacid;
     
     private List<Role> roles;
+    
+    private List<Resource> resources;
  
     public void setRoles(List<Role> roles) {
         this.roles = roles;
@@ -33,16 +35,21 @@ public class UserDetailsEntity implements UserDetails{
         this.passWord = user.getPassWord();
     }
  
-    public UserDetailsEntity(User user, List<Role> roles) {
+    public UserDetailsEntity(User user, List<Role> roles, List<Resource> resources) {
         this.userName = user.getUserName();
         this.passWord = user.getPassWord();
         this.uniacid = user.getUniacid();
         this.roles = roles;
+        this.resources = resources;
     }
  
     public List<Role> getRoles() {
         return roles;
     }
+
+	public List<Resource> getResources() {
+		return resources;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zhongwei.namecard.dao.UserMapper;
+import com.zhongwei.namecard.entity.Resource;
 import com.zhongwei.namecard.entity.Role;
 import com.zhongwei.namecard.entity.User;
 import com.zhongwei.namecard.entity.UserDetailsEntity;
@@ -22,6 +24,9 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private RoleService roleService;
 	
+	@Autowired
+	private ResourceService resourceService;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
@@ -32,7 +37,16 @@ public class UserService implements UserDetailsService{
             throw new UsernameNotFoundException("没有该用户");
         }
         List<Role> roles = roleService.getRolesByUserId(user.getId());
-        return new UserDetailsEntity(user, roles);
+        List<Resource> resources = new ArrayList<>();
+        if(roles!=null && roles.size()>0) {
+        	for(Role role : roles) {
+        		List<Resource> roleResources = this.resourceService.getResourcesByRoleId(role.getId());
+        		if(roleResources!=null && roleResources.size()>0) {
+        			resources.addAll(roleResources);
+        		}
+        	}
+        }
+        return new UserDetailsEntity(user, roles, resources);
 	}
 
 }

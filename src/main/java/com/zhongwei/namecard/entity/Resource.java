@@ -13,6 +13,8 @@ public class Resource implements Serializable{
 	private String resourceName;
 	
 	private boolean flag = false;
+	
+	private String type;
 
 	public Integer getId() {
 		return id;
@@ -45,5 +47,32 @@ public class Resource implements Serializable{
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Resource resource = (Resource) o;
+
+        if (!id.equals(resource.id)) return false;
+        return resourceName.equals(resource.resourceName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + resourceName.hashCode();
+        return result;
+    }
 
 }
