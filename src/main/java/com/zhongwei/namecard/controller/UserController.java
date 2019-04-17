@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import com.zhongwei.namecard.dao.UserMapper;
 import com.zhongwei.namecard.dao.UserRoleMapper;
 import com.zhongwei.namecard.entity.Role;
 import com.zhongwei.namecard.entity.User;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.RoleService;
 
 @Controller
@@ -95,8 +97,9 @@ public class UserController {
 	
 	@RequestMapping("/save")
 	@Transactional
-	public @ResponseBody CommonMessage saveUser(HttpServletRequest request, HttpServletResponse response, User user){
+	public @ResponseBody CommonMessage saveUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication, User user){
 		CommonMessage message = new CommonMessage();
+		UserDetailsEntity userDetailsEntity = (UserDetailsEntity)authentication.getPrincipal();
 		User testUser = this.userDao.getByUserName(user.getUserName());
 		if(user!=null && user.getId()!=null){
 			User oldUser = this.userDao.getOne(user.getId());
@@ -106,6 +109,7 @@ public class UserController {
 					message.setMessage("用户名已存在！");
 					return message;
 				}
+				user.setUniacid(userDetailsEntity.getUniacid());
 				this.userDao.update(user);
 				message.setSuccess(true);
 				message.setMessage("保存成功！");
@@ -122,6 +126,7 @@ public class UserController {
 			return message;
 		}
 		user.setPassWord(BCrypt.hashpw("123456", BCrypt.gensalt()));
+		user.setUniacid(userDetailsEntity.getUniacid());
 		this.userDao.insert(user);
 		message.setSuccess(true);
 		message.setMessage("保存成功！");
