@@ -13,6 +13,8 @@ public interface RoleMapper {
 	
 	List<Role> getAllForRoleList();
 	
+	List<Role> getByUniacid(Integer uniacid);
+	
 	List<Role> getByIds(List<Integer> roleIds);
 	
 	Role getOne(Integer id);

@@ -1,11 +1,13 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.ShopsSpecMapper;
 import com.zhongwei.namecard.entity.ShopsSpec;
 import com.zhongwei.namecard.entity.ShopsSpecExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 
 @Controller
 @RequestMapping("/shopProperty")
@@ -25,8 +28,11 @@ public class ShopPropertyController {
 	private ShopsSpecMapper shopsPropertyMapper;
 	
 	@RequestMapping("/getPropertyList")
-	public String getPropertyList(Model model) {
-		List<ShopsSpec> shopPropertyList = shopsPropertyMapper.selectByExample(new ShopsSpecExample());
+	public String getPropertyList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		ShopsSpecExample shopsSpecExample = new ShopsSpecExample();
+		shopsSpecExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<ShopsSpec> shopPropertyList = shopsPropertyMapper.selectByExample(shopsSpecExample);
 		model.addAttribute("propertys", shopPropertyList);
 		return "shoppropertylist";
 	}
@@ -45,8 +51,10 @@ public class ShopPropertyController {
 	@RequestMapping(value= {"/save"})
 	@Transactional
 	public @ResponseBody CommonMessage saveProperty(
-			HttpServletRequest request, HttpServletResponse response, ShopsSpec property){
+			HttpServletRequest request, HttpServletResponse response, Principal principal, Authentication authentication, ShopsSpec property){
 		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		property.setUniacid(user.getUniacid());
 		this.setPropertyDefaultValue(property);
 		if(property!=null && property.getId()!=null && property.getId()>0) {
 			ShopsSpec oldProperty = shopsPropertyMapper.selectByPrimaryKey(property.getId());

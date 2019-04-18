@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.entity.Card;
 import com.zhongwei.namecard.entity.CardExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.NameCardService;
 
@@ -37,8 +40,11 @@ public class NameCardController {
 	private FileUploadService fileUploadService;
 	
 	@RequestMapping("/getNamecardList")
-	public String getUsers(Model model) {
-		List<Card> cardList = cardMapper.selectByExample(new CardExample());
+	public String getNamecardList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardExample cardExample = new CardExample();
+		cardExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<Card> cardList = cardMapper.selectByExample(cardExample);
 		model.addAttribute("cards", cardList);
 		return "cardlist";
 	}
@@ -63,7 +69,10 @@ public class NameCardController {
 			@RequestParam(name="shareimageKey",required=false) MultipartFile shareimage,
 			@RequestParam(name="style2bgimageKey",required=false) MultipartFile style2bgimage,
 			@RequestParam(name="filesKey",required=false) MultipartFile[] personalimage,
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		card.setUniacid(user.getUniacid());
 		if(card!=null && card.getId()!=null && card.getId()>0) {
 			CardWithBLOBs oldCard = cardMapper.selectByPrimaryKey(card.getId());
 			if(oldCard!=null && oldCard.getId()!=0) {

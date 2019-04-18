@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ import com.zhongwei.namecard.entity.ShopsCategory;
 import com.zhongwei.namecard.entity.ShopsCategoryExample;
 import com.zhongwei.namecard.entity.ShopsSpec;
 import com.zhongwei.namecard.entity.ShopsSpecExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.ShopService;
 
@@ -48,8 +51,11 @@ public class ShopController {
 	private ShopService shopService;
 	
 	@RequestMapping("/getShopList")
-	public String getShops(Model model) {
-		List<CardShopsWithBLOBs> shopList = shopMapper.selectByExampleWithBLOBs(new CardShopsExample());
+	public String getShops(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardShopsExample cardShopsExample = new CardShopsExample();
+		cardShopsExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardShopsWithBLOBs> shopList = shopMapper.selectByExampleWithBLOBs(cardShopsExample);
 		for(CardShopsWithBLOBs shop : shopList) {
 			ShopsCategory category = this.categoryMapper.selectByPrimaryKey(shop.getTypeid());
 			shop.setTypeName(category==null?"":category.getTitle());
@@ -91,7 +97,10 @@ public class ShopController {
 			@RequestParam(name="gimageKey",required=false) MultipartFile gimage, 
 			@RequestParam(name="topPicFilesKey",required=false) MultipartFile[] topPicImage,
 			@RequestParam(name="cpBsFilesKey",required=false) MultipartFile[] cpBsImage,
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardShopsWithBLOBs shop){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		shop.setUniacid(user.getUniacid());
 		if(shop!=null && shop.getId()!=null && shop.getId()>0) {
 			CardShopsWithBLOBs oldShop = shopMapper.selectByPrimaryKey(shop.getId());
 			if(oldShop!=null && oldShop.getId()!=0) {

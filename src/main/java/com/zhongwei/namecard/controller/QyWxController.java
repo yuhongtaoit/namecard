@@ -1,11 +1,13 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.SetQYMapper;
 import com.zhongwei.namecard.entity.SetQY;
 import com.zhongwei.namecard.entity.SetQYExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 
 @Controller
 @RequestMapping("/qywx")
@@ -30,8 +33,11 @@ public class QyWxController {
 	}
 	
 	@RequestMapping("/getBasicSet")
-	public String getBasicSet(Model model) {
-		List<SetQY> setQyList = this.setQyMapper.selectByExample(new SetQYExample());
+	public String getBasicSet(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		SetQYExample setQYExample = new SetQYExample();
+		setQYExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<SetQY> setQyList = this.setQyMapper.selectByExample(setQYExample);
 		if(setQyList!=null && setQyList.size()>0) {
 			SetQY setQy = setQyList.get(0);
 			model.addAttribute("setQy", setQy);
@@ -41,8 +47,10 @@ public class QyWxController {
 	
 	@RequestMapping("/basicSetSave")
 	@Transactional
-	public @ResponseBody CommonMessage basicSetSave(HttpServletRequest request, HttpServletResponse response, SetQY setQy){
+	public @ResponseBody CommonMessage basicSetSave(HttpServletRequest request, HttpServletResponse response, SetQY setQy, Principal principal, Authentication authentication){
 		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		setQy.setUniacid(user.getUniacid());
 		this.setQyDefaultValue(setQy);
 		if(setQy!=null && setQy.getId()!=null){
 			SetQY oldSetQy = this.setQyMapper.selectByPrimaryKey(setQy.getId());

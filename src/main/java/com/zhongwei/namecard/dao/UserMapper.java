@@ -11,6 +11,8 @@ public interface UserMapper {
 	
 	List<User> getAll();
 	
+	List<User> getByUniacid(Integer uniacid);
+	
 	User getOne(Integer id);
 	
 	User getByUserName(String userName);

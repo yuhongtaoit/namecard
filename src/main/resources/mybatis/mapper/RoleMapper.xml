@@ -8,13 +8,20 @@
     </resultMap>
     
     <sql id="Base_Column_List" >
-        id, role_name, role_name_zh
+        id, role_name, role_name_zh, uniacid
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap" >
        SELECT 
        <include refid="Base_Column_List" />
 	   FROM role
+    </select>
+    
+    <select id="getByUniacid" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM role
+	   WHERE uniacid=#{uniacid} and role_name != 'ROLE_ADMIN'
     </select>
     
     <select id="getAllForRoleList" resultMap="BaseResultMap" >
@@ -51,9 +58,9 @@
     <insert id="insert" parameterType="com.zhongwei.namecard.entity.Role" >
        INSERT INTO 
        		role
-       		(role_name,role_name_zh) 
+       		(role_name,role_name_zh,uniacid) 
        	VALUES
-       		(#{roleName}, #{roleNameZh})
+       		(#{roleName}, #{roleNameZh}, #{uniacid})
     </insert>
     
     <update id="update" parameterType="com.zhongwei.namecard.entity.Role" >
@@ -61,7 +68,8 @@
        		role 
        SET 
        	<if test="roleName != null">role_name = #{roleName},</if>
-       	role_name_zh = #{roleNameZh}
+       	role_name_zh = #{roleNameZh},
+       	uniacid = #{uniacid}
        WHERE 
        		id = #{id}
     </update>

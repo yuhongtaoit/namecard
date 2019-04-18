@@ -1,11 +1,14 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -20,6 +23,7 @@ import com.zhongwei.namecard.dao.RoleResourceMapper;
 import com.zhongwei.namecard.dao.UserRoleMapper;
 import com.zhongwei.namecard.entity.Resource;
 import com.zhongwei.namecard.entity.Role;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.ResourceService;
 
 @Controller
@@ -42,16 +46,32 @@ public class RoleController {
 	private ResourceService resourceService;
 	
 	@RequestMapping("/getRoleList")
-	public String getUsers(Model model) {
-		List<Role> roles = roleDao.getAllForRoleList();
+	public String getRoleList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		List<Role> roles = roleDao.getByUniacid(user.getUniacid());
 		model.addAttribute("roles", roles);
 		return "rolelist";
 	}
 	
 	@RequestMapping("/getResources")
-	public String getResources(HttpServletRequest request, HttpServletResponse response, Model model, Integer roleId){
-		List<Resource> interfaceResources = resourceDao.getByType("interface");
-		List<Resource> menuResources = resourceDao.getByType("menu");
+	public String getResources(HttpServletRequest request, HttpServletResponse response, Model model, Principal principal, Authentication authentication, Integer roleId){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		List<Resource> interfaceResources = new ArrayList<>();
+		List<Resource> menuResources = new ArrayList<>();
+		if(hasAdminRole(user.getRoles())) {
+			interfaceResources = resourceDao.getByType("interface");
+			menuResources = resourceDao.getByType("menu");
+		}else {
+			List<Resource> grantResources = user.getResources();
+			for(Resource resource : grantResources) {
+				if("interface".equals(resource.getType()) && !interfaceResources.contains(resource)) {
+					interfaceResources.add(resource);
+				}
+				if("menu".equals(resource.getType()) && !menuResources.contains(resource)) {
+					menuResources.add(resource);
+				}
+			}
+		}
 		List<Resource> roleResources = resourceService.getResourcesByRoleId(roleId);
 		if(interfaceResources!=null && interfaceResources.size()>0) {
 			for(Resource resource : interfaceResources) {
@@ -111,8 +131,10 @@ public class RoleController {
 	
 	@RequestMapping("/save")
 	@Transactional
-	public @ResponseBody CommonMessage saveRole(HttpServletRequest request, HttpServletResponse response, Role role){
+	public @ResponseBody CommonMessage saveRole(HttpServletRequest request, HttpServletResponse response, Role role, Principal principal, Authentication authentication){
 		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		role.setUniacid(user.getUniacid());
 		Role repeatTest = this.roleDao.getByRoleName(role.getRoleName());
 		if(role!=null && role.getId()!=null){
 			Role oldRole = this.roleDao.getOne(role.getId());
@@ -160,5 +182,13 @@ public class RoleController {
 		return message;
     }
     
+    private boolean hasAdminRole(List<Role> roles) {
+		for(Role role : roles) {
+			if("ROLE_ADMIN".equals(role.getRoleName())) {
+				return true;
+			}
+		}
+		return false;
+	}
     
 }

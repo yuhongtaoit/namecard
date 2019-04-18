@@ -12,6 +12,8 @@ public class Role implements Serializable{
 	
 	private String roleNameZh;
 	
+	private Integer uniacid;
+	
 	private boolean flag = false;
 
 	public Integer getId() {
@@ -36,6 +38,14 @@ public class Role implements Serializable{
 
 	public void setRoleNameZh(String roleNameZh) {
 		this.roleNameZh = roleNameZh;
+	}
+
+	public Integer getUniacid() {
+		return uniacid;
+	}
+
+	public void setUniacid(Integer uniacid) {
+		this.uniacid = uniacid;
 	}
 
 	public boolean isFlag() {

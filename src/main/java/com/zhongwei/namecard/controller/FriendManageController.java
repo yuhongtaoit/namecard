@@ -1,11 +1,13 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import com.zhongwei.namecard.entity.CardFriendExample;
 import com.zhongwei.namecard.entity.CardFriendWithBLOBs;
 import com.zhongwei.namecard.entity.CardPl;
 import com.zhongwei.namecard.entity.CardPlExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.FriendService;
 
@@ -46,14 +49,17 @@ public class FriendManageController {
 	}
 	
 	@RequestMapping("/getDynamicList")
-	public String getDynamicList(Model model) {
-		List<CardFriendWithBLOBs> friendList = this.friendMapper.selectByExampleWithBLOBs(new CardFriendExample());
+	public String getDynamicList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardFriendExample cardFriendExample = new CardFriendExample();
+		cardFriendExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardFriendWithBLOBs> friendList = this.friendMapper.selectByExampleWithBLOBs(cardFriendExample);
 		model.addAttribute("friendList", friendList);
 		return "dynamiclist";
 	}
 	
 	@RequestMapping("/dynamicEdit")
-	public String newsEdit(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String dynamicEdit(HttpServletRequest request, HttpServletResponse response, Model model){
 		String idStr = request.getParameter("id");
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
@@ -68,9 +74,12 @@ public class FriendManageController {
 	
 	@RequestMapping(value= {"/dynamicSave"},consumes= {"multipart/form-data" })
 	@Transactional
-	public @ResponseBody CommonMessage newsSave(
+	public @ResponseBody CommonMessage dynamicSave(
 			@RequestParam(name="gimageKey",required=false) MultipartFile gimage, 
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardFriendWithBLOBs friend){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		friend.setUniacid(user.getUniacid());
 		if(friend!=null && friend.getId()!=null && friend.getId()>0) {
 			CardFriendWithBLOBs oldFriend = friendMapper.selectByPrimaryKey(friend.getId());
 			if(oldFriend!=null && oldFriend.getId()!=0) {
@@ -98,8 +107,11 @@ public class FriendManageController {
     }
 	
 	@RequestMapping("/getReviewList")
-	public String getReviewList(Model model) {
-		List<CardPl> cardPlList = this.cardPlMapper.selectByExample(new CardPlExample());
+	public String getReviewList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardPlExample cardPlExample = new CardPlExample();
+		cardPlExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardPl> cardPlList = this.cardPlMapper.selectByExample(cardPlExample);
 		model.addAttribute("cardPlList", cardPlList);
 		return "cardpllist";
 	}

@@ -1,11 +1,13 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardSetMapper;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.BasicSetService;
 
 @Controller
@@ -36,8 +39,11 @@ public class BasicSetController {
 	}
 	
 	@RequestMapping("/getBasicSet")
-	public String getBasicSet(Model model) {
-		List<CardSet> cardSetList = this.cardSetMapper.selectByExample(new CardSetExample());
+	public String getBasicSet(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardSetExample cardSetExample = new CardSetExample();
+		cardSetExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardSet> cardSetList = this.cardSetMapper.selectByExample(cardSetExample);
 		if(cardSetList!=null && cardSetList.size()>0) {
 			CardSet cardSet = cardSetList.get(0);
 			model.addAttribute("cardSet", cardSet);
@@ -50,7 +56,10 @@ public class BasicSetController {
 	public @ResponseBody CommonMessage basicSetSave(
 			@RequestParam(name="logoimageKey",required=false) MultipartFile logoimage, 
 			@RequestParam(name="shopBgImageKey",required=false) MultipartFile shopBgImage,
+			 Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardSet cardSet){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		cardSet.setUniacid(user.getUniacid());
 		if(cardSet!=null && cardSet.getId()!=null && cardSet.getId()>0) {
 			CardSet oldCardSet = cardSetMapper.selectByPrimaryKey(cardSet.getId());
 			if(oldCardSet!=null && oldCardSet.getId()!=0) {

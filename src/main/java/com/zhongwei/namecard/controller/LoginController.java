@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +53,7 @@ public class LoginController {
 		AccountWxappExample accountExample = new AccountWxappExample();
 		accountExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<AccountWxapp> accounts = accountMapper.selectByExample(accountExample);
+		
 		if(accounts!=null && accounts.size()>0) {
 			AccountWxapp account = accounts.get(0);
 			model.addAttribute("accountName", account.getName());
@@ -76,12 +75,8 @@ public class LoginController {
 	public @ResponseBody CommonMessage changeAccount(HttpServletRequest request, HttpServletResponse response, Principal principal, Authentication authentication, Model model, Integer acid) {
 		CommonMessage message = new CommonMessage();
 		AccountWxapp account = this.accountMapper.selectByPrimaryKey(acid);
-		UserDetailsEntity user = (UserDetailsEntity)authentication.getPrincipal();
-		user.setUniacid(account.getUniacid());
-		SecurityContextImpl securityContextImpl = (SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
-		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, authentication.getCredentials());
-		auth.setDetails(authentication.getDetails());
-		securityContextImpl.setAuthentication(auth);
+		UserDetailsEntity userInfo = (UserDetailsEntity) authentication.getPrincipal();
+		userInfo.setUniacid(account.getUniacid());
 		message.setSuccess(true);
 		message.setMessage("切换机构成功");
 		return message;

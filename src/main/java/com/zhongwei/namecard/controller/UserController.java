@@ -42,8 +42,9 @@ public class UserController {
 	private RoleService roleService;
 	
 	@RequestMapping("/getUserList")
-	public String getUsers(Model model) {
-		List<User> users=userDao.getAll();
+	public String getUsers(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		List<User> users=userDao.getByUniacid(user.getUniacid());
 		model.addAttribute("users", users);
 		return "userlist";
 	}

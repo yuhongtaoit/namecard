@@ -1,11 +1,13 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.AccountWxappMapper;
 import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.AccountWxappExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 
 @Controller
 @RequestMapping("/account")
@@ -25,8 +28,11 @@ public class AccountController {
 	private AccountWxappMapper accountMapper;
 	
 	@RequestMapping("/getAccountList")
-	public String getUsers(Model model) {
-		List<AccountWxapp> accountList = this.accountMapper.selectByExample(new AccountWxappExample());
+	public String getUsers(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		AccountWxappExample accountExample = new AccountWxappExample();
+		accountExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<AccountWxapp> accountList = this.accountMapper.selectByExample(accountExample);
 		model.addAttribute("accountList", accountList);
 		return "accountlist";
 	}
@@ -44,8 +50,10 @@ public class AccountController {
 	
 	@RequestMapping("/saveAccount")
 	@Transactional
-	public @ResponseBody CommonMessage saveAccount(HttpServletRequest request, HttpServletResponse response, AccountWxapp account){
+	public @ResponseBody CommonMessage saveAccount(HttpServletRequest request, HttpServletResponse response, Principal principal, Authentication authentication, AccountWxapp account){
 		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		account.setUniacid(user.getUniacid());
 		this.setAccountDefaultValue(account);
 		if(account!=null && account.getAcid()!=null){
 			AccountWxapp oldAccount = this.accountMapper.selectByPrimaryKey(account.getAcid());

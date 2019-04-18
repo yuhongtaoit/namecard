@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardProductMapper;
 import com.zhongwei.namecard.entity.CardProductExample;
 import com.zhongwei.namecard.entity.CardProductWithBLOBs;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.ProductService;
 
@@ -36,14 +39,17 @@ public class CardProductController {
 	private ProductService productService;
 	
 	@RequestMapping("/getProductList")
-	public String getShops(Model model) {
-		List<CardProductWithBLOBs> productList = productMapper.selectByExampleWithBLOBs(new CardProductExample());
+	public String getProducts(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardProductExample cardProductExample = new CardProductExample();
+		cardProductExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardProductWithBLOBs> productList = productMapper.selectByExampleWithBLOBs(cardProductExample);
 		model.addAttribute("products", productList);
 		return "productlist";
 	}
 	
 	@RequestMapping("/edit")
-	public String editShop(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String editProduct(HttpServletRequest request, HttpServletResponse response, Model model){
 		String idStr = request.getParameter("id");
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
@@ -54,17 +60,20 @@ public class CardProductController {
 			model.addAttribute("cpBsImgs", cpBsImgList);
 			model.addAttribute("cpBsContents", cpBsContentList);
 		}else {
-			model.addAttribute("shop", new CardProductWithBLOBs());
+			model.addAttribute("product", new CardProductWithBLOBs());
 		}
 		return "productedit";
 	}
 	
 	@RequestMapping(value= {"/save"},consumes= {"multipart/form-data" })
 	@Transactional
-	public @ResponseBody CommonMessage saveShop(
+	public @ResponseBody CommonMessage saveProduct(
 			@RequestParam(name="cpBsImgFilesKey",required=false) MultipartFile[] cpBsImg,
 			@RequestParam(name="cpBsContentFilesKey",required=false) MultipartFile[] cpBsContent,
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardProductWithBLOBs product){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		product.setUniacid(user.getUniacid());
 		if(product!=null && product.getId()!=null && product.getId()>0) {
 			CardProductWithBLOBs oldProduct = productMapper.selectByPrimaryKey(product.getId());
 			if(oldProduct!=null && oldProduct.getId()!=0) {

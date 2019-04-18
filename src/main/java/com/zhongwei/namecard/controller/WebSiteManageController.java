@@ -1,5 +1,6 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ import com.zhongwei.namecard.entity.CardNews;
 import com.zhongwei.namecard.entity.CardNewsExample;
 import com.zhongwei.namecard.entity.CardWeb;
 import com.zhongwei.namecard.entity.CardWebExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.WebSiteService;
 
@@ -59,8 +62,11 @@ public class WebSiteManageController {
 	}
 	
 	@RequestMapping("/getBasicSet")
-	public String getBasicSet(Model model) {
-		List<CardWeb> cardWebList = this.cardWebMapper.selectByExampleWithBLOBs(new CardWebExample());
+	public String getBasicSet(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardWebExample cardWebExample = new CardWebExample();
+		cardWebExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardWeb> cardWebList = this.cardWebMapper.selectByExampleWithBLOBs(cardWebExample);
 		if(cardWebList!=null && cardWebList.size()>0) {
 			CardWeb cardWeb = cardWebList.get(0);
 			model.addAttribute("cardWeb", cardWeb);
@@ -71,8 +77,11 @@ public class WebSiteManageController {
 	}
 	
 	@RequestMapping("/getAdvList")
-	public String getAdvList(Model model) {
-		List<CardAdv> cardAdvList = cardAdvMapper.selectByExample(new CardAdvExample());
+	public String getAdvList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardAdvExample cardAdvExample = new CardAdvExample();
+		cardAdvExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardAdv> cardAdvList = cardAdvMapper.selectByExample(cardAdvExample);
 		model.addAttribute("cardAdvList", cardAdvList);
 		return "websiteadvlist";
 	}
@@ -94,7 +103,10 @@ public class WebSiteManageController {
 	@Transactional
 	public @ResponseBody CommonMessage advSave(
 			@RequestParam(name="gimageKey",required=false) MultipartFile gimage, 
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardAdv cardAdv){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		cardAdv.setUniacid(user.getUniacid());
 		if(cardAdv!=null && cardAdv.getId()!=null && cardAdv.getId()>0) {
 			CardAdv oldCardAdv = cardAdvMapper.selectByPrimaryKey(cardAdv.getId());
 			if(oldCardAdv!=null && oldCardAdv.getId()!=0) {
@@ -122,8 +134,11 @@ public class WebSiteManageController {
     }
 	
 	@RequestMapping("/getNavList")
-	public String getNavList(Model model) {
-		List<CardNav> cardNavList = cardNavMapper.selectByExample(new CardNavExample());
+	public String getNavList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardNavExample cardNavExample = new CardNavExample();
+		cardNavExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardNav> cardNavList = cardNavMapper.selectByExample(cardNavExample);
 		model.addAttribute("cardNavList", cardNavList);
 		return "websitenavlist";
 	}
@@ -145,7 +160,10 @@ public class WebSiteManageController {
 	@Transactional
 	public @ResponseBody CommonMessage navSave(
 			@RequestParam(name="gimageKey",required=false) MultipartFile gimage, 
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardNav cardNav){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		cardNav.setUniacid(user.getUniacid());
 		if(cardNav!=null && cardNav.getId()!=null && cardNav.getId()>0) {
 			CardNav oldCardNav = cardNavMapper.selectByPrimaryKey(cardNav.getId());
 			if(oldCardNav!=null && oldCardNav.getId()!=0) {
@@ -173,8 +191,11 @@ public class WebSiteManageController {
     }
 	
 	@RequestMapping("/getNewsList")
-	public String getNewsList(Model model) {
-		List<CardNews> cardNewsList = cardNewsMapper.selectByExample(new CardNewsExample());
+	public String getNewsList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardNewsExample cardNewsExample = new CardNewsExample();
+		cardNewsExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardNews> cardNewsList = cardNewsMapper.selectByExample(cardNewsExample);
 		model.addAttribute("cardNewsList", cardNewsList);
 		return "websitenewslist";
 	}
@@ -197,7 +218,10 @@ public class WebSiteManageController {
 	@Transactional
 	public @ResponseBody CommonMessage newsSave(
 			@RequestParam(name="gimageKey",required=false) MultipartFile gimage, 
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardNews cardNews){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		cardNews.setUniacid(user.getUniacid());
 		if(cardNews!=null && cardNews.getId()!=null && cardNews.getId()>0) {
 			CardNews oldCardNews = cardNewsMapper.selectByPrimaryKey(cardNews.getId());
 			if(oldCardNews!=null && oldCardNews.getId()!=0) {
@@ -230,7 +254,10 @@ public class WebSiteManageController {
 			@RequestParam(name="videoKey",required=false) MultipartFile video, 
 			@RequestParam(name="imagesKey",required=false) MultipartFile images, 
 			@RequestParam(name="cpBsFilesKey",required=false) MultipartFile[] cpBsImage,
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardWeb cardWeb){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		cardWeb.setUniacid(user.getUniacid());
 		if(cardWeb!=null && cardWeb.getId()!=null && cardWeb.getId()>0) {
 			CardWeb oldCardWeb = cardWebMapper.selectByPrimaryKey(cardWeb.getId());
 			if(oldCardWeb!=null && oldCardWeb.getId()!=0) {

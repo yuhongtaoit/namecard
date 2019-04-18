@@ -22,6 +22,13 @@
 	   FROM users
 	   WHERE userName != 'admin'
     </select>
+    
+    <select id="getByUniacid" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM users
+	   WHERE userName != 'admin' and uniacid=#{uniacid}
+    </select>
 
     <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
         SELECT 

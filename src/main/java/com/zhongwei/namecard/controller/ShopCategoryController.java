@@ -1,11 +1,13 @@
 package com.zhongwei.namecard.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.ShopsCategoryMapper;
 import com.zhongwei.namecard.entity.ShopsCategory;
 import com.zhongwei.namecard.entity.ShopsCategoryExample;
+import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
 import com.zhongwei.namecard.service.ShopCategoryService;
 
@@ -35,8 +38,11 @@ public class ShopCategoryController {
 	private FileUploadService fileUploadService;
 	
 	@RequestMapping("/getCategoryList")
-	public String getCategoryList(Model model) {
-		List<ShopsCategory> shopCategoryList = shopsCategoryMapper.selectByExample(new ShopsCategoryExample());
+	public String getCategoryList(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		ShopsCategoryExample shopsCategoryExample = new ShopsCategoryExample();
+		shopsCategoryExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<ShopsCategory> shopCategoryList = shopsCategoryMapper.selectByExample(shopsCategoryExample);
 		model.addAttribute("categorys", shopCategoryList);
 		return "shopcategorylist";
 	}
@@ -56,7 +62,10 @@ public class ShopCategoryController {
 	@Transactional
 	public @ResponseBody CommonMessage saveCategory(
 			@RequestParam(name="thumbimageKey",required=false) MultipartFile thumbimage, 
+			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, ShopsCategory category){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		category.setUniacid(user.getUniacid());
 		if(category!=null && category.getId()!=null && category.getId()>0) {
 			ShopsCategory oldCategory = shopsCategoryMapper.selectByPrimaryKey(category.getId());
 			if(oldCategory!=null && oldCategory.getId()!=0) {
