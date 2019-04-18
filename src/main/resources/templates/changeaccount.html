@@ -13,23 +13,22 @@ function cancel(){
 	window.close();
 }
 function save(){
-	var password = document.getElementById("password").value;
-	$.post("/user/updatePassword",
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	var uuid = document.getElementById("id"+index).value;
+	$.post("/changeAccount",
 			{
-				'password':password
+				'acid':uuid
 			},
 			function(data){
 				var json = eval(data);
 				if(json.success){
 					window.opener.location.href = '/index';
-					/* $.ajax({
-			             type: "GET",
-			             url: "/logout",
-			             async:false,
-			             success: function(data){
-			            	 
-			             }
-			         }); */
 					alert(json.message);
 					window.close();
 				}else{
@@ -46,8 +45,9 @@ function save(){
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<form role="form" action="/user/save" id="userinfo">
-				<div class="form-group">
-					 <label for="exampleInputEmail1">新密码</label><input type="text" class="form-control" id="password" name="password"/>
+				<div th:each="account,iterStat : ${accountList}" class="radio" style="padding-left: 15px;">
+					 <input type="hidden" th:value="${account.acid}" th:id="'id'+${iterStat.count}"/>
+					 <input th:text="${account.name}" name="radio" th:checked="${account.uniacid}==${uniacid}" type="radio"/>
 				</div>
 				<div align="center">
 					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>

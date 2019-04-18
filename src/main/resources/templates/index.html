@@ -110,12 +110,19 @@ function updatePassword(){
 	window.open("/user/toUpdatePassword","修改密码","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
+function changeAccount(){
+	window.open("/toChangeAccount","修改密码","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
+}
+
 </script>
 </head>
 <body>
 <div class="col-md-12 column" style="margin-bottom: 10px">
+	<input type="hidden" id="hasRoleAdmin" name="hasRoleAdmin" th:value="${hasRoleAdmin}"/>
+	<input type="hidden" id="menuResources" name="menuResources" th:value="${menuResources}"/>
 	<p style="float: left;margin-left: 20px;margin-top: 10px;color: orange;" th:text="'欢迎您，'+${userName}"></p>
 	<p style="float: left;margin-left: 20px;margin-top: 10px;color: orange;" th:text="'您当前登录的机构是：'+${accountName}"></p>
+	<a id="changeAccount" href="javascript:void(0);" onclick="changeAccount()" style="float: left;margin-left: 20px;margin-top: 10px;color: orange;cursor: pointer;">切换机构</a>
 	<a href="/logout" style="float: right;margin-right: 20px;margin-top: 10px;color: orange;cursor: pointer;">退出登录</a>
 	<a href="javascript:void(0);" onclick="updatePassword()" style="float: right;margin-right: 20px;margin-top: 10px;color: orange;cursor: pointer;">修改密码</a>
 </div>
@@ -125,16 +132,16 @@ function updatePassword(){
 		<div class="col-md-12 column">
 			<nav class="navbar navbar-default" role="navigation" style="background-color: #FCF5E3">
 				<div class="navbar-header">
-					 <a class="navbar-brand" href="#" onclick="userList()">用户管理</a>
-					 <a class="navbar-brand" href="#" onclick="roleList()">角色管理</a>
-					 <a class="navbar-brand" href="#" onclick="accountManage()">商户管理</a>
-					 <a class="navbar-brand" href="#" onclick="namecard()">名片管理</a>
-					 <a class="navbar-brand" href="#" onclick="shop()">商城管理</a>
-					 <a class="navbar-brand" href="#" onclick="product()">产品管理</a>
-					 <a class="navbar-brand" href="#" onclick="officialWebsite()">官网管理</a>
-					 <a class="navbar-brand" href="#" onclick="basicSet()">基础设置</a>
-					 <a class="navbar-brand" href="#" onclick="qywxSet()">企业微信设置</a>
-					 <a class="navbar-brand" href="#" onclick="friendManage()">朋友圈管理</a>
+					 <a class="navbar-brand" id="userManage" href="#" onclick="userList()">用户管理</a>
+					 <a class="navbar-brand" id="roleManage" href="#" onclick="roleList()">角色管理</a>
+					 <a class="navbar-brand" id="accountManage" href="#" onclick="accountManage()">商户管理</a>
+					 <a class="navbar-brand" id="cardManage" href="#" onclick="namecard()">名片管理</a>
+					 <a class="navbar-brand" id="shopManage" href="#" onclick="shop()">商城管理</a>
+					 <a class="navbar-brand" id="productManage" href="#" onclick="product()">产品管理</a>
+					 <a class="navbar-brand" id="websiteManage" href="#" onclick="officialWebsite()">官网管理</a>
+					 <a class="navbar-brand" id="basicManage" href="#" onclick="basicSet()">基础设置</a>
+					 <a class="navbar-brand" id="qywxManage" href="#" onclick="qywxSet()">企业微信设置</a>
+					 <a class="navbar-brand" id="friendManage" href="#" onclick="friendManage()">朋友圈管理</a>
 				</div>
 			</nav>
 			<div class="jumbotron" id="mainList">
@@ -144,6 +151,44 @@ function updatePassword(){
 </div>
 <script type="text/javascript">
 userList();
+var hasRoleAdmin = $("#hasRoleAdmin").val();
+if(!hasRoleAdmin){
+	$("#changeAccount").remove();
+}
+var menuResources = toArray($("#menuResources").val());
+if(!hasRoleAdmin && menuResources.indexOf("menu_user_manage") == -1){
+	$("#userManage").remove();
+}
+if(!hasRoleAdmin && menuResources.indexOf("menu_role_manage") == -1){
+	$("#roleManage").remove();
+}
+if(!hasRoleAdmin && menuResources.indexOf("menu_account_manage") == -1){
+	$("#accountManage").remove();
+}
+if(!hasRoleAdmin && menuResources.indexOf("menu_card_manage") == -1){
+	$("#cardManage").remove();
+}
+if(!hasRoleAdmin && menuResources.indexOf("menu_shop_manage") == -1){
+	$("#shopManage").remove();
+}
+if(!hasRoleAdmin && menuResources.indexOf("menu_product_manage") == -1){
+	$("#productManage").remove();
+}
+function toArray(val){
+	if(myStartWith(val,"[")){
+		return val.substring(val.indexOf("[")+1, val.lastIndexOf("]")).split(",");
+	}else{
+		return val.split(",");
+	}
+}
+
+function myStartWith(val,flag){
+	if(val.indexOf(flag)==0){
+		return true;
+	}else{
+		return false;
+	}
+}
 </script>
 </body>
 </html>

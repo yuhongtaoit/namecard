@@ -71,6 +71,10 @@ public class UserDetailsEntity implements UserDetails{
 		return uniacid;
 	}
 
+	public void setUniacid(Integer uniacid) {
+		this.uniacid = uniacid;
+	}
+
 	@Override
 	public String getUsername() {
 		return userName;

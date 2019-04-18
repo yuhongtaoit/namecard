@@ -64,7 +64,7 @@ public class Resource implements Serializable{
         Resource resource = (Resource) o;
 
         if (!id.equals(resource.id)) return false;
-        return resourceName.equals(resource.resourceName);
+        return resourceName.equals(resource.resourceName) && url.equals(resource.url) && type.equals(resource.type);
 
     }
 
@@ -72,6 +72,8 @@ public class Resource implements Serializable{
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + resourceName.hashCode();
+        result = 31 * result + url.hashCode();
+        result = 31 * result + type.hashCode();
         return result;
     }
 
