@@ -156,23 +156,35 @@ if(!hasRoleAdmin){
 	$("#changeAccount").remove();
 }
 var menuResources = toArray($("#menuResources").val());
-if(!hasRoleAdmin && menuResources.indexOf("menu_user_manage") == -1){
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_user_manage")){
 	$("#userManage").remove();
 }
-if(!hasRoleAdmin && menuResources.indexOf("menu_role_manage") == -1){
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_role_manage")){
 	$("#roleManage").remove();
 }
-if(!hasRoleAdmin && menuResources.indexOf("menu_account_manage") == -1){
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_account_manage")){
 	$("#accountManage").remove();
 }
-if(!hasRoleAdmin && menuResources.indexOf("menu_card_manage") == -1){
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_card_manage")){
 	$("#cardManage").remove();
 }
-if(!hasRoleAdmin && menuResources.indexOf("menu_shop_manage") == -1){
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_shop_manage")){
 	$("#shopManage").remove();
 }
-if(!hasRoleAdmin && menuResources.indexOf("menu_product_manage") == -1){
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_product_manage")){
 	$("#productManage").remove();
+}
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_website_manage")){
+	$("#websiteManage").remove();
+}
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_basic_manage")){
+	$("#basicManage").remove();
+}
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_qywx_manage")){
+	$("#qywxManage").remove();
+}
+if(!hasRoleAdmin && !hasValue(menuResources,"menu_friend_manage")){
+	$("#friendManage").remove();
 }
 function toArray(val){
 	if(myStartWith(val,"[")){
@@ -180,6 +192,19 @@ function toArray(val){
 	}else{
 		return val.split(",");
 	}
+}
+
+function hasValue(array,val){
+	for(var i=0;i<array.length;i++){
+		if(myTrim(array[i])==val){
+			return true;
+		}
+	}
+	return false;
+}
+
+function myTrim(x) {
+    return x.replace(/^\s+|\s+$/gm,'');
 }
 
 function myStartWith(val,flag){

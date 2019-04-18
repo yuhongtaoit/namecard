@@ -34,10 +34,7 @@ import com.zhongwei.namecard.entity.CardSet;
 @Service
 public class MiniQrService {
 	
-	@Autowired
-	private FileUploadService fileUploadService;
-	
-	public Map getminiqrQr(String sceneStr, String accessToken) {
+	public Map getminiqrQr(String sceneStr, String accessToken ,Integer uniacid, Integer cardId) {
         RestTemplate rest = new RestTemplate();
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -59,8 +56,7 @@ public class MiniQrService {
             ResponseEntity<byte[]> entity = rest.exchange(url, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
             byte[] result = entity.getBody();
             inputStream = new ByteArrayInputStream(result);
-
-            File file = new File("C:/Users/wangqiulin/Desktop/1.png");
+            File file = new File("E:/attachment/images/"+uniacid+"/"+cardId+".png");
             if (!file.exists()){
                 file.createNewFile();
             }
