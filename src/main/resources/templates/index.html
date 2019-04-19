@@ -5,8 +5,9 @@
 <script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="jquery/jquery-form.js"></script>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="css/pagination.css" rel="stylesheet">
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
+<script type="text/javascript" src="js/pagination/pagination.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 html{
@@ -44,8 +45,8 @@ body{
     margin-right:-4px;
 }
 </style>
-
 <script type="text/javascript">
+var url = "";
 function userList(){
 	$( "#mainList" ).load( "/user/getUserList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
@@ -62,12 +63,14 @@ function shop(){
 	$( "#mainList" ).load( "/shop/getShopList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	getPage();
 }
 
 function product(){
 	$( "#mainList" ).load( "/product/getProductList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	getPage();
 }
 
 function namecard(){
@@ -144,7 +147,11 @@ function changeAccount(){
 					 <a class="navbar-brand" id="friendManage" href="#" onclick="friendManage()">朋友圈管理</a>
 				</div>
 			</nav>
-			<div class="jumbotron" id="mainList">
+			<div class="jumbotron" >
+				<div id="mainList">
+				</div>
+				<div id="pagination" align="center">
+	            </div>
 			</div>
 		</div>
 	</div>
@@ -186,6 +193,51 @@ if(!hasRoleAdmin && !hasValue(menuResources,"menu_qywx_manage")){
 if(!hasRoleAdmin && !hasValue(menuResources,"menu_friend_manage")){
 	$("#friendManage").remove();
 }
+function getPage(){
+	alert(1111);
+	$("#pagination").html("");
+	$("#pagination").pagination({
+		dataSource: function(done){
+			$.ajax({
+			    type : "GET",
+			    url : "/product/getProductTotal",
+				dataType : "json",
+				success : function(data) {
+					var json = eval(data);
+					if(json.success){
+						var total = json.message;
+						var result = [];
+						
+						for(var i = 1; i <= total; i++){
+							result.push(i);
+						}
+						
+						done(result);
+					}
+				}
+		  	});
+	        
+	    },
+		showPrevious:true,
+		showNext:true,
+		prevText:'上一页', // "前一页"分页按钮上显示的文字
+		nextText:'下一页', // "后一页"分页按钮上显示的文字
+		pageRange: 3,
+		autoHidePrevious:true,
+		autoHideNext:true,
+		pageSize: 2,
+		callback:function (response, pagination) {
+			$.ajax({
+			    type : "GET",
+			    url : "/product/getProductList",
+				success : function(data) {
+					$('#mainList').html(data);
+				}
+		  	});
+	    } // 点击分页按钮的回调函数
+	});
+}
+
 function toArray(val){
 	if(myStartWith(val,"[")){
 		return val.substring(val.indexOf("[")+1, val.lastIndexOf("]")).split(",");

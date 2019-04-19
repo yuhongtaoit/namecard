@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardProductMapper;
 import com.zhongwei.namecard.entity.CardProductExample;
@@ -38,14 +41,37 @@ public class CardProductController {
 	@Autowired
 	private ProductService productService;
 	
+	private int pageSize = 2;//每页大小
+	
+	private int pageNo = 1;//第几页，初始值为1
+	
 	@RequestMapping("/getProductList")
-	public String getProducts(Model model, Principal principal, Authentication authentication) {
+	public String getProducts(Model model, Integer pindex, Principal principal, Authentication authentication) {
+		if(pindex == null) 
+			pindex = 0;
+		
+		if(pindex<1) {
+			pindex = pageNo;
+		}
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		Page<CardProductWithBLOBs> page = PageHelper.startPage(pindex, pageSize);
 		CardProductExample cardProductExample = new CardProductExample();
 		cardProductExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<CardProductWithBLOBs> productList = productMapper.selectByExampleWithBLOBs(cardProductExample);
 		model.addAttribute("products", productList);
 		return "productlist";
+	}
+	
+	@RequestMapping("/getProductTotal")
+	public @ResponseBody CommonMessage getProductTotal(Model model, Principal principal, Authentication authentication) {
+		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardProductExample cardProductExample = new CardProductExample();
+		cardProductExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		int total = productMapper.countByExample(cardProductExample);
+		message.setSuccess(true);
+		message.setMessage(String.valueOf(total));
+		return message;
 	}
 	
 	@RequestMapping("/edit")
