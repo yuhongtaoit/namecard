@@ -8,6 +8,7 @@
 <link href="css/pagination.css" rel="stylesheet">
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/pagination/pagination.js"></script>
+<script src="/bootstrap/js/bootstrap-paginator.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 html{
@@ -150,8 +151,9 @@ function changeAccount(){
 			<div class="jumbotron" >
 				<div id="mainList">
 				</div>
-				<div id="pagination" align="center">
-	            </div>
+				<div align="center">
+		    		<ul id='pagearea' class="pagination"></ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -193,50 +195,30 @@ if(!hasRoleAdmin && !hasValue(menuResources,"menu_qywx_manage")){
 if(!hasRoleAdmin && !hasValue(menuResources,"menu_friend_manage")){
 	$("#friendManage").remove();
 }
-function getPage(){
-	alert(1111);
-	$("#pagination").html("");
-	$("#pagination").pagination({
-		dataSource: function(done){
+$(function(){
+	var options = {
+		bootstrapMajorVersion:3,
+        currentPage: 2,
+        totalPages: 5,
+        size:"normal",
+        alignment:"center",
+        onPageClicked: function(e,originalEvent,type,page){
+        	alert(type);
+        	alert(page);
+			var url = "";
+				url = "/product/getProductList";
 			$.ajax({
-			    type : "GET",
-			    url : "/product/getProductTotal",
-				dataType : "json",
-				success : function(data) {
-					var json = eval(data);
-					if(json.success){
-						var total = json.message;
-						var result = [];
-						
-						for(var i = 1; i <= total; i++){
-							result.push(i);
-						}
-						
-						done(result);
-					}
-				}
-		  	});
-	        
-	    },
-		showPrevious:true,
-		showNext:true,
-		prevText:'上一页', // "前一页"分页按钮上显示的文字
-		nextText:'下一页', // "后一页"分页按钮上显示的文字
-		pageRange: 3,
-		autoHidePrevious:true,
-		autoHideNext:true,
-		pageSize: 2,
-		callback:function (response, pagination) {
-			$.ajax({
-			    type : "GET",
-			    url : "/product/getProductList",
-				success : function(data) {
-					$('#mainList').html(data);
-				}
-		  	});
-	    } // 点击分页按钮的回调函数
-	});
-}
+	             type: "GET",
+	             url: url,
+	             async:false,
+	             success: function(data){
+	            	 $("#mainList", window.document).html(data);
+	             }
+	         });
+        }
+    }
+    $('#pagearea').bootstrapPaginator(options);
+})
 
 function toArray(val){
 	if(myStartWith(val,"[")){
