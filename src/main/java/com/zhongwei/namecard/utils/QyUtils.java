@@ -72,8 +72,7 @@ public class QyUtils {
 	}
 
 	public static int checkQyLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// int uniacid = Integer.valueOf(request.getParameter("uniacid"));
-		int uniacid = Constants.UNIACID;
+		Integer uniacid = Integer.valueOf(request.getParameter("uniacid"));
 		List<SetQY> qyList = new ArrayList<SetQY>();
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);
@@ -126,7 +125,11 @@ public class QyUtils {
 			String geturl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=" + qytoken + "&code="
 					+ code;
 			JSONObject json = HttpClientUtils.get(geturl);// ******
-			userId = json.getString("UserId");
+			try {
+				userId = json.getString("UserId");
+			} catch (Exception e) {
+				return null;
+			}
 			if (StringUtils.hasText(userId)) {
 				logger.info("请在企业微信打开");
 			}
@@ -134,12 +137,7 @@ public class QyUtils {
 		return userId;
 	}
 
-	public static void friendDownload(String mediaId) {
-
-	}
-
-	public static String downloadImage(String mediaId, int cardId) throws Exception {
-		Integer uniacid = Constants.UNIACID;
+	public static String downloadImage(Integer uniacid,  String mediaId, int cardId) throws Exception {
 		List<SetQY> qyList = new ArrayList<SetQY>();
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);

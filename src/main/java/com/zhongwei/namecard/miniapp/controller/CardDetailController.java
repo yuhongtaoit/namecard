@@ -420,7 +420,7 @@ public class CardDetailController {
 					}
 					friend.setAllImgarr(arr1);
 				}
-				friend.setTimeStr(DateUtils.millisToString(friend.getTime()));
+				friend.setTimeStr(DateUtils.millisToString(Long.valueOf(friend.getTime()*Long.valueOf(1000))));
 				friend.setHeadImg(ImageUrlUtils.getAbsolutelyURL(friend.getHeadImg()));
 			}
 		}

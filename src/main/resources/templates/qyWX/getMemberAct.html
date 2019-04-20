@@ -25,19 +25,19 @@
 <body>
     <div class="weui-flex" style="position: fixed;top: 0;width: 100%;">
         <div class="weui-flex__item navbar active_navbar">
-           <a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=2)}">
+           <a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=${uniacid})}">
                 <div class="placeholder">时间</div>
                 <div class="border" ></div>
             </a>
         </div>
         <div class="weui-flex__item navbar">
-            <a th:href="@{${projectRootPath} + 'member/memberAct'(uniacid=2)}">
+            <a th:href="@{${projectRootPath} + 'member/memberAct'(uniacid=${uniacid})}">
                 <div class="placeholder">行为</div>
                 <div class="border" style="display:block"></div>
             </a>
         </div>
         <div class="weui-flex__item navbar">
-            <a th:href="@{${projectRootPath} + 'interact/interact'(uniacid=2)}">
+            <a th:href="@{${projectRootPath} + 'interact/interact'(uniacid=${uniacid})}">
                 <div class="placeholder">人</div>
                 <div class="border"></div>
             </a>
@@ -55,7 +55,11 @@
     <script type="text/javascript" src="../js/qyjs/weui.min.js"></script>
     <script src="../js/qyjs/mescroll.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
-	
+    var state = {foo: "bar"};
+    var uniacid = [[${uniacid}]];
+    var type = [[${type}]];
+    history.replaceState(state,'',[[${projectRootPath}]] + "member/getMemberAct?uniacid="+uniacid + "&type=" + type);
+    
     function getNoDataMsg(page) {
 		if (page != null && page > 1)
 			return "<div class='no-data'>已经到底了</div>";
@@ -74,7 +78,7 @@
 
     function load(pageObj) {
     	var type = [[${type}]]
-		$.post([[${projectRootPath}]] + "member/getMemberActiontype", {page:pageObj.num,type:type}, function(data){
+		$.post([[${projectRootPath}]] + "member/getMemberActiontype", {uniacid: uniacid,page:pageObj.num,type:type}, function(data){
 
             if (data.error>0) {
 					alert(data.msg);
@@ -191,7 +195,7 @@ function getPager(callback, mescroll_id) {
     }
 
       function member_detail(id, card_id) {
-    	var url = [[${projectRootPath}]] + "staffer/memberDetail?uniacid=2"+'&member_id='+id+'&card_id='+card_id;
+    	var url = [[${projectRootPath}]] + "staffer/memberDetail?uniacid=" + uniacid +'&member_id='+id+'&card_id='+card_id;
         to_url(url);
     }
 	

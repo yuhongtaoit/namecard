@@ -35,7 +35,6 @@ import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.DateUtils;
 import com.zhongwei.namecard.utils.QyUtils;
 
@@ -66,8 +65,13 @@ public class StafferMemberController {
 	
 	@RequestMapping("/clientEdit")
 	public String clientEdit(HttpServletRequest request, HttpServletResponse response,String openid, Integer card_id, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
-		int uniacid = Constants.UNIACID;
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
 			logger.info("请在企业微信打开");
@@ -126,12 +130,21 @@ public class StafferMemberController {
 		
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
 		model.addAttribute("info", info);
+		model.addAttribute("uniacid", uniacid);
+		model.addAttribute("openid", openid);
+		model.addAttribute("card_id", card_id);
 		return "qyWX/clientEdit";
 	}
 	
 	@RequestMapping("/getMemberFollow")
 	public String getMemberFollow(HttpServletRequest request, HttpServletResponse response,
 			Integer mid, Integer card_id, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -161,6 +174,9 @@ public class StafferMemberController {
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
 		model.addAttribute("member_info", memberInfo);
+		model.addAttribute("uniacid", uniacid);
+		model.addAttribute("mid", mid);
+		model.addAttribute("card_id", card_id);
 		return "qyWX/getMemberFollow";
 	}
 	
@@ -173,7 +189,13 @@ public class StafferMemberController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -240,7 +262,13 @@ public class StafferMemberController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -309,7 +337,13 @@ public class StafferMemberController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -373,7 +407,13 @@ public class StafferMemberController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -428,7 +468,13 @@ public class StafferMemberController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -474,7 +520,13 @@ public class StafferMemberController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {

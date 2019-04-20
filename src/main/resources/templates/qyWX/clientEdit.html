@@ -86,7 +86,11 @@ body{background-color:#F3F3F3;width:100%;height:100%;overflow-x:hidden;max-width
 var flag = false;
 var pbStatus = 0;
 var hmdStatus = 0;
-
+var state = {foo: "bar"};
+var uniacid = [[${uniacid}]];
+var card_id = [[${card_id}]];
+var openid = [[${openid}]];
+history.replaceState(state,'',[[${projectRootPath}]] + "client/clientEdit?uniacid="+uniacid+ "&card_id" + card_id + "&openid=" + openid);
 $(function() {
 	$('#switchCP_1').prop('checked', [[${info['pbStatus']}]]);	
 	$('#switchCP').prop('checked', [[${info['hmdStatus']}]]);
@@ -106,7 +110,7 @@ $(function() {
 		var phone=$('#phone').val();
 		var m_id = [[${info['id']}]];
 		flag = true;
-		$.post([[${projectRootPath}]] + "staffer/member/clientSave", {hmdStatus:hmdStatus,pbStatus:pbStatus,phone:phone,name:name,mid:m_id}, function(data){
+		$.post([[${projectRootPath}]] + "staffer/member/clientSave", {hmdStatus:hmdStatus,pbStatus:pbStatus,phone:phone,name:name,uniacid: uniacid,mid:m_id}, function(data){
 			if (data.Code>0) {
 				alert(data.msg);
 				flag = false;

@@ -160,6 +160,11 @@
 	
     var textname;
 	var t=false;
+	var state = {foo: "bar"};
+	var uniacid = [[${uniacid}]];
+	var mid = [[${mid}]];
+	var card_id = [[${card_id}]];
+	history.replaceState(state,'',[[${projectRootPath}]] + "staffer/member/getMemberFollow?uniacid="+uniacid+ "&card_id" + card_id + "&mid=" + mid);
     $(function () {
 
         $('.show-follow-list').click(function () {
@@ -198,7 +203,7 @@
 			t=true;
 			$.post(
 				[[${projectRootPath}]] + "staffer/member/getMemberCloser",
-				{content:sign,card_id:card_id,card_mid:card_mid}, 
+				{uniacid: uniacid,content:sign,card_id:card_id,card_mid:card_mid}, 
 				function(data){
 					if (data.Code>0) {
 						alert(data.msg);

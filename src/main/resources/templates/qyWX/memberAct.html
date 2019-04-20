@@ -21,19 +21,19 @@
 <body>
 <div class="weui-flex" style="position: fixed;top: 0;width: 100%;">
         <div class="weui-flex__item navbar">
-            <a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=2)}">
+            <a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=${uniacid})}">
                 <div class="placeholder">时间</div>
                 <div class="border" ></div>
             </a>
         </div>
         <div class="weui-flex__item navbar active_navbar">
-            <a th:href="@{${projectRootPath} + 'member/memberAct'(uniacid=2)}">
+            <a th:href="@{${projectRootPath} + 'member/memberAct'(uniacid=${uniacid})}">
                 <div class="placeholder">行为</div>
                 <div class="border" style="display:block"></div>
             </a>
         </div>
         <div class="weui-flex__item navbar">
-            <a th:href="@{${projectRootPath} + 'interact/interact'(uniacid=2)}">
+            <a th:href="@{${projectRootPath} + 'interact/interact'(uniacid=${uniacid})}">
                 <div class="placeholder">人</div>
                 <div class="border"></div>
             </a>
@@ -131,7 +131,7 @@
 </div>
 
 <div class="weui-tabbar tabbar">
-	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/9.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label" style="color:#f2c507;">雷达</p>
 	</a>
@@ -142,15 +142,15 @@
 		</span>
 		<p class="weui-tabbar__label">消息</p>
 	</a-->
-	<a th:href="@{${projectRootPath} + 'client/client'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'client/client'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">客户</p>
 	</a>
-	<a th:href="@{${projectRootPath} + 'friend/friend'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'friend/friend'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">动态</p>
 	</a>
-	<a th:href="@{${projectRootPath} + 'home/home'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'home/home'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">我</p>
 	</a>
@@ -160,6 +160,9 @@
     <script type="text/javascript" th:inline="javascript">
 	
     var startTime1 = null;
+    var state = {foo: "bar"};
+    var uniacid = [[${uniacid}]];
+    history.replaceState(state,'',[[${projectRootPath}]] + "member/memberAct?uniacid="+uniacid);
 	$(function () {
 
 		loadBtn();
@@ -177,7 +180,7 @@
 		});
 	
 		$('.chkhref').on('click', function () {
-			window.location = [[${projectRootPath}]] + "member/getMemberAct?type=" + $(this).attr("data-id");;
+			window.location = [[${projectRootPath}]] + "member/getMemberAct?type=" + $(this).attr("data-id")+"&uniacid=" + uniacid;
 		});
 	}
     </script>

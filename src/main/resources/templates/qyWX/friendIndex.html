@@ -51,7 +51,7 @@
   </div>
 	
 	<div class="weui-tabbar tabbar">
-	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/9_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label" >雷达</p>
 	</a>
@@ -62,15 +62,15 @@
 		</span>
 		<p class="weui-tabbar__label">消息</p>
 	</a-->
-	<a th:href="@{${projectRootPath} + 'client/client'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'client/client'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">客户</p>
 	</a>
-	<a th:href="@{${projectRootPath} + 'friend/friend'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'friend/friend'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/16.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label" style="color:#f2c507;">动态</p>
 	</a>
-	<a th:href="@{${projectRootPath} + 'home/home'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'home/home'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">我</p>
 	</a>
@@ -81,6 +81,10 @@
     <script src="../js/qyjs/mescroll.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
   //分页控件
+  var state = {foo: "bar"};
+  var uniacid = [[${uniacid}]];
+  history.replaceState(state,'',[[${projectRootPath}]] + "friend/friend?uniacid="+uniacid);
+  
   function getPager(callback, mescroll_id) {
       if (mescroll_id == null)
           mescroll_id = "mescroll";
@@ -110,7 +114,7 @@
         //发动态
         $(".float-btn").on("click", function () {
   		//跳转发布动态的页面
-  			var url =  [[${projectRootPath}]] + "friend/friendEditor";
+  			var url =  [[${projectRootPath}]] + "friend/friendEditor?uniacid=" + uniacid;
   			to_url(url);
         })
 
@@ -134,7 +138,7 @@
         if (pageObj == null)
             pageObj = { num: 1 };
         var html = "";
-         $.post( [[${projectRootPath}]] + "friend/getFriendlist", {page:pageObj.num}, function(data){
+         $.post( [[${projectRootPath}]] + "friend/getFriendlist", {uniacid: uniacid,page:pageObj.num}, function(data){
   				if (data.error>0) {
   					alert(data.msg);
                       mescroll.endErr();
@@ -188,7 +192,7 @@
     var cmt_list = $(".comment_" + fid).parent();
   	var r=confirm("确定要删除该评论吗")
   	  if (r==true){
-  		 $.post( [[${projectRootPath}]] + "friend/deletePl", {fid:fid}, function(data){
+  		 $.post( [[${projectRootPath}]] + "friend/deletePl", {uniacid: uniacid,fid:fid}, function(data){
   					if (data.Code>0) {
   						alert(data.msg);
   					}else{
@@ -211,7 +215,7 @@
   	del_dt =true;
   	var r=confirm("确定要删除该动态吗")
   	  if (r==true){
-  		$.post( [[${projectRootPath}]] + "friend/deleteDt", {fid:fid}, function(data){
+  		$.post( [[${projectRootPath}]] + "friend/deleteDt", {uniacid: uniacid,fid:fid}, function(data){
   				if (data.Code>0) {
   					alert(data.msg);
   				}else{
@@ -239,7 +243,7 @@
   		return;
   	}
   	pl_1 =true;
-  	$.post( [[${projectRootPath}]] + "friend/addPl", {fid:fid,content:content}, function(data){
+  	$.post( [[${projectRootPath}]] + "friend/addPl", {uniacid: uniacid,fid:fid,content:content}, function(data){
   			if (data.Code>0) {
   				alert(data.msg);
   			}else{
@@ -267,7 +271,7 @@
       $('#actions_67').hide();
       $('.f12').hide();
 
-  	$.post( [[${projectRootPath}]] + "friend/addZan", {fid:fid}, function(data){
+  	$.post( [[${projectRootPath}]] + "friend/addZan", {uniacid: uniacid,fid:fid}, function(data){
   			if (data.Code>0) {
   				alert(data.msg);
   			}else{

@@ -26,7 +26,6 @@ import com.zhongwei.namecard.entity.ActReportExample;
 import com.zhongwei.namecard.entity.Card;
 import com.zhongwei.namecard.entity.CardExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.QyUtils;
 
 @Controller
@@ -46,6 +45,12 @@ public class InteractController {
 	
 	@RequestMapping("/interact")
 	public String stafferIndex(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -58,6 +63,7 @@ public class InteractController {
 			return "qyWX/error";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+		model.addAttribute("uniacid", uniacid);
 		return "qyWX/interact";
 	}
 	
@@ -69,7 +75,13 @@ public class InteractController {
 		int error = 0;
 		result.put("message", message);
 		result.put("error", error);
-		int uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("message", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int page = Integer.valueOf(request.getParameter("page"));
 		int status = QyUtils.checkQyLogin(request, response);
 		
@@ -117,7 +129,13 @@ public class InteractController {
 		int error = 0;
 		result.put("message", message);
 		result.put("error", error);
-		int uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("message", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
