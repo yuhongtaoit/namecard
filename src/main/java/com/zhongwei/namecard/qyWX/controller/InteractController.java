@@ -58,9 +58,10 @@ public class InteractController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
 		model.addAttribute("uniacid", uniacid);

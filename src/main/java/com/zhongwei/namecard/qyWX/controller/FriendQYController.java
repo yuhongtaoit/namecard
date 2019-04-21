@@ -90,9 +90,10 @@ public class FriendQYController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
 		model.addAttribute("uniacid", uniacid);
@@ -113,9 +114,10 @@ public class FriendQYController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);
@@ -130,7 +132,7 @@ public class FriendQYController {
 		}else {
 			http_type = "http://";
 		}
-		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/friend/friendEditor";
+		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/friend/friendEditor?uniacid=" + uniacid;
 		Map<String, Object> Sign = QySendUtils.addSign(setQY.getCorpid(), ticket, url);
 		model.addAttribute("Sign", Sign);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());

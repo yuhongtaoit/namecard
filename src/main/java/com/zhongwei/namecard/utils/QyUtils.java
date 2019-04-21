@@ -90,7 +90,7 @@ public class QyUtils {
 			// if(!StringUtils.hasText(userId)) {
 			// return -1;
 			// }
-
+//			return -2;
 			userId = "qutianshou"; // 测试******
 			request.getSession().setAttribute("session_dbs_masclwlcard_usderid", userId);
 		}
@@ -172,11 +172,15 @@ public class QyUtils {
 			String content_disposition = conn.getHeaderField("Content-disposition");
 			// 微信服务器生成的文件名称
 			String file_name = "";
-			String[] content_arr = content_disposition.split(";");
-			if (content_arr.length == 2) {
-				String tmp = content_arr[1];
-				int index = tmp.indexOf("\"");
-				file_name = tmp.substring(index + 1, tmp.length() - 1);
+			if(StringUtils.hasText(content_disposition)) {
+				String[] content_arr = content_disposition.split(";");
+				if (content_arr.length == 2) {
+					String tmp = content_arr[1];
+					int index = tmp.indexOf("\"");
+					file_name = tmp.substring(index + 1, tmp.length() - 1);
+				}
+			}else {
+				file_name = media_id+".jpg";
 			}
 			// 生成不同文件名称
 			File file = new File(path + file_name);

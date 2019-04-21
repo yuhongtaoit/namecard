@@ -69,9 +69,10 @@ public class HomeQyController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		String userId = (String) request.getSession().getAttribute("session_dbs_masclwlcard_usderid");
 		CardExample cardExample = new CardExample();
@@ -102,8 +103,10 @@ public class HomeQyController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		CardSetExample setExample = new CardSetExample();
 		setExample.createCriteria().andUniacidEqualTo(uniacid);
@@ -140,8 +143,10 @@ public class HomeQyController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		String userId = (String) request.getSession().getAttribute("session_dbs_masclwlcard_usderid");
 		CardExample cardExample = new CardExample();
@@ -171,8 +176,10 @@ public class HomeQyController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);
@@ -187,7 +194,7 @@ public class HomeQyController {
 		}else {
 			http_type = "http://";
 		}
-		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/home/myPhoto";
+		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/home/myPhoto?uniacid=" + uniacid;
 		Map<String, Object> Sign = QySendUtils.addSign(setQY.getCorpid(), ticket, url);
 		model.addAttribute("Sign", Sign);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());

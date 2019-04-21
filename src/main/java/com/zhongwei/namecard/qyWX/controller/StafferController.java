@@ -27,6 +27,7 @@ import com.zhongwei.namecard.dao.CardFormMapper;
 import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.dao.CardMemberMapper;
 import com.zhongwei.namecard.dao.CardSetMapper;
+import com.zhongwei.namecard.dao.SetQYMapper;
 import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.AccountWxappExample;
 import com.zhongwei.namecard.entity.ActReport;
@@ -42,6 +43,8 @@ import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.entity.SetQY;
+import com.zhongwei.namecard.entity.SetQYExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
 import com.zhongwei.namecard.utils.HttpClientUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
@@ -80,6 +83,9 @@ public class StafferController {
 	@Autowired
 	private CardFormMapper formMapper;
 	
+	@Autowired
+	private SetQYMapper qyMapper;
+	
 	@RequestMapping("/stafferIndex")
 	public String stafferIndex(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		Object uniacidObj = request.getParameter("uniacid");
@@ -95,9 +101,10 @@ public class StafferController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
 		model.addAttribute("uniacid", uniacid);
@@ -170,9 +177,10 @@ public class StafferController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		if(member_id == null) {
 			model.addAttribute("message", "信息拉取失败-1");

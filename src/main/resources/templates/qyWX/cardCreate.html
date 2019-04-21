@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>新增名片</title>
+    <link rel="stylesheet" type="text/css" href="../css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+</head>
+<!-- <style type="text/css">
+ body{background-color:#F3F3F3;width:100%;height:100vh;overflow-x:hidden}
+.number{padding-top:10px;padding-bottom:10px}
+.number input{height:30px;border:none}
+.choose_country{border:1px solid #666;padding:2px 15px;margin-right:15px;color:#666}
+.choose_active{border:1px solid #FE7B03;color:#FE7B03}
+.color_h{color:#666}
+#selectdate{border:none}
+.save_btn{border-radius:5px;color:#fff;margin-top:25px;margin-bottom:25px;width:80%;margin-left:auto;margin-right:auto;background-color:#FE7B03;border:none}
+.hide{display:none}
+.cropper-bg {background-image: url();background-color: #000;}
+a:hover{color: #fff;}
+.rounded{border-radius: 0!important;}
+a{text-decoration:none!important;}
+</style>
+<style>
+ .input-box{margin-top:10px; padding-left:10px; padding-right:10px;background-color:#fff;}
+    .weui-input-1{ height:280px; background-color:#fff;width:100%; }
+</style> -->
+<style>
+.weui-cells{margin-top:0}
+.weui-icon{position:relative;left:90%;top:-18%;width:15px;height:15px}
+.editor-bottom{position:fixed;background-color:#fff;width:90%;margin-left:20px;max-width:640px;height:50px;margin-bottom:40px;line-height:40px;text-align:center;font-family:'微软雅黑';font-size:18px;color:#2F363E;letter-spacing:.2em;border-radius:5px}
+.weui-uploader__bd{overflow:visible}
+#chooseimg{background:#ececeb}
+.save_btn{border-radius:5px;color:#fff;margin-top:25px;margin-bottom:25px;width:80%;margin-left:auto;margin-right:auto;background-color:#FE7B03;border:none}
+.dd{display:flex;justify-content:center;align-items:center}
+.li-item{position:relative}
+.close{top:-10px;left:63px;width:23px}
+.btn-add {width:90%;background:#f2c507}
+ .make-button {position: fixed;bottom: 0;width: 100%;padding: 15px 0;color: #fff;}
+</style>
+<style>
+ .input-box{margin-top:10px; padding-left:10px; padding-right:10px;background-color:#fff;}
+    .weui-input-1{ height:280px; background-color:#fff;width:100%; }
+</style>
+<body>
+  <!-- <div class="weui-cells weui-cells_form">
+    <div class="weui-cell weui-cell_select weui-cell_select-after number">
+      <div class="weui-cell__hd">
+        <label for="" pattern="[0-40]*" class="weui-label">手机号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input type="text" class="mobile" placeholder="请输入手机号" th:value="${card_info['cardTel']}">
+      </div>
+    </div>
+  </div> -->
+  <div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">头像图片</label></div>
+      <div class="weui-uploader">
+           <div class="weui-uploader__bd">
+               <ul class="weui-uploader__files" id="uploaderFiles">
+                   
+               </ul>
+               <div class="weui-uploader__input-box" id="chooseimg"></div>
+           </div>
+       </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+      <div class="weui-cell__bd">
+        <input id="cardName" name="cardName" class="weui-input wxid" type="text" placeholder="请输入姓名" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">个人电话</label></div>
+      <div class="weui-cell__bd">
+        <input id="cardTel" name="cardTel" class="weui-input mobile" type="text" placeholder="请输入个人电话"  />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">微信号</label></div>
+      <div class="weui-cell__bd">
+        <input  id="weixinid" name="weixinid" class="weui-input wxid" type="text" placeholder="请输入微信号"  />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">点赞数</label></div>
+      <div class="weui-cell__bd">
+        <input id="thumbsNum" name="thumbsNum" class="weui-input wxid" type="text" placeholder="点赞数" onkeyup="value=value.replace(/[^\d]/g, '')" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">企业号帐号</label></div>
+      <div class="weui-cell__bd">
+        <input id="userid" name="userid" class="weui-input" type="text" placeholder="请输入企业号帐号" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
+      <div class="weui-cell__bd">
+        <input id="email" name="email" class="weui-input email" type="text" placeholder="请输入邮箱" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">性别</label></div>
+      <div class="weui-cell__bd">
+        <label class="radio radio-inline">
+			<input type="radio" name="sex" value="0" th:checked="0 == 0" checked="checked"> 女
+		</label>
+		<label class="radio radio-inline" style="margin-top: 10px">
+			<input type="radio" name="sex" value="1" th:checked="0 == 1"> 男
+		</label>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">公司名称</label></div>
+      <div class="weui-cell__bd">
+        <input id="companyName" name="companyName" class="weui-input" type="text" placeholder="请输入公司名称" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">公司电话</label></div>
+      <div class="weui-cell__bd">
+        <input id="phone" name="phone" class="weui-input" type="text" placeholder="请输入公司电话" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">公司职位</label></div>
+      <div class="weui-cell__bd">
+        <input id="roleName" name="roleName" class="weui-input" type="text" placeholder="请输入公司职位" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">公司详细地址</label></div>
+      <div class="weui-cell__bd">
+        <input id="detailedAddress" name="detailedAddress" class="weui-input" type="text" placeholder="请输入公司详细地址" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">分享标题</label></div>
+      <div class="weui-cell__bd">
+        <input id="shareTitle" name="shareTitle" class="weui-input" type="text" placeholder="请输入分享标题" />
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">分享图片</label></div>
+      <div class="weui-uploader">
+           <div class="weui-uploader__bd">
+               <ul class="weui-uploader__files" id="uploaderFXFiles">
+                   
+               </ul>
+               <div class="weui-uploader__input-box" id="chooseFXimg"></div>
+           </div>
+       </div>
+    </div>
+	<!-- <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">个人简介</label></div>
+      <div class="weui-cell__bd">
+			<input id="cardInstr" name="cardInstr" class="weui-input" type="text" placeholder="个人简介" />
+      </div>
+    </div> -->
+     <div class="weui-cells weui-cells_form">
+        <!--标签列表-->
+        <div class="label-set mb25 label-list">
+            <div class="weui-cell__bd input-box" >
+                <textarea id="sign"  maxlength="500"  class="weui-input-1 content" placeholder="请填写个人简介" ></textarea>
+                <div id="cardInstr" style="float:right;margin-top:-20px;position:relative;"></div>
+            </div>
+        </div>
+	</div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">个人照片</label>
+	      <div class="weui-textarea-counter">
+              <span id="uploadCount">0</span>/9
+          </div>
+	      <div class="weui-uploader">
+	           <div class="weui-uploader__bd">
+	               <ul class="weui-uploader__files" id="uploaderGRFiles">
+	                   
+	               </ul>
+	               <div class="weui-uploader__input-box" id="chooseGRimg"></div>
+	           </div>
+	       </div>
+       </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">默认显示</label></div>
+      <div class="weui-cell__bd">
+        <label class="radio radio-inline">
+			<input type="radio" name="mrtype" value="0" th:checked="0 == 0" checked="checked"> 否
+		</label>
+		<label class="radio radio-inline" style="margin-top: 10px">
+			<input type="radio" name="mrtype" value="1" th:checked="0 == 1"> 是
+		</label>
+      </div>
+    </div>
+  </div>
+  <div class="button-sp-area save_btn">
+    <a href="javascript:;" class="weui-btn btn-submit">保存</a>
+  </div>
+
+</body>
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script type="text/javascript" src="../js/qyjs/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../js/qyjs/weui.min.js"></script>
+    <script src="../js/qyjs/mescroll.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+    var logoimage = "";
+    var upList = [];
+    var upFXList = [];
+    var upGRList = [];
+    var localIdCounts = 0;
+    var localIdFXCounts = 0;
+    var localIdGRCounts = 0;
+    var flag = false;
+   	var state = {foo: "bar"};
+   	var uniacid = [[${uniacid}]];
+    history.replaceState(state,'',[[${projectRootPath}]] + "cardCreate/cardCreate?uniacid="+uniacid);
+    $(function() {
+        wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				appId: [[${Sign['appId']}]], // 必填，公众号的唯一标识
+				timestamp: [[${Sign['timestamp']}]], // 必填，生成签名的时间戳
+				nonceStr: [[${Sign['nonceStr']}]], // 必填，生成签名的随机串
+				signature: [[${Sign['signature']}]], // 必填，签名
+				jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'] // 必填，需要使用的JS接口列表
+			})
+    })
+     $(function() {
+        $(".btn-submit").click(function () {
+    		if(flag){
+    			return false;
+    		}
+    		 var cardName = $('#cardName').val();
+    		 var cardTel = $('#cardTel').val();
+    		 var weixinid = $('#weixinid').val();
+    		 var thumbsNum = $('#thumbsNum').val();
+    		 var userid = $('#userid').val();
+    		 var email = $('#email').val();
+    		 var gender = $("input[name='sex']:checked").val();
+    		 var mrtype = $("input[name='mrtype']:checked").val();
+    		 var companyName = $('#companyName').val();
+    		 var phone = $('#phone').val();
+    		 var roleName = $('#roleName').val();
+    		 var detailedAddress = $('#detailedAddress').val();
+    		 var shareTitle = $('#shareTitle').val();
+    		 var cardInstr = $('.content').val();
+    		 var photo = upGRList.join(",");
+    		 var cardLogo = '';
+    		 var shareImg = '';
+    		 if(upList.length > 0){
+    			 cardLogo = upList[0];
+    		 }
+    		 if(upFXList.length > 0){
+    			 shareImg = upFXList[0];
+    		 }
+    	//alert(gender)
+    		 flag = true;
+            if (phone_1()==true&&email_1()==true) {
+    			$.post( [[${projectRootPath}]] + "cardCreate/insert", 
+    					{cardName:cardName, 
+    					cardTel:cardTel,
+    					email:email,
+    					weixinid:weixinid,
+    					thumbsNum:thumbsNum,
+    					userid:userid,
+    					gender:gender,
+    					mrtype:mrtype,
+    					companyName:companyName,
+    					phone:phone,
+    					roleName:roleName,
+    					detailedAddress:detailedAddress,
+    					shareTitle:shareTitle,
+    					cardInstr:cardInstr,
+    					photo:photo,
+    					cardLogo:cardLogo,
+    					shareImg:shareImg,
+    					uniacid:uniacid}, 
+    					function(data){
+    				if (data.Code>0) {
+    					alert(data.msg);
+                        flag = false;
+                        return;
+                    }else{
+    					to_url( [[${projectRootPath}]] + "staffer/stafferIndex?uniacid="+uniacid);
+    				}
+    				
+                 },"json");
+            }else{
+    			flag = false;
+    		} 
+            
+        })
+      }); 
+    
+    function checkApi(){
+        wx.checkJsApi({
+            jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function(res) {
+                //alert(res)
+            // 以键值对的形式返回，可用的api值true，不可用为false
+            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+            }
+        });
+    }
+    wx.ready(function() {
+        checkApi();
+        //拍照、本地图片选择
+        var images = {
+            localId: [],
+            serverId: []
+        }
+        /* var localIdCounts = 0;
+        var localIdFXCounts = 0;
+        var localIdGRCounts = 0; */
+        document.querySelector("#chooseimg").onclick = function() {
+            wx.chooseImage({
+                count: 1, // 默认1
+                sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function(res) {
+                    images.localId = res.localIds;
+                    if (images.localId.length == 0) {
+                        alert("请选择图片");
+                        return;
+                    }
+                    if(localIdCounts > 0){
+                        localIdCounts =  localIdCounts + res.localIds.length;
+                    }else{
+                        localIdCounts =  res.localIds.length;
+                    }
+        
+                    if (localIdCounts > 1) {
+                        alert("上传图片最多不能超过1张！");
+                        return;
+                    }
+                 //   $("#uploadCount").text(localIdCounts);
+
+                    var i = 0,length = images.localId.length;
+                    images.serverId = [];
+                   
+                    if (!window.__wxjs_is_wkwebview) { //不是是ios是WKWebview
+                        uploadImgHtml(res.localIds)
+                    }
+
+                    function upload() {
+                        if (window.__wxjs_is_wkwebview) { //是ios是WKWebview
+                            wx.getLocalImgData({ 
+                                localId: images.localId[i], // 图片的localID
+                                 success: function(res) {
+                                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                    localData = localData.replace('jgp', 'jpeg'); //iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+                                    uploadImgHtml2(localData)
+                                },
+                                fail: function(res) {   alert("显示失败");  } 
+                            });
+                        } 
+                        wx.uploadImage({
+                            localId: images.localId[i],
+                            success: function(res) {
+                                i++;
+								 //alert('已上传：' + i + '/' + length);
+								 
+								 //同步本地服务器
+								uploadSeverIds(res.serverId);
+                                images.serverId.push(res.serverId);
+                                if (i < length) {
+                                    upload();
+                                }
+                            },
+                            fail: function(res) {
+                                alert(JSON.stringify(res))
+                            }
+                        })
+                    }
+                    upload();
+                }
+            })
+        }
+        document.querySelector("#chooseFXimg").onclick = function() {
+            wx.chooseImage({
+                count: 1, // 默认1
+                sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function(res) {
+                    images.localId = res.localIds;
+                    if (images.localId.length == 0) {
+                        alert("请选择图片");
+                        return;
+                    }
+                    if(localIdFXCounts > 0){
+                    	localIdFXCounts =  localIdFXCounts + res.localIds.length;
+                    }else{
+                    	localIdFXCounts =  res.localIds.length;
+                    }
+        
+                    if (localIdFXCounts > 1) {
+                        alert("上传图片最多不能超过1张！");
+                        return;
+                    }
+                //    $("#uploadCount").text(localIdFXCounts);
+
+                    var i = 0,length = images.localId.length;
+                    images.serverId = [];
+                   
+                    if (!window.__wxjs_is_wkwebview) { //不是是ios是WKWebview
+                        uploadFXImgHtml(res.localIds)
+                    }
+
+                    function upload() {
+                        if (window.__wxjs_is_wkwebview) { //是ios是WKWebview
+                            wx.getLocalImgData({ 
+                                localId: images.localId[i], // 图片的localID
+                                 success: function(res) {
+                                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                    localData = localData.replace('jgp', 'jpeg'); //iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+                                    uploadFXImgHtml2(localData)
+                                },
+                                fail: function(res) {   alert("显示失败");  } 
+                            });
+                        } 
+                        wx.uploadImage({
+                            localId: images.localId[i],
+                            success: function(res) {
+                                i++;
+								 //alert('已上传：' + i + '/' + length);
+								 
+								 //同步本地服务器
+								uploadFXSeverIds(res.serverId);
+                                images.serverId.push(res.serverId);
+                                if (i < length) {
+                                    upload();
+                                }
+                            },
+                            fail: function(res) {
+                                alert(JSON.stringify(res))
+                            }
+                        })
+                    }
+                    upload();
+                }
+            })
+        };
+        document.querySelector("#chooseGRimg").onclick = function() {
+            wx.chooseImage({
+                count: 9, // 默认1
+                sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function(res) {
+                    images.localId = res.localIds;
+                    if (images.localId.length == 0) {
+                        alert("请选择图片");
+                        return;
+                    }
+                    if(localIdGRCounts > 0){
+                    	localIdGRCounts =  localIdGRCounts + res.localIds.length;
+                    }else{
+                    	localIdGRCounts =  res.localIds.length;
+                    }
+        
+                    if (localIdGRCounts > 9) {
+                        alert("上传图片最多不能超过9张！");
+                        return;
+                    }
+                    $("#uploadCount").text(localIdGRCounts);
+
+                    var i = 0,length = images.localId.length;
+                    images.serverId = [];
+                   
+                    if (!window.__wxjs_is_wkwebview) { //不是是ios是WKWebview
+                        uploadGRImgHtml(res.localIds)
+                    }
+
+                    function upload() {
+                        if (window.__wxjs_is_wkwebview) { //是ios是WKWebview
+                            wx.getLocalImgData({ 
+                                localId: images.localId[i], // 图片的localID
+                                 success: function(res) {
+                                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                    localData = localData.replace('jgp', 'jpeg'); //iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+                                    uploadGRImgHtml2(localData)
+                                },
+                                fail: function(res) {   alert("显示失败");  } 
+                            });
+                        } 
+                        wx.uploadImage({
+                            localId: images.localId[i],
+                            success: function(res) {
+                                i++;
+								 //alert('已上传：' + i + '/' + length);
+								 
+								 //同步本地服务器
+								uploadGRSeverIds(res.serverId);
+                                images.serverId.push(res.serverId);
+                                if (i < length) {
+                                    upload();
+                                }
+                            },
+                            fail: function(res) {
+                                alert(JSON.stringify(res))
+                            }
+                        })
+                    }
+                    upload();
+                }
+            })
+        }
+    });
+    wx.error(function(res) {
+       //alert(res)
+    });
+    //得到微信的素材到本地服务器
+    function uploadSeverIds(serverId) {
+		 $.post( [[${projectRootPath}]] + "cardCreate/friendDownload", {uniacid: uniacid,media_id:serverId}, function(data){
+            if (data.Code){
+				alert(data.msg);
+                return;
+			}
+            if (data.Code == 0) {
+            	upList.push(data.Data);
+            }
+         },"json");
+    }
+    function uploadFXSeverIds(serverId) {
+		 $.post( [[${projectRootPath}]] + "cardCreate/friendDownload", {uniacid: uniacid,media_id:serverId}, function(data){
+            if (data.Code){
+				alert(data.msg);
+                return;
+			}
+            if (data.Code == 0) {
+            	upFXList.push(data.Data);
+            }
+         },"json");
+    }
+    function uploadGRSeverIds(serverId) {
+		 $.post( [[${projectRootPath}]] + "cardCreate/friendDownload", {uniacid: uniacid,media_id:serverId}, function(data){
+            if (data.Code){
+				alert(data.msg);
+                return;
+			}
+            if (data.Code == 0) {
+            	upGRList.push(data.Data);
+            }
+         },"json");
+    }
+    //显示选择的图片
+    function uploadImgHtml(localId) {
+    	
+    	var html = ""
+        for (var k = 0; k < localId.length; k++) {
+            html += '<li class="weui-uploader__file li-item" style="background-image: url(' + localId[k] + ');">'
+            html += '<img class="pa close btn-delete"  data-src="' + localId[k] + '" src="../qyImages/close.png">';
+            html += '</li>'
+        }
+        $("#uploaderFiles").append(html);
+        loadBtn();
+    	/* $("#uploaderFiles").empty();
+        var html = ""
+        for (var k = 0; k < localId.length; k++) {
+            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
+        }
+        $("#uploaderFiles").append(html); */
+    }
+    function uploadImgHtml2(localId) {
+     //   $("#uploaderFiles").empty();
+       /*  var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        $("#uploaderFiles").append(html); */
+        var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        $("#uploaderFiles").append(html);
+        loadBtn();
+    }
+    function uploadFXImgHtml(localId) {
+    	/* $("#uploaderFXFiles").empty();
+        var html = ""
+        for (var k = 0; k < localId.length; k++) {
+            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
+        }
+        $("#uploaderFXFiles").append(html); */
+    	var html = ""
+        for (var k = 0; k < localId.length; k++) {
+            html += '<li class="weui-uploader__file li-item" style="background-image: url(' + localId[k] + ');">'
+            html += '<img class="pa close btn-delete"  data-src="' + localId[k] + '" src="../qyImages/close.png">';
+            html += '</li>'
+        }
+        $("#uploaderFXFiles").append(html);
+        loadFXBtn();
+    }
+    function uploadFXImgHtml2(localId) {
+      /*   $("#uploaderFXFiles").empty();
+        var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        $("#uploaderFXFiles").append(html); */
+    	var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        $("#uploaderFXFiles").append(html);
+    	loadFXBtn();
+    }
+    function uploadGRImgHtml(localId) {
+    	/* $("#uploaderGRFiles").empty();
+        var html = ""
+        for (var k = 0; k < localId.length; k++) {
+            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
+        }
+        $("#uploaderGRFiles").append(html); */
+    	var html = ""
+        for (var k = 0; k < localId.length; k++) {
+            html += '<li class="weui-uploader__file li-item" style="background-image: url(' + localId[k] + ');">'
+            html += '<img class="pa close btn-delete"  data-src="' + localId[k] + '" src="../qyImages/close.png">';
+            html += '</li>'
+        }
+        $("#uploaderGRFiles").append(html);
+        loadGRBtn();
+    }
+    function uploadGRImgHtml2(localId) {
+        /* $("#uploaderGRFiles").empty();
+        var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        $("#uploaderGRFiles").append(html); */
+    	var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        $("#uploaderGRFiles").append(html);
+    	loadGRBtn();
+    }
+    function loadBtn() {
+        $(".btn-delete").unbind();
+        $(".btn-add").unbind();
+
+        $(".btn-delete").click(function () {
+            var that = $(this);
+            var img = $(this).attr("data-src");
+
+			var r=confirm("确定要删除吗")
+			if (r==true)
+				{
+				  for (var i = 0; i < upList.length; i++) {
+                    if (img == upList[i])
+                        upList.splice(i, 1);    //删除图片
+                }
+                that.parent().remove();
+                console.info(localIdCounts);
+               // $("#uploadCount").text(upList.length);
+                localIdCounts = localIdCounts -1;
+			}
+			
+        });
+
+        $(".btn-add").click(function () { showDialog(); })
+    }
+    function loadFXBtn() {
+        $(".btn-delete").unbind();
+        $(".btn-add").unbind();
+
+        $(".btn-delete").click(function () {
+            var that = $(this);
+            var img = $(this).attr("data-src");
+
+			var r=confirm("确定要删除吗")
+			if (r==true)
+				{
+				  for (var i = 0; i < upFXList.length; i++) {
+                    if (img == upFXList[i])
+                    	upFXList.splice(i, 1);    //删除图片
+                }
+                that.parent().remove();
+                console.info(localIdFXCounts);
+                //$("#uploadCount").text(upList.length);
+                localIdFXCounts = localIdFXCounts -1;
+			}
+			
+        });
+
+        $(".btn-add").click(function () { showDialog(); })
+    }
+    function loadGRBtn() {
+        $(".btn-delete").unbind();
+        $(".btn-add").unbind();
+
+        $(".btn-delete").click(function () {
+            var that = $(this);
+            var img = $(this).attr("data-src");
+
+			var r=confirm("确定要删除吗")
+			if (r==true)
+				{
+				  for (var i = 0; i < upGRList.length; i++) {
+                    if (img == upGRList[i])
+                    	upGRList.splice(i, 1);    //删除图片
+                }
+                that.parent().remove();
+                console.info(localIdGRCounts);
+                localIdGRCounts = localIdGRCounts -1;
+                $("#uploadCount").text(localIdGRCounts);
+                
+			}
+			
+        });
+
+        $(".btn-add").click(function () { showDialog(); })
+    }
+    function showDialog() {
+        $('#dialog').css('display', '');
+        $(".tagname").focus();
+    }
+    function closeDialog() {
+        $('#dialog').css('display', 'none');
+    }
+      	//跳转页面
+    function to_url(url) {
+        window.location.href = url;
+    }
+      function phone_1() {
+          var rule = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+          var mobile = $('.mobile').val();
+          if (mobile == "") {
+              alert("手机号不能为空");
+              return false;
+          } else if (!rule.test(mobile)) {
+              alert("手机格式不对，请重新输入");
+              return false;
+          } else { return true; }
+      }
+      
+      function email_1() {
+          var email = $('.email').val();
+          if (email == "") {
+              alert("邮箱不能为空");
+              return false;
+          }else if (!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
+              alert("邮箱格式不正确！请重新输入");
+              return false;
+          } else {
+               return true;
+          }
+      }
+
+    </script>
+    </html>
