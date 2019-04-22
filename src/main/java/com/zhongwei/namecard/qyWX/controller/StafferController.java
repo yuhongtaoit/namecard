@@ -27,6 +27,7 @@ import com.zhongwei.namecard.dao.CardFormMapper;
 import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.dao.CardMemberMapper;
 import com.zhongwei.namecard.dao.CardSetMapper;
+import com.zhongwei.namecard.dao.SetQYMapper;
 import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.AccountWxappExample;
 import com.zhongwei.namecard.entity.ActReport;
@@ -42,8 +43,9 @@ import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.entity.SetQY;
+import com.zhongwei.namecard.entity.SetQYExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.HttpClientUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
@@ -81,8 +83,17 @@ public class StafferController {
 	@Autowired
 	private CardFormMapper formMapper;
 	
+	@Autowired
+	private SetQYMapper qyMapper;
+	
 	@RequestMapping("/stafferIndex")
 	public String stafferIndex(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -90,23 +101,31 @@ public class StafferController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+		model.addAttribute("uniacid", uniacid);
 		return "qyWX/stafferIndex";
 	}
 	
 	
 	@RequestMapping("/getAiMsg")
-	public @ResponseBody Map<String, Object> getAiMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public @ResponseBody Map<String, Object> getAiMsg(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		Map<String, Object> result = new HashMap<String, Object>();
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		String msg = "返回消息";
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		int uniacid = Constants.UNIACID;
 		int page = Integer.valueOf(request.getParameter("page"));
 		int status = QyUtils.checkQyLogin(request, response);
 		
@@ -145,7 +164,12 @@ public class StafferController {
 	
 	@RequestMapping("/memberDetail")
 	public String memberDetail(HttpServletRequest request, HttpServletResponse response,Integer member_id, Integer card_id, Integer type, Model model) throws IOException {
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -153,9 +177,10 @@ public class StafferController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		if(member_id == null) {
 			model.addAttribute("message", "信息拉取失败-1");
@@ -191,11 +216,20 @@ public class StafferController {
 		model.addAttribute("member_info", memberInfo);
 		model.addAttribute("info", info);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+		model.addAttribute("uniacid", uniacid);
+		model.addAttribute("member_id", member_id);
+		model.addAttribute("type", type);
+		model.addAttribute("card_id", card_id);
 		return "qyWX/memberDetail";
 	}
 	@RequestMapping("/chat")
 	public String chat(HttpServletRequest request, HttpServletResponse response,String openid, Integer card_id, Model model) throws IOException {
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		CardWithBLOBs card = cardMapper.selectByPrimaryKey(card_id);
 		List<CardMember> chatList = new ArrayList<CardMember>();
 		CardMemberExample memberExample = new CardMemberExample();
@@ -210,13 +244,22 @@ public class StafferController {
 		model.addAttribute("chat_info", chatInfo);
 		model.addAttribute("msg", msg);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+		model.addAttribute("uniacid", uniacid);
+		model.addAttribute("openid", openid);
+		model.addAttribute("card_id", card_id);
 		return "qyWX/chat";
 	}
 	
 	@RequestMapping("/dosend")
 	public @ResponseBody Map<String, Object> dosend(HttpServletRequest request, HttpServletResponse response,String openid, Integer card_id, String msg, Model model) throws IOException {
-		Integer uniacid = Constants.UNIACID;
 		Map<String, Object> result = new HashMap<String, Object>();
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("mess", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
@@ -274,8 +317,14 @@ public class StafferController {
 	}
 	@RequestMapping("/getsend")
 	public @ResponseBody Map<String, Object> getsend(HttpServletRequest request, HttpServletResponse response,String openid, Integer card_id, Model model) throws IOException {
-		Integer uniacid = Constants.UNIACID;
 		Map<String, Object> result = new HashMap<String, Object>();
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("mess", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		CardChatExample chatExample = new CardChatExample();
 		chatExample.createCriteria().andUniacidEqualTo(uniacid).andOpenidEqualTo(openid).andStypeEqualTo(0).andCardIdEqualTo(card_id);
 		chatExample.setOrderByClause(" addtime asc");

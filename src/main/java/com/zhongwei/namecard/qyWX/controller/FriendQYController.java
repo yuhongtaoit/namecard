@@ -41,7 +41,6 @@ import com.zhongwei.namecard.entity.CardZanExample;
 import com.zhongwei.namecard.entity.SetQY;
 import com.zhongwei.namecard.entity.SetQYExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.DateUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
@@ -78,6 +77,12 @@ public class FriendQYController {
 	
 	@RequestMapping("/friend")
 	public String friend(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -85,15 +90,23 @@ public class FriendQYController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+		model.addAttribute("uniacid", uniacid);
 		return "qyWX/friendIndex";
 	}
 	@RequestMapping("/friendEditor")
 	public String friendEditor(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -101,17 +114,17 @@ public class FriendQYController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
-		Integer uniacid = Constants.UNIACID;
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);
 		List<SetQY> qyList = qyMapper.selectByExample(qyExample);
 		SetQY setQY = qyList.size() > 0 ? qyList.get(0) : new SetQY(); 
 		String accessToken = QySendUtils.getAccessToken(setQY.getCorpid(), setQY.getSecret(), uniacid);
-		String ticket = QySendUtils.getqyJsapiTicket(accessToken, uniacid);
+		String ticket = QySendUtils.getqyJsapiTicket(setQY.getCorpid(), setQY.getSecret(), accessToken, uniacid);
 		String http_type = "";
 		String refererURL = request.getHeader("https-tag");
 		if(StringUtils.hasText(refererURL)){
@@ -119,10 +132,11 @@ public class FriendQYController {
 		}else {
 			http_type = "http://";
 		}
-		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/friend/friendEditor";
+		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/friend/friendEditor?uniacid=" + uniacid;
 		Map<String, Object> Sign = QySendUtils.addSign(setQY.getCorpid(), ticket, url);
 		model.addAttribute("Sign", Sign);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+		model.addAttribute("uniacid", uniacid);
 		return "qyWX/friendEditor";
 	}
 	
@@ -134,7 +148,13 @@ public class FriendQYController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int page = Integer.valueOf(request.getParameter("page"));
 		int status = QyUtils.checkQyLogin(request, response);
 		
@@ -171,7 +191,7 @@ public class FriendQYController {
 		friendExample.setOrderByClause(" time DESC");
 		List<CardFriendWithBLOBs> Data = friendMapper.selectByExampleWithBLOBs(friendExample);
 		for(CardFriendWithBLOBs friend : Data) {
-			friend.setTimeStr(DateUtils.millisToString(Long.valueOf(friend.getTime())*1000));
+			friend.setTimeStr(DateUtils.millisToString(Long.valueOf(friend.getTime())*Long.valueOf(1000)));
 			if(friend.getCardId() == cardInfo.getId()) {
 				friend.setIs_my("1");
 			}else {
@@ -220,7 +240,13 @@ public class FriendQYController {
 		int Code = 0;
 		result.put("msg", msg);
 		result.put("Code", Code);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("Code", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -307,7 +333,13 @@ public class FriendQYController {
 		int Code = 0;
 		result.put("msg", msg);
 		result.put("Code", Code);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("Code", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -391,7 +423,13 @@ public class FriendQYController {
 		int Code = 0;
 		result.put("msg", msg);
 		result.put("Code", Code);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("Code", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -445,7 +483,13 @@ public class FriendQYController {
 		int Code = 0;
 		result.put("msg", msg);
 		result.put("Code", Code);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("Code", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -488,7 +532,13 @@ public class FriendQYController {
 		int Code = 0;
 		result.put("msg", msg);
 		result.put("Code", Code);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("Code", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {
@@ -516,7 +566,7 @@ public class FriendQYController {
 			result.put("Code", 1);
 			return result;
 		}
-		String Data = QyUtils.downloadImage(media_id, cardInfo.getId());
+		String Data = QyUtils.downloadImage(uniacid, media_id, cardInfo.getId());
 		result.put("Code", 0);
 		result.put("Data", Data);
 		return result;
@@ -530,7 +580,13 @@ public class FriendQYController {
 		int Code = 0;
 		result.put("msg", msg);
 		result.put("Code", Code);
-		Integer uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("Code", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		
 		if(status == -1) {

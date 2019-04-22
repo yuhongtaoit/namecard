@@ -29,6 +29,7 @@ import com.zhongwei.namecard.entity.CardFooter;
 import com.zhongwei.namecard.entity.CardFooterExample;
 import com.zhongwei.namecard.entity.CardFriendExample;
 import com.zhongwei.namecard.entity.CardFriendExample.Criteria;
+import com.zhongwei.namecard.miniapp.config.WxMaProperties;
 import com.zhongwei.namecard.entity.CardFriendWithBLOBs;
 import com.zhongwei.namecard.entity.CardMember;
 import com.zhongwei.namecard.entity.CardMemberExample;
@@ -60,6 +61,9 @@ public class ReportController {
 	
 	@Autowired
 	private ActReportMapper actReportMapper;
+	
+	@Autowired
+	private WxMaProperties wxMaProperties;
 	
 	@Autowired
 	private CardChatMapper cardChatMapper;
@@ -94,8 +98,7 @@ public class ReportController {
 		cardList = cardMapper.selectByExampleWithBLOBs(cardExample);
 		card = cardList.size() > 0 ? cardList.get(0) : new CardWithBLOBs();
 		
-//		$url = $_W["siteroot"] . "app/" . $this->createMobileUrl("chat", array("openid" => $userinfo["openId"], "card_id" => $_GPC["card_id"]));
-		String url = "";//******调用后台模块chat方法的url，参数为openid和card_id
+		String url = wxMaProperties.getProjectRootPath() + "staffer/chat?uniacid="+uniacid + "&card_id" + card.getId() + "&openid=" + openId;
 		CardMember cardMember = new CardMember();
 		List<CardMember> memberList = new ArrayList<CardMember>();
 		CardMemberExample memberExample = new CardMemberExample();

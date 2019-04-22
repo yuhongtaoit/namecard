@@ -122,7 +122,7 @@ public class QySendUtils {
 		accessToken = json.getString("access_token");
 		token.setAccessToken(accessToken);
 		token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
-		accessTokenMapper.updateByPrimaryKey(token);
+		accessTokenMapper.updateByPrimaryKeyWithBLOBs(token);
 		return accessToken;
 	}
 	
@@ -158,11 +158,11 @@ public class QySendUtils {
 		accessToken = json.getString("access_token");
 		token.setAccessToken(accessToken);
 		token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
-		accountTokenMapper.updateByPrimaryKey(token);
+		accountTokenMapper.updateByPrimaryKeyWithBLOBs(token);
 		return accessToken;
 	}
 	
-	public static String getqyJsapiTicket(String accessToken,int uniacid) {
+	public static String getqyJsapiTicket(String corpid, String secret, String accessToken,int uniacid) {
 		CardTicket ticket = ticketMapper.selectByPrimaryKey(accessToken);
 		if(ticket == null) {
 			ticket = new CardTicket();
@@ -171,10 +171,51 @@ public class QySendUtils {
 			ticket.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
 			String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + accessToken;
 			String ticketStr = "";
-			JSONObject json = HttpClientUtils.get(url);//******待校验
-			ticketStr = json.getString("ticket");
+			JSONObject json = HttpClientUtils.get(url);
+//			if(!json.containsKey("ticket")) {
+//				ticketMapper.deleteByPrimaryKey(accessToken);
+//				AccessToken token = accessTokenMapper.selectByPrimaryKey(secret);
+//				token.setCorpid(corpid);
+//				String u1 = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + secret;
+//				String aToken = "";
+//				json = HttpClientUtils.get(u1);
+//				aToken = json.getString("access_token");
+//				ticket.setAccessToken(aToken);
+//				token.setAccessToken(aToken);
+//				token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+//				accessTokenMapper.updateByPrimaryKeyWithBLOBs(token);
+//				url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + aToken;
+//				ticketStr = "";
+//				json = HttpClientUtils.get(url);
+//				ticketStr = json.getString("ticket");
+//			}else {
+//				ticketStr = json.getString("ticket");
+//			}
+			try {
+				ticketStr = json.getString("ticket");
+			} catch (Exception e) {
+				ticketMapper.deleteByPrimaryKey(accessToken);
+				AccessToken token = accessTokenMapper.selectByPrimaryKey(secret);
+				token.setCorpid(corpid);
+				String u1 = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + secret;
+				String aToken = "";
+				json = HttpClientUtils.get(u1);
+				aToken = json.getString("access_token");
+				ticket.setAccessToken(aToken);
+				token.setAccessToken(aToken);
+				token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+				accessTokenMapper.updateByPrimaryKeyWithBLOBs(token);
+				url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + aToken;
+				ticketStr = "";
+				json = HttpClientUtils.get(url);
+				ticketStr = json.getString("ticket");
+			}
 			ticket.setTicket(ticketStr);
-			ticketMapper.insert(ticket);
+			try {
+				ticketMapper.insert(ticket);
+			} catch (Exception e) {
+				
+			}
 			return ticketStr;
 		}
 		if(Long.valueOf(ticket.getValidTime()) > System.currentTimeMillis()) {
@@ -184,7 +225,33 @@ public class QySendUtils {
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + accessToken;
 		String ticketStr = "";
 		JSONObject json = HttpClientUtils.get(url);//******待校验
-		ticketStr = json.getString("ticket");
+		try {
+			//token 失效，重新获取
+			ticketStr = json.getString("ticket");
+		} catch (Exception e) {
+			ticketMapper.deleteByPrimaryKey(accessToken);
+			AccessToken token = accessTokenMapper.selectByPrimaryKey(secret);
+			token.setCorpid(corpid);
+			String u1 = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + secret;
+			String aToken = "";
+			json = HttpClientUtils.get(u1);
+			aToken = json.getString("access_token");
+			token.setAccessToken(aToken);
+			token.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+			accessTokenMapper.updateByPrimaryKeyWithBLOBs(token);
+			url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + aToken;
+			ticketStr = "";
+			json = HttpClientUtils.get(url);
+			ticketStr = json.getString("ticket");
+			
+			ticket = new CardTicket();
+			ticket.setUniacid(uniacid);
+			ticket.setAccessToken(aToken);
+			ticket.setValidTime(String.valueOf(System.currentTimeMillis() + 7000*1000));
+			ticket.setTicket(ticketStr);
+			ticketMapper.insert(ticket);
+			return null;
+		}
 		ticket.setTicket(ticketStr);
 		ticketMapper.updateByPrimaryKey(ticket);
 		return null;

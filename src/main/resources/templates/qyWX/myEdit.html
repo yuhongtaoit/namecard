@@ -87,6 +87,9 @@ a{text-decoration:none!important;}
     <script type="text/javascript" th:inline="javascript">
 	
     var flag = false;
+   	var state = {foo: "bar"};
+   	var uniacid = [[${uniacid}]];
+    history.replaceState(state,'',[[${projectRootPath}]] + "home/myEdit?uniacid="+uniacid);
     $(function() {
         $(".btn-submit").click(function () {
     		if(flag){
@@ -100,15 +103,13 @@ a{text-decoration:none!important;}
     	
     		 flag = true;
             if (phone_1()==true&&email_1()==true) {
-
-    			$.post( [[${projectRootPath}]] + "home/mySaveCard", {wxid:wxid,mobile:mobile,email:email,content:content,zd_msg:zd_msg}, function(data){
-
+    			$.post( [[${projectRootPath}]] + "home/mySaveCard", {wxid:wxid,mobile:mobile,email:email,content:content,zd_msg:zd_msg,uniacid:uniacid}, function(data){
     				if (data.Code>0) {
     					alert(data.msg);
                         flag = false;
                         return;
                     }else{
-    					to_url( [[${projectRootPath}]] + "home/myEdit");
+    					to_url( [[${projectRootPath}]] + "home/myEdit?uniacid="+uniacid);
     				}
     				
                  },"json");

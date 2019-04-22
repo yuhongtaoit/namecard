@@ -196,7 +196,16 @@
 	<script type="text/javascript" src="../js/qyjs/echarts.min.js"></script>
     <script src="../js/qyjs/mescroll.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
-	
+    var state = {foo: "bar"};
+    var uniacid = [[${uniacid}]];
+    var member_id = [[${member_id}]];
+    var card_id = [[${card_id}]];
+    var type = [[${type}]];
+    if(!!type){
+    	history.replaceState(state,'',[[${projectRootPath}]] + "staffer/memberDetail?uniacid="+uniacid + "&card_id=" + card_id + "&type=" + type + "&member_id=" + member_id);
+    }else{
+    	history.replaceState(state,'',[[${projectRootPath}]] + "staffer/memberDetail?uniacid="+uniacid + "&card_id=" + card_id + "&member_id=" + member_id);
+    }
     //预览图片
     function viewImg(obj) {
         var src = obj.currentSrc;
@@ -208,7 +217,7 @@
 	 $(".a_im").click(function () {
 		 var openid = [[${member_info['openid']}]];
 		 var card_id = [[${member_info['aid']}]];
-	 	 var url = [[${projectRootPath}]] + "staffer/chat?openid=" + openid + "&card_id=" + card_id;
+	 	 var url = [[${projectRootPath}]] + "staffer/chat?openid=" + openid + "&card_id=" + card_id + "&uniacid=" + uniacid;
 		 to_url(url);
       });
 		
@@ -216,7 +225,7 @@
         $(".a-client-edit").click(function () {
         	var openid = [[${member_info['openid']}]];
        	 	var card_id = [[${member_info['aid']}]];
-            var url = [[${projectRootPath}]] + "staffer/member/clientEdit"+'?openid='+openid+'&card_id='+card_id;
+            var url = [[${projectRootPath}]] + "staffer/member/clientEdit"+'?openid='+openid+'&card_id='+card_id + "&uniacid=" + uniacid;
 			to_url(url);
         });
 	
@@ -259,7 +268,7 @@
 	$(".a-follow").click(function () {
 		var mid = [[${member_info['id']}]];
 		var card_id = [[${member_info['aid']}]];
-		var url = [[${projectRootPath}]] + "staffer/member/getMemberFollow" + "?mid=" + mid+"&card_id=" + card_id;
+		var url = [[${projectRootPath}]] + "staffer/member/getMemberFollow" + "?mid=" + mid+"&card_id=" + card_id + "&uniacid=" + uniacid;
 		to_url(url);
 	});	  
        $('#show_gailv').on('click', function () {
@@ -289,7 +298,7 @@ function Change(result) {
 
 	cha=true;
 
-	 $.post([[${projectRootPath}]] + "staffer/member/getMemberChange", { mid:mid , gailv:gailv }, function(data){
+	 $.post([[${projectRootPath}]] + "staffer/member/getMemberChange", {uniacid: uniacid, mid:mid , gailv:gailv }, function(data){
         if (data.error>0) {
 			alert(data.msg);
 			cha=false;
@@ -308,7 +317,7 @@ function Change(result) {
 		
 		 $.post(
 				 [[${projectRootPath}]] + "staffer/member/getMemberAidata",
-				 {card_id:card_id,openid:openid}, function(data){
+				 {uniacid: uniacid, card_id:card_id,openid:openid}, function(data){
 				if (data.error>0) {
 					alert(data.msg);
                     return;
@@ -410,7 +419,7 @@ function chart_1(arr) {
 
 		$.post(
 			[[${projectRootPath}]] + "staffer/member/getMemberGj",
-			{card_id:card_id,page:pageObj.num,card_mid:card_mid}, 
+			{uniacid: uniacid, card_id:card_id,page:pageObj.num,card_mid:card_mid}, 
 			function(data){
 				if (data.error>0) {
 					alert(data.msg);
@@ -449,7 +458,7 @@ function chart_1(arr) {
         if (pageObj == null) pageObj = { num: 1 };
         $.post(
         	[[${projectRootPath}]] + "staffer/member/getAiMsgClient",
-       		{page:pageObj.num,card_id:card_id,openid:openid}, 
+       		{uniacid: uniacid,page:pageObj.num,card_id:card_id,openid:openid}, 
        		function(data){
 	           if (data.error>0) {
 						alert(data.msg);

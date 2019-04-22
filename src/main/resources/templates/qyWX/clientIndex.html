@@ -51,7 +51,7 @@ body {background-color: #fff;width: 100%;overflow-x: hidden;}
     </div>
 	
 	<div class="weui-tabbar tabbar">
-	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'staffer/stafferIndex'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/9_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label" >雷达</p>
 	</a>
@@ -62,15 +62,15 @@ body {background-color: #fff;width: 100%;overflow-x: hidden;}
 		</span>
 		<p class="weui-tabbar__label">消息</p>
 	</a-->
-	<a th:href="@{${projectRootPath} + 'client/client'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'client/client'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/14.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label" style="color:#f2c507;">客户</p>
 	</a>
-	<a th:href="@{${projectRootPath} + 'friend/friend'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'friend/friend'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">动态</p>
 	</a>
-	<a th:href="@{${projectRootPath} + 'home/home'}" class="weui-tabbar__item">
+	<a th:href="@{${projectRootPath} + 'home/home'(uniacid=${uniacid})}" class="weui-tabbar__item">
 		<img src="../qyImages/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
 		<p class="weui-tabbar__label">我</p>
 	</a>
@@ -89,7 +89,10 @@ body {background-color: #fff;width: 100%;overflow-x: hidden;}
     <script type="text/javascript" src="../js/qyjs/weui.min.js"></script>
     <script src="../js/qyjs/mescroll.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
-
+	var state = {foo: "bar"};
+	var uniacid = [[${uniacid}]];
+	
+	history.replaceState(state,'',[[${projectRootPath}]] + "client/client?uniacid="+uniacid);
     //分页控件
     function getPager(callback, mescroll_id) {
         if (mescroll_id == null)
@@ -123,11 +126,11 @@ body {background-color: #fff;width: 100%;overflow-x: hidden;}
     		window.location.href = url;
     	}
     	$("#type_0").click(function () {
-    		var url = [[${projectRootPath}]] + "client/client?type=0";
+    		var url = [[${projectRootPath}]] + "client/client?type=0&uniacid="+uniacid;
     		to_url(url);
     	})
     	$("#type_1").click(function () {
-    		var url = [[${projectRootPath}]] + "client/client?type=1";
+    		var url = [[${projectRootPath}]] + "client/client?type=1&uniacid="+uniacid;
     		to_url(url);
     	})
         function showlayer() {
@@ -174,7 +177,7 @@ body {background-color: #fff;width: 100%;overflow-x: hidden;}
         var followName = "";
         var source;//客户来源
     	var type= [[${type}]];
-         $.post( [[${projectRootPath}]] + "client/clientGetlist", {page:pageObj.num,type:type}, function(data){
+         $.post( [[${projectRootPath}]] + "client/clientGetlist", {page:pageObj.num,uniacid: uniacid,type:type}, function(data){
     		
             if (data.error>0) {
     			alert(data.msg);
@@ -209,7 +212,7 @@ body {background-color: #fff;width: 100%;overflow-x: hidden;}
                 if (list[i].avatarUrl == null || list[i].avatarUrl == "") {
                     $('.weui-media-box__thumb').attr('src', '../qyImages/18.png')
                 }
-    			html += "<div class='weui-box'><a href=" + [[${projectRootPath}]] + "staffer\/memberDetail?member_id=" + list[i].id + "&card_id=" + list[i].aid+ "&type=1" + " class='weui-media-box weui-media-box_appmsg'><div class='weui-media-box__hd'><img class='weui-media-box__thumb' src='" + list[i].avatarUrl + "' alt=''></div><div class='weui-media-box__bd'><h4 class='weui-media-box__title f14'>" + list[i].nickname + "<span  class='date_right f14'>预计成交率：" + list[i].gailv + "%</span></h4><h4 class='weui-media-box__title'><span class='yellow f14'>电话:" + list[i].phone + "</span><span class='yellow f14'> " + followName + "</span><span  class='date_right2 f14'> 来源：" + list[i].source_name + "</span></h4></div></a></div>"
+    			html += "<div class='weui-box'><a href=" + [[${projectRootPath}]] + "staffer\/memberDetail?member_id=" + list[i].id + "&card_id=" + list[i].aid+ "&type=1&uniacid=" + uniacid + " class='weui-media-box weui-media-box_appmsg'><div class='weui-media-box__hd'><img class='weui-media-box__thumb' src='" + list[i].avatarUrl + "' alt=''></div><div class='weui-media-box__bd'><h4 class='weui-media-box__title f14'>" + list[i].nickname + "<span  class='date_right f14'>预计成交率：" + list[i].gailv + "%</span></h4><h4 class='weui-media-box__title'><span class='yellow f14'>电话:" + list[i].phone + "</span><span class='yellow f14'> " + followName + "</span><span  class='date_right2 f14'> 来源：" + list[i].source_name + "</span></h4></div></a></div>"
             
     		}
             $(".client-list").append(html);

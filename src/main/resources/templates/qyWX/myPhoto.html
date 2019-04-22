@@ -57,6 +57,9 @@
     <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
     <script type="text/javascript" src="../js/qyjs/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
+    var state = {foo: "bar"};
+    var uniacid = [[${uniacid}]];
+    history.replaceState(state,'',[[${projectRootPath}]] + "home/myPhoto?uniacid="+uniacid);
     var upList = [];
     $(function() {
         wx.config({
@@ -72,7 +75,7 @@
         //获取名片
     function GetImgs() {
 
-		$.post( [[${projectRootPath}]] + "home/myPhotoGet", {}, function(data){
+		$.post( [[${projectRootPath}]] + "home/myPhotoGet", {uniacid: uniacid}, function(data){
             if (data.Code > 0) {
                 alert(data.msg);
             } else {
@@ -94,7 +97,7 @@
         },"json");
     }
 function member_detail(id, card_id) {
-		var url =  [[${projectRootPath}]] + "staffer/memberDetail"+'&member_id='+id+'&card_id='+card_id;
+		var url =  [[${projectRootPath}]] + "staffer/memberDetail"+'&member_id='+id+'&card_id='+card_id + "&uniacid=" + uniacid;
         to_url(url);
     }
 	
@@ -110,9 +113,9 @@ function to_url(url) {
 		
         var imgs = upList.join(",");
 		flas=true;
-		 $.post( [[${projectRootPath}]] + "home/myPhotoSave", {imgs:imgs}, function(data){
+		 $.post( [[${projectRootPath}]] + "home/myPhotoSave", {uniacid: uniacid,imgs:imgs}, function(data){
             if (data.Code == 0) {
-				to_url([[${projectRootPath}]] + "home/myPhoto");
+				to_url([[${projectRootPath}]] + "home/myPhoto?uniacid=" + uniacid);
             }else{
 				  alert(data.msg);
 				  flas=false;
@@ -188,7 +191,6 @@ function to_url(url) {
                 sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function(res) {
-                	console.info("-------------"+res);
                     images.localId = res.localIds;
                     if (images.localId.length == 0) {
                         alert("请选择图片");
@@ -242,7 +244,7 @@ function to_url(url) {
                     upload();
                 },
                 fail: function(res){
-                	alert(res)
+                	console.info(res)
                 }
             })
         }
@@ -252,7 +254,7 @@ function to_url(url) {
 	//得到微信的素材到本地服务器
     function uploadSeverIds(serverId) {
 
-		 $.post( [[${projectRootPath}]] + "home/friendDownload", {media_id:serverId}, function(data){
+		 $.post( [[${projectRootPath}]] + "home/friendDownload", {uniacid: uniacid,media_id:serverId}, function(data){
             if (data.Code){
 				alert(data.msg);
                 return;

@@ -28,6 +28,12 @@
 
 </html>
 <script type="text/javascript" th:inline="javascript">
+	var state = {foo: "bar"};
+	var uniacid = [[${uniacid}]];
+	var card_id = [[${card_id}]];
+	var openid = [[${openid}]];
+	history.replaceState(state,'',[[${projectRootPath}]] + "staffer/chat?uniacid="+uniacid + "&card_id" + card_id + "&openid=" + openid);
+	
 $(function () {
 	load();
 });
@@ -97,6 +103,7 @@ function sendmsg(){
 			[[${projectRootPath}]] + "staffer/dosend",
 			{msg:msg,
 			openid : openid,
+			uniacid: uniacid,
 			card_id: card_id}, 
 			function(json){
 				if(json.error==0){
@@ -120,6 +127,7 @@ function myTimer(){
 	$.post(
 			[[${projectRootPath}]] + "staffer/getsend",
 			{openid:openid,
+			uniacid: uniacid,
 			card_id:card_id}, 
 			function(json){
 				if(json.success){

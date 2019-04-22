@@ -29,7 +29,6 @@ import com.zhongwei.namecard.entity.CardExample;
 import com.zhongwei.namecard.entity.CardMember;
 import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.Constants;
 import com.zhongwei.namecard.utils.QyUtils;
 
 
@@ -53,6 +52,12 @@ public class ClientController {
 	
 	@RequestMapping("/client")
 	public String stafferIndex(HttpServletRequest request, HttpServletResponse response,Integer type, Model model) throws IOException {
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			model.addAttribute("message", "请先登录企业微信");
+			return "qyWX/error";
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int status = QyUtils.checkQyLogin(request, response);
 		if(status == -1) {
 			model.addAttribute("message", "请在企业微信打开");
@@ -60,12 +65,14 @@ public class ClientController {
 			return "qyWX/error";
 		}
 		if(status == -2) {
+			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
-			logger.info("没有绑定对应的名片");
-			return "qyWX/error";
+			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
+			return "qyWX/error1";
 		}
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
 		model.addAttribute("type", type != null ? type : 0);
+		model.addAttribute("uniacid", uniacid);
 		return "qyWX/clientIndex";
 	}
 	
@@ -78,7 +85,13 @@ public class ClientController {
 		int error = 0;
 		result.put("msg", msg);
 		result.put("error", error);
-		int uniacid = Constants.UNIACID;
+		Object uniacidObj = request.getParameter("uniacid");
+		if(uniacidObj == null || !StringUtils.hasText(uniacidObj.toString())) {
+			result.put("msg", "请先登录企业微信");
+			result.put("error", 1);
+			return result;
+		}
+		Integer uniacid = Integer.valueOf(uniacidObj.toString());
 		int page = Integer.valueOf(request.getParameter("page"));
 		int status = QyUtils.checkQyLogin(request, response);
 		

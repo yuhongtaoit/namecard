@@ -69,6 +69,9 @@
     <script type="text/javascript" th:inline="javascript">
     var uploadCount = 0;
     var upList = [];
+    var state = {foo: "bar"};
+	var uniacid = [[${uniacid}]];
+	history.replaceState(state,'',[[${projectRootPath}]] + "friend/friendEditor?uniacid="+uniacid);
     $(function() {
         wx.config({
 				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -168,7 +171,7 @@
 
     //得到微信的素材到本地服务器
     function uploadSeverIds(serverId) {
-		 $.post( [[${projectRootPath}]] + "friend/friendDownload", {media_id:serverId}, function(data){
+		 $.post( [[${projectRootPath}]] + "friend/friendDownload", {uniacid: uniacid,media_id:serverId}, function(data){
             if (data.Code){
 				alert(data.msg);
                 return;
@@ -204,10 +207,10 @@
             alert("请上传图片");
             return;
         }
-		 $.post( [[${projectRootPath}]] +"friend/friendSave", {imgs:imgs,content:content}, function(data){
+		 $.post( [[${projectRootPath}]] +"friend/friendSave", {uniacid: uniacid,imgs:imgs,content:content}, function(data){
             if (data.Code == 0) {
 				$('.weui-textarea').val("");
-				to_url( [[${projectRootPath}]] + "friend/friend");
+				to_url( [[${projectRootPath}]] + "friend/friend?uniacid=" + uniacid);
             }else{
 				  alert("发布失败");
 				  return;

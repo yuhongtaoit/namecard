@@ -49,7 +49,7 @@ public class FriendController {
 		data.putAll(info.friendToMap(info));
 		data.put("card", card);
 		data.put("card_id", card_id);
-		data.put("time", DateUtils.millisToString(info.getTime()));
+		data.put("time", DateUtils.millisToString(Long.valueOf(info.getTime()*Long.valueOf(1000))));
 		info.setAllImgarr(info.getAllImg().split(","));
 //		if (!empty($info["all_img"])) {   ******
 //			$info["all_imgarr"] = explode(",", $info["all_img"]);

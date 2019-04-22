@@ -72,8 +72,7 @@ public class QyUtils {
 	}
 
 	public static int checkQyLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// int uniacid = Integer.valueOf(request.getParameter("uniacid"));
-		int uniacid = Constants.UNIACID;
+		Integer uniacid = Integer.valueOf(request.getParameter("uniacid"));
 		List<SetQY> qyList = new ArrayList<SetQY>();
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);
@@ -91,7 +90,7 @@ public class QyUtils {
 			// if(!StringUtils.hasText(userId)) {
 			// return -1;
 			// }
-
+//			return -2;
 			userId = "qutianshou"; // 测试******
 			request.getSession().setAttribute("session_dbs_masclwlcard_usderid", userId);
 		}
@@ -126,7 +125,11 @@ public class QyUtils {
 			String geturl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=" + qytoken + "&code="
 					+ code;
 			JSONObject json = HttpClientUtils.get(geturl);// ******
-			userId = json.getString("UserId");
+			try {
+				userId = json.getString("UserId");
+			} catch (Exception e) {
+				return null;
+			}
 			if (StringUtils.hasText(userId)) {
 				logger.info("请在企业微信打开");
 			}
@@ -134,12 +137,7 @@ public class QyUtils {
 		return userId;
 	}
 
-	public static void friendDownload(String mediaId) {
-
-	}
-
-	public static String downloadImage(String mediaId, int cardId) throws Exception {
-		Integer uniacid = Constants.UNIACID;
+	public static String downloadImage(Integer uniacid,  String mediaId, int cardId) throws Exception {
 		List<SetQY> qyList = new ArrayList<SetQY>();
 		SetQYExample qyExample = new SetQYExample();
 		qyExample.createCriteria().andUniacidEqualTo(uniacid);
@@ -174,11 +172,15 @@ public class QyUtils {
 			String content_disposition = conn.getHeaderField("Content-disposition");
 			// 微信服务器生成的文件名称
 			String file_name = "";
-			String[] content_arr = content_disposition.split(";");
-			if (content_arr.length == 2) {
-				String tmp = content_arr[1];
-				int index = tmp.indexOf("\"");
-				file_name = tmp.substring(index + 1, tmp.length() - 1);
+			if(StringUtils.hasText(content_disposition)) {
+				String[] content_arr = content_disposition.split(";");
+				if (content_arr.length == 2) {
+					String tmp = content_arr[1];
+					int index = tmp.indexOf("\"");
+					file_name = tmp.substring(index + 1, tmp.length() - 1);
+				}
+			}else {
+				file_name = media_id+".jpg";
 			}
 			// 生成不同文件名称
 			File file = new File(path + file_name);
