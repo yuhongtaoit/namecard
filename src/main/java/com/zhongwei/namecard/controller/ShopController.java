@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardShopsMapper;
 import com.zhongwei.namecard.dao.ShopsCategoryMapper;
@@ -50,10 +51,21 @@ public class ShopController {
 	@Autowired
 	private ShopService shopService;
 	
+	private int pageSize = 2;//每页大小
+	
+	private int pageNo = 1;//第几页，初始值为1
+	
 	@RequestMapping("/getShopList")
-	public String getShops(Model model, Principal principal, Authentication authentication) {
+	public String getShops(Model model, Integer pindex, Principal principal, Authentication authentication) {
+		if(pindex == null) 
+			pindex = 0;
+		
+		if(pindex<1) {
+			pindex = pageNo;
+		}
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
 		CardShopsExample cardShopsExample = new CardShopsExample();
+		PageHelper.startPage(pindex, pageSize);
 		cardShopsExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<CardShopsWithBLOBs> shopList = shopMapper.selectByExampleWithBLOBs(cardShopsExample);
 		for(CardShopsWithBLOBs shop : shopList) {
@@ -62,6 +74,18 @@ public class ShopController {
 		}
 		model.addAttribute("shops", shopList);
 		return "shoplist";
+	}
+	
+	@RequestMapping("/getShopTotal")
+	public @ResponseBody CommonMessage getShopTotal(Model model, Principal principal, Authentication authentication) {
+		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardShopsExample cardShopsExample = new CardShopsExample();
+		cardShopsExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		int total = shopMapper.countByExample(cardShopsExample);
+		message.setSuccess(true);
+		message.setMessage(String.valueOf(total%pageSize==0?total/pageSize:total/pageSize+1));
+		return message;
 	}
 	
 	@RequestMapping("/edit")

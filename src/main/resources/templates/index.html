@@ -69,6 +69,7 @@ function roleList(){
 function shop(){
 	flag = "shop";
 	url="/shop/getShopList";
+	totalPagesUrl = "/shop/getShopTotal";
 	$( "#mainList" ).load( "/shop/getShopList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
@@ -129,6 +130,8 @@ function friendManage(){
 
 function accountManage(){
 	flag = "account";
+	totalPagesUrl = "/account/getAccountTotal";
+	url="/account/getAccountList";
 	$( "#mainList" ).load( "/account/getAccountList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
@@ -226,7 +229,6 @@ function initPaginator(){
 var currentPage=1;
 var totalPages;
 if(flag=="account" || flag=="card" || flag=="shop" || flag=="product"){
-	alert(totalPagesUrl);
 	$.ajax({
 	    type: "GET",
 	    url: totalPagesUrl,

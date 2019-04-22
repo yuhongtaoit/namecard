@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.AccountWxappMapper;
 import com.zhongwei.namecard.entity.AccountWxapp;
@@ -27,14 +28,37 @@ public class AccountController {
 	@Autowired
 	private AccountWxappMapper accountMapper;
 	
+	private int pageSize = 2;//每页大小
+	
+	private int pageNo = 1;//第几页，初始值为1
+	
 	@RequestMapping("/getAccountList")
-	public String getUsers(Model model, Principal principal, Authentication authentication) {
+	public String getUsers(Model model, Integer pindex, Principal principal, Authentication authentication) {
+		if(pindex == null) 
+			pindex = 0;
+		
+		if(pindex<1) {
+			pindex = pageNo;
+		}
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		PageHelper.startPage(pindex, pageSize);
 		AccountWxappExample accountExample = new AccountWxappExample();
 		accountExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<AccountWxapp> accountList = this.accountMapper.selectByExample(accountExample);
 		model.addAttribute("accountList", accountList);
 		return "accountlist";
+	}
+	
+	@RequestMapping("/getAccountTotal")
+	public @ResponseBody CommonMessage getAccountTotal(Model model, Principal principal, Authentication authentication) {
+		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		AccountWxappExample accountExample = new AccountWxappExample();
+		accountExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		int total = accountMapper.countByExample(accountExample);
+		message.setSuccess(true);
+		message.setMessage(String.valueOf(total%pageSize==0?total/pageSize:total/pageSize+1));
+		return message;
 	}
 	
 	@RequestMapping("/editAccount")

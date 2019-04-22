@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardProductMapper;
 import com.zhongwei.namecard.entity.CardProductExample;
@@ -55,7 +53,7 @@ public class CardProductController {
 		}
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
 		CardProductExample cardProductExample = new CardProductExample();
-		Page<CardProductWithBLOBs> page = PageHelper.startPage(pindex, pageSize);
+		PageHelper.startPage(pindex, pageSize);
 		cardProductExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<CardProductWithBLOBs> productList = productMapper.selectByExampleWithBLOBs(cardProductExample);
 		model.addAttribute("products", productList);

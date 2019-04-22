@@ -67,7 +67,7 @@ public class NameCardController {
 		}
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
 		CardExample cardExample = new CardExample();
-		Page<CardProductWithBLOBs> page = PageHelper.startPage(pindex, pageSize);
+		PageHelper.startPage(pindex, pageSize);
 		cardExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<Card> cardList = cardMapper.selectByExample(cardExample);
 		model.addAttribute("cards", cardList);
@@ -109,9 +109,9 @@ public class NameCardController {
 			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card){
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
-//		AccountWxapp account = accountMapper.selectByPrimaryKey(user.getUniacid());
-//		String accessToken = QySendUtils.getAccessToken(account.getKey(), account.getSecret(), user.getUniacid());
-//		this.miniQrService.getminiqrQr("uniacid=2&send_cardid=0&share_id=0&card_id=11", accessToken, user.getUniacid(), 1);
+		AccountWxapp account = accountMapper.selectByPrimaryKey(user.getUniacid());
+		String accessToken = QySendUtils.getAccountToken(account.getKey(), account.getSecret(), user.getUniacid());
+		this.miniQrService.getminiqrQr("uniacid=2&send_cardid=0&share_id=0&card_id=11", accessToken, user.getUniacid(), 1);
 		card.setUniacid(user.getUniacid());
 		if(card!=null && card.getId()!=null && card.getId()>0) {
 			CardWithBLOBs oldCard = cardMapper.selectByPrimaryKey(card.getId());
