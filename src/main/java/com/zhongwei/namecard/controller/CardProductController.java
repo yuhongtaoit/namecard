@@ -54,8 +54,8 @@ public class CardProductController {
 			pindex = pageNo;
 		}
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
-		Page<CardProductWithBLOBs> page = PageHelper.startPage(pindex, pageSize);
 		CardProductExample cardProductExample = new CardProductExample();
+		Page<CardProductWithBLOBs> page = PageHelper.startPage(pindex, pageSize);
 		cardProductExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		List<CardProductWithBLOBs> productList = productMapper.selectByExampleWithBLOBs(cardProductExample);
 		model.addAttribute("products", productList);
@@ -70,7 +70,7 @@ public class CardProductController {
 		cardProductExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		int total = productMapper.countByExample(cardProductExample);
 		message.setSuccess(true);
-		message.setMessage(String.valueOf(total));
+		message.setMessage(String.valueOf(total%pageSize==0?total/pageSize:total/pageSize+1));
 		return message;
 	}
 	

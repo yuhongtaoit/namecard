@@ -47,67 +47,92 @@ body{
 }
 </style>
 <script type="text/javascript">
-var url = "";
+var url = ""
+var totalPagesUrl = "";
+var flag = "";
 function userList(){
+	flag = "user";
 	$( "#mainList" ).load( "/user/getUserList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function roleList(){
+	flag = "role";
 	$( "#mainList" ).load( "/role/getRoleList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function shop(){
+	flag = "shop";
+	url="/shop/getShopList";
 	$( "#mainList" ).load( "/shop/getShopList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
-	getPage();
+	initPaginator();
 }
 
 function product(){
+	flag = "product";
+	totalPagesUrl = "/product/getProductTotal";
+	url="/product/getProductList";
 	$( "#mainList" ).load( "/product/getProductList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
-	getPage();
+	initPaginator();
 }
 
 function namecard(){
+	flag = "card";
+	totalPagesUrl = "/namecard/getNameCardTotal";
+	url="/namecard/getNamecardList";
 	$( "#mainList" ).load( "/namecard/getNamecardList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function officialWebsite(){
+	flag = "website";
 	$( "#mainList" ).load( "/website/index", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function basicSet(){
+	flag = "basic";
 	$( "#mainList" ).load( "/basic/index", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function qywxSet(){
+	flag = "qywx";
 	$( "#mainList" ).load( "/qywx/index", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function friendManage(){
+	flag = "friend";
 	$( "#mainList" ).load( "/friendManage/index", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function accountManage(){
+	flag = "account";
 	$( "#mainList" ).load( "/account/getAccountList", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
+	initPaginator();
 }
 
 function updatePassword(){
@@ -151,14 +176,14 @@ function changeAccount(){
 			<div class="jumbotron" >
 				<div id="mainList">
 				</div>
-				<div align="center">
+				<div id="pagediv" align="center">
 		    		<ul id='pagearea' class="pagination"></ul>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 userList();
 var hasRoleAdmin = $("#hasRoleAdmin").val();
 if(!hasRoleAdmin){
@@ -195,30 +220,53 @@ if(!hasRoleAdmin && !hasValue(menuResources,"menu_qywx_manage")){
 if(!hasRoleAdmin && !hasValue(menuResources,"menu_friend_manage")){
 	$("#friendManage").remove();
 }
-$(function(){
+
+
+function initPaginator(){
+var currentPage=1;
+var totalPages;
+if(flag=="account" || flag=="card" || flag=="shop" || flag=="product"){
+	alert(totalPagesUrl);
+	$.ajax({
+	    type: "GET",
+	    url: totalPagesUrl,
+	    async:false,
+	    success: function(data){
+	    	var json = eval(data);
+			if(json.success){
+			   	 totalPages = json.message;
+			}else{
+				alert(json.message);
+				window.close();
+			}
+	    }
+	});
+}
 	var options = {
-		bootstrapMajorVersion:3,
-        currentPage: 2,
-        totalPages: 5,
-        size:"normal",
-        alignment:"center",
-        onPageClicked: function(e,originalEvent,type,page){
-        	alert(type);
-        	alert(page);
-			var url = "";
-				url = "/product/getProductList";
-			$.ajax({
-	             type: "GET",
-	             url: url,
-	             async:false,
-	             success: function(data){
-	            	 $("#mainList", window.document).html(data);
-	             }
-	         });
-        }
-    }
-    $('#pagearea').bootstrapPaginator(options);
-})
+			bootstrapMajorVersion:3,
+	        currentPage: currentPage,
+	        totalPages: totalPages,
+	        size:"normal",
+	        alignment:"center",
+	        onPageClicked: function(e,originalEvent,type,page){
+				$.ajax({
+		             type: "GET",
+		             url: url+"?pindex="+page,
+		             async:false,
+		             success: function(data){
+		            	 $("#mainList", window.document).html(data);
+		             }
+		         });
+	        }
+	    }
+	if(flag=="account" || flag=="card" || flag=="shop" || flag=="product"){
+		var html = "<ul id='pagearea' class='pagination'></ul>";
+		$("#pagediv").append(html);
+	    $('#pagearea').bootstrapPaginator(options);
+	}else{
+		$('#pagearea').remove();
+	}
+}
 
 function toArray(val){
 	if(myStartWith(val,"[")){
