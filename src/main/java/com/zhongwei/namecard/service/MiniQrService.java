@@ -63,13 +63,13 @@ public class MiniQrService {
             byte[] result = entity.getBody();
             inputStream = new ByteArrayInputStream(result);
 
-            String baseFilePath = "E:/attachment/images/"+uniacid+"/";
+            String baseFilePath = this.baseFilePath+"attachment/images/"+uniacid+"/";
             File filePath = new File(baseFilePath);
     		if (!filePath.exists() && !filePath.isDirectory()) {
     		    System.out.println("目录不存在，创建目录：" + filePath);
     		    filePath.mkdirs();
     		}
-            File file = new File("E:/attachment/images/"+uniacid+"/"+cardId+".png");
+            File file = new File(this.baseFilePath+"attachment/images/"+uniacid+"/"+cardId+".png");
             if (!file.exists()){
                 file.createNewFile();
             }
