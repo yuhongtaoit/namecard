@@ -106,7 +106,7 @@ public class MiniQrService {
 			//此处是要替代logo的自定义图片路径，自定义图片不要用透明的或者半透明的
 			CardWithBLOBs card = this.cardMapper.selectByPrimaryKey(cardId);
 			String logoPath = card.getCardLogo();
-			BufferedImage image = ImageIO.read(new File(baseFilePath+logoPath));
+			BufferedImage image = ImageIO.read(new File(this.baseFilePath+logoPath));
 		    //int w = image.getWidth();
 		    //int h = image.getHeight();
 		    BufferedImage output = new BufferedImage(195, 195, BufferedImage.TYPE_INT_ARGB);
@@ -120,7 +120,7 @@ public class MiniQrService {
 		    g2.drawImage(image, 0, 0, 195, 195, null);
 		    g2.dispose();
 		    //这是生成的临时替换logo图片的保存路径
-		    ImageIO.write(output, "png", new File("E:/attachment/images/"+uniacid+"/"+cardId+"_logo.png"));
+		    ImageIO.write(output, "png", new File(this.baseFilePath+"attachment/images/"+uniacid+"/"+cardId+"_logo.png"));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -128,23 +128,23 @@ public class MiniQrService {
 		//生产新的二维码图片
 		try {
 			//此处是小程序码的路径
-		    BufferedImage appletImg = ImageIO.read(new FileInputStream("E:/attachment/images/"+uniacid+"/"+cardId+".png"));
+		    BufferedImage appletImg = ImageIO.read(new FileInputStream(this.baseFilePath+"attachment/images/"+uniacid+"/"+cardId+".png"));
 		    Graphics2D g2d = appletImg.createGraphics();
 		    // 设置抗锯齿的属性  
 		    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		    //此处是替换logo的临时图片路径
-		    BufferedImage centerImg = ImageIO.read(new File("E:/attachment/images/"+uniacid+"/"+cardId+"_logo.png"));
+		    BufferedImage centerImg = ImageIO.read(new File(this.baseFilePath+"attachment/images/"+uniacid+"/"+cardId+"_logo.png"));
 		    g2d.drawImage(centerImg.getScaledInstance(centerImg.getWidth(), centerImg.getHeight(), Image.SCALE_SMOOTH), (appletImg.getWidth() - centerImg.getWidth()) / 2, (appletImg.getHeight() - centerImg.getHeight()) / 2, null);
 		    // 关闭资源 
 		    g2d.dispose();
 		    //生成新的二维码，覆盖原来的，此处为原小程序码路径，如需另为保存，请自定义路径
-		    ImageIO.write(appletImg, "png", new File("E:/attachment/images/"+uniacid+"/"+cardId+".png"));
+		    ImageIO.write(appletImg, "png", new File(this.baseFilePath+"attachment/images/"+uniacid+"/"+cardId+".png"));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		new File("E:/attachment/images/"+uniacid+"/"+cardId+"_logo.png").delete();
+		new File(this.baseFilePath+"attachment/images/"+uniacid+"/"+cardId+"_logo.png").delete();
 			                    
 	}
 	
