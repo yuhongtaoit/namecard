@@ -56,6 +56,9 @@ public class AccountController {
 		AccountWxappExample accountExample = new AccountWxappExample();
 		accountExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		int total = accountMapper.countByExample(accountExample);
+		if(total == 0) {
+			total=1;
+		}
 		message.setSuccess(true);
 		message.setMessage(String.valueOf(total%pageSize==0?total/pageSize:total/pageSize+1));
 		return message;

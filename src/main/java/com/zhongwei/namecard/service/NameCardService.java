@@ -14,8 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zhongwei.namecard.common.CommonMessage;
+import com.zhongwei.namecard.dao.AccountWxappMapper;
 import com.zhongwei.namecard.dao.CardMapper;
+import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
+import com.zhongwei.namecard.utils.QySendUtils;
 
 @Service
 public class NameCardService {
@@ -25,6 +28,12 @@ public class NameCardService {
 	
 	@Autowired
 	private FileUploadService fileUploadService;
+	
+	@Autowired
+	private AccountWxappMapper accountMapper;
+	
+	@Autowired
+	private MiniQrService miniQrService;
 	
 	@Transactional
 	public CommonMessage createNameCard(MultipartFile logoimage, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
@@ -42,6 +51,9 @@ public class NameCardService {
 		card.setTotalPicNum(personalimage.length+3);
 		try {
 			cardMapper.insert(card);
+			AccountWxapp account = accountMapper.selectByPrimaryKey(card.getUniacid());
+			String accessToken = QySendUtils.getAccountToken(account.getKey(), account.getSecret(), card.getUniacid());
+			this.miniQrService.getMiniQr("uniacid="+card.getUniacid()+"&card_id="+card.getId(), accessToken, card.getUniacid(), card.getId());
 			message.setSuccess(true);
 			message.setMessage("保存成功！");
 			return message;

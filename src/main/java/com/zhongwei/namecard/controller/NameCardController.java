@@ -17,22 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.common.CommonMessage;
-import com.zhongwei.namecard.dao.AccountWxappMapper;
 import com.zhongwei.namecard.dao.CardMapper;
-import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.Card;
 import com.zhongwei.namecard.entity.CardExample;
-import com.zhongwei.namecard.entity.CardProductExample;
-import com.zhongwei.namecard.entity.CardProductWithBLOBs;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
-import com.zhongwei.namecard.service.MiniQrService;
 import com.zhongwei.namecard.service.NameCardService;
-import com.zhongwei.namecard.utils.QySendUtils;
 
 @Controller
 @RequestMapping("/namecard")
@@ -42,16 +35,10 @@ public class NameCardController {
 	private CardMapper cardMapper;
 	
 	@Autowired
-	private AccountWxappMapper accountMapper;
-	
-	@Autowired
 	private NameCardService nameCardService;
 	
 	@Autowired
 	private FileUploadService fileUploadService;
-	
-	@Autowired
-	private MiniQrService miniQrService;
 	
 	private int pageSize = 2;//每页大小
 	
@@ -81,6 +68,9 @@ public class NameCardController {
 		CardExample cardExample = new CardExample();
 		cardExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		int total = cardMapper.countByExample(cardExample);
+		if(total == 0) {
+			total=1;
+		}
 		message.setSuccess(true);
 		message.setMessage(String.valueOf(total%pageSize==0?total/pageSize:total/pageSize+1));
 		return message;
@@ -109,9 +99,6 @@ public class NameCardController {
 			Principal principal, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card){
 		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
-		AccountWxapp account = accountMapper.selectByPrimaryKey(user.getUniacid());
-		String accessToken = QySendUtils.getAccountToken(account.getKey(), account.getSecret(), user.getUniacid());
-		this.miniQrService.getminiqrQr("uniacid=2&send_cardid=0&share_id=0&card_id=11", accessToken, user.getUniacid(), 1);
 		card.setUniacid(user.getUniacid());
 		if(card!=null && card.getId()!=null && card.getId()>0) {
 			CardWithBLOBs oldCard = cardMapper.selectByPrimaryKey(card.getId());

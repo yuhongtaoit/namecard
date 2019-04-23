@@ -165,7 +165,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
     insert into ims_dbs_masclwlcard (id, uniacid, identify, 
       card_logo, detailed_address, card_name, 
       errmsg, card_id, userid, 

@@ -83,6 +83,9 @@ public class ShopController {
 		CardShopsExample cardShopsExample = new CardShopsExample();
 		cardShopsExample.createCriteria().andUniacidEqualTo(user.getUniacid());
 		int total = shopMapper.countByExample(cardShopsExample);
+		if(total == 0) {
+			total=1;
+		}
 		message.setSuccess(true);
 		message.setMessage(String.valueOf(total%pageSize==0?total/pageSize:total/pageSize+1));
 		return message;
