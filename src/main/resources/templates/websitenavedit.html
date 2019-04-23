@@ -89,22 +89,12 @@ function cancel(){
 				  
 				  <div class="form-group">
 					 <label for="newid" class="col-sm-2 control-label">选择文章:</label>
-						<select class="xizn" id="newid" name="newid">
-							<option value="0">请选择</option>
-							 
-								<option value="5">联系我们</option>
-							 
-								<option value="6">案例持续更新</option>
-							 
-								<option value="7">服务案例</option>
-							 
-								<option value="8">智能名片</option>
-							 
-								<option value="9">定制开发</option>
-							 
-								<option value="10">网络推广</option>
-								
+					 <div class="col-sm-8 col-xs-12">
+						<select name="newid" class="form-control" th:field="${cardNav.newid}">
+							<option value="0">无</option>
+							<option th:each="cardNew : ${cardNews}" th:text="${cardNew.title}" th:value="${cardNew.id}"></option>
 						</select>
+					 </div>
 				  </div>
 				  
 				  <div class="form-group">

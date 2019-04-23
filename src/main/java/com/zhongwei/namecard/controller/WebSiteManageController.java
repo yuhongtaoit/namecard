@@ -144,8 +144,13 @@ public class WebSiteManageController {
 	}
 	
 	@RequestMapping("/navEdit")
-	public String navEdit(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String navEdit(HttpServletRequest request, Principal principal, Authentication authentication, HttpServletResponse response, Model model){
 		String idStr = request.getParameter("id");
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardNewsExample cardNewsExample = new CardNewsExample();
+		cardNewsExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardNews> cardNews = this.cardNewsMapper.selectByExampleWithBLOBs(cardNewsExample);
+		model.addAttribute("cardNews", cardNews);
 		if(idStr!=null && idStr.trim().length()>0){
 			int id = Integer.valueOf(idStr);
 			CardNav cardNav = cardNavMapper.selectByPrimaryKey(id);

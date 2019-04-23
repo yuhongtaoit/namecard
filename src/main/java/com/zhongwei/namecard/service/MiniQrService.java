@@ -48,7 +48,7 @@ public class MiniQrService {
             String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
             Map<String,Object> param = new HashMap<>();
             param.put("scene", sceneStr);
-            param.put("page", "dbs_masclwlcard/pages/home/home");
+            param.put("page", "dbs_masclwlcard/pages/tab/tab");
             param.put("width", 430);
             param.put("auto_color", false);
             Map<String,Object> line_color = new HashMap<>();
