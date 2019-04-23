@@ -95,6 +95,7 @@ function deleteAccount(){
 		            	 $("#mainList", window.document).html(data);
 		             }
 		         });
+		         initPaginator(false);
 				alert(json.message);
 				window.close();
 			}

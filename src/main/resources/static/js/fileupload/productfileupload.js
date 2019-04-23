@@ -196,6 +196,7 @@ function save(){
 			            	 $("#mainList", window.opener.document).html(data);
 			             }
 			         });
+					opener.initPaginator(true);
 					alert(json.message);
 					window.close();
 				}else{

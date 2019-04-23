@@ -96,6 +96,7 @@ function deleteShop(){
 		            	 $("#mainList", window.document).html(data);
 		             }
 		         });
+		         initPaginator();
 				alert(json.message);
 				window.close();
 			}

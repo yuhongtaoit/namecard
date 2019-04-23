@@ -100,6 +100,7 @@ function deleteCard(){
 		            	 $("#mainList", window.document).html(data);
 		             }
 		         });
+		        initPaginator();
 				alert(json.message);
 				window.close();
 			}
