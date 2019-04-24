@@ -93,6 +93,7 @@ public class NameCardController {
 	@Transactional
 	public @ResponseBody CommonMessage saveCard(
 			@RequestParam(name="logoimageKey",required=false) MultipartFile logoimage, 
+			@RequestParam(name="videoKey",required=false) MultipartFile video, 
 			@RequestParam(name="shareimageKey",required=false) MultipartFile shareimage,
 			@RequestParam(name="style2bgimageKey",required=false) MultipartFile style2bgimage,
 			@RequestParam(name="filesKey",required=false) MultipartFile[] personalimage,

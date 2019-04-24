@@ -6,6 +6,7 @@
     <result column="uniacid" property="uniacid" jdbcType="INTEGER" />
     <result column="identify" property="identify" jdbcType="VARCHAR" />
     <result column="card_logo" property="cardLogo" jdbcType="VARCHAR" />
+    <result column="vedio" property="vedio" jdbcType="VARCHAR" />
     <result column="detailed_address" property="detailedAddress" jdbcType="VARCHAR" />
     <result column="card_name" property="cardName" jdbcType="VARCHAR" />
     <result column="errmsg" property="errmsg" jdbcType="VARCHAR" />
@@ -105,7 +106,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, uniacid, identify, card_logo, detailed_address, card_name, errmsg, card_id, userid, 
+    id, uniacid, identify, vedio, card_logo, detailed_address, card_name, errmsg, card_id, userid, 
     weixinid, address, sex, template_type, card_forward_status, see_num, browse_headimg_num, 
     sort, signature_count, share_num, total_pic_num, ishide, thumbs_num, mrtype, card_level, 
     last_update_star_time, card_tel, role_name, phone, email, hide_property, customer_disturb, 
@@ -167,7 +168,7 @@
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.zhongwei.namecard.entity.CardWithBLOBs" >
     insert into ims_dbs_masclwlcard (id, uniacid, identify, 
-      card_logo, detailed_address, card_name, 
+      card_logo, vedio, detailed_address, card_name, 
       errmsg, card_id, userid, 
       weixinid, address, sex, 
       template_type, card_forward_status, see_num, 
@@ -181,7 +182,7 @@
       share_title, is_sendcard_id, is_sendcard, 
       card_instr, photo)
     values (#{id,jdbcType=INTEGER}, #{uniacid,jdbcType=INTEGER}, #{identify,jdbcType=VARCHAR}, 
-      #{cardLogo,jdbcType=VARCHAR}, #{detailedAddress,jdbcType=VARCHAR}, #{cardName,jdbcType=VARCHAR}, 
+      #{cardLogo,jdbcType=VARCHAR}, #{vedio,jdbcType=VARCHAR}, #{detailedAddress,jdbcType=VARCHAR}, #{cardName,jdbcType=VARCHAR}, 
       #{errmsg,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
       #{weixinid,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, 
       #{templateType,jdbcType=BIT}, #{cardForwardStatus,jdbcType=BIT}, #{seeNum,jdbcType=INTEGER}, 
@@ -209,6 +210,9 @@
       </if>
       <if test="cardLogo != null" >
         card_logo,
+      </if>
+      <if test="cardLogo != null" >
+        vedio,
       </if>
       <if test="detailedAddress != null" >
         detailed_address,
@@ -334,6 +338,9 @@
       </if>
       <if test="cardLogo != null" >
         #{cardLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="vedio != null" >
+        #{vedio,jdbcType=VARCHAR},
       </if>
       <if test="detailedAddress != null" >
         #{detailedAddress,jdbcType=VARCHAR},
@@ -469,6 +476,9 @@
       <if test="record.cardLogo != null" >
         card_logo = #{record.cardLogo,jdbcType=VARCHAR},
       </if>
+      <if test="record.cardLogo != null" >
+        vedio = #{record.vedio,jdbcType=VARCHAR},
+      </if>
       <if test="record.detailedAddress != null" >
         detailed_address = #{record.detailedAddress,jdbcType=VARCHAR},
       </if>
@@ -591,6 +601,7 @@
       uniacid = #{record.uniacid,jdbcType=INTEGER},
       identify = #{record.identify,jdbcType=VARCHAR},
       card_logo = #{record.cardLogo,jdbcType=VARCHAR},
+      vedio = #{record.vedio,jdbcType=VARCHAR},
       detailed_address = #{record.detailedAddress,jdbcType=VARCHAR},
       card_name = #{record.cardName,jdbcType=VARCHAR},
       errmsg = #{record.errmsg,jdbcType=VARCHAR},
@@ -638,6 +649,7 @@
       uniacid = #{record.uniacid,jdbcType=INTEGER},
       identify = #{record.identify,jdbcType=VARCHAR},
       card_logo = #{record.cardLogo,jdbcType=VARCHAR},
+      vedio = #{record.vedio,jdbcType=VARCHAR},
       detailed_address = #{record.detailedAddress,jdbcType=VARCHAR},
       card_name = #{record.cardName,jdbcType=VARCHAR},
       errmsg = #{record.errmsg,jdbcType=VARCHAR},
@@ -688,6 +700,9 @@
       </if>
       <if test="cardLogo != null" >
         card_logo = #{cardLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="vedio != null" >
+        vedio = #{vedio,jdbcType=VARCHAR},
       </if>
       <if test="detailedAddress != null" >
         detailed_address = #{detailedAddress,jdbcType=VARCHAR},
@@ -808,6 +823,7 @@
     set uniacid = #{uniacid,jdbcType=INTEGER},
       identify = #{identify,jdbcType=VARCHAR},
       card_logo = #{cardLogo,jdbcType=VARCHAR},
+      vedio = #{vedio,jdbcType=VARCHAR},
       detailed_address = #{detailedAddress,jdbcType=VARCHAR},
       card_name = #{cardName,jdbcType=VARCHAR},
       errmsg = #{errmsg,jdbcType=VARCHAR},
@@ -852,6 +868,7 @@
     set uniacid = #{uniacid,jdbcType=INTEGER},
       identify = #{identify,jdbcType=VARCHAR},
       card_logo = #{cardLogo,jdbcType=VARCHAR},
+      vedio = #{vedio,jdbcType=VARCHAR},
       detailed_address = #{detailedAddress,jdbcType=VARCHAR},
       card_name = #{cardName,jdbcType=VARCHAR},
       errmsg = #{errmsg,jdbcType=VARCHAR},

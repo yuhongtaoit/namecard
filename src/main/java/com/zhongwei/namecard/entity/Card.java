@@ -11,6 +11,8 @@ public class Card {
     private String identify;
 
     private String cardLogo;
+    
+    private String vedio;
 
     private String detailedAddress;
 
@@ -120,7 +122,15 @@ public class Card {
         this.cardLogo = cardLogo == null ? null : cardLogo.trim();
     }
 
-    public String getDetailedAddress() {
+    public String getVedio() {
+		return vedio;
+	}
+
+	public void setVedio(String vedio) {
+		this.vedio = vedio;
+	}
+
+	public String getDetailedAddress() {
         return detailedAddress;
     }
 
