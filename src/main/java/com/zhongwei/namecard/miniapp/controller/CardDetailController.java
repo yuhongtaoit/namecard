@@ -528,6 +528,7 @@ public class CardDetailController {
 			}
 		}
 		data.put("newphoto", photo);
+		data.put("video", StringUtils.hasText(info.getVedio()) ? ImageUrlUtils.getAbsolutelyURL(info.getVedio()) : null);
 		List<CardMember> cardAllmembr = new ArrayList<CardMember>();
 		CardMemberExample memberExample2 = new CardMemberExample();
 		memberExample2.createCriteria().andUniacidEqualTo(uniacid).andAidEqualTo(card_id);

@@ -48,7 +48,7 @@ public class PosterController {
 		CardSet cardSet = list.size() > 0 ? list.get(0) : new CardSet();
 		cardSet.setCompanyLogo(ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()).replaceAll("http://", "https://"));
 		data.put("base", cardSet);
-		data.put("codepng", ImageUrlUtils.getAbsolutelyURL("addons/dbs_masclwlcard/sea/" + uniacid + "/" + card.getId() + ".png").replaceAll("http://", "https://"));
+		data.put("codepng", ImageUrlUtils.getAbsolutelyURL("attachment/images/" + uniacid + "/" + card.getId() + ".png").replaceAll("http://", "https://"));
 		data.put("cardLogo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("http://", "https://"));
 		data.put("card_logo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("http://", "https://"));
 		
