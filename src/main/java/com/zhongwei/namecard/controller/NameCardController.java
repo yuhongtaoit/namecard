@@ -104,10 +104,10 @@ public class NameCardController {
 		if(card!=null && card.getId()!=null && card.getId()>0) {
 			CardWithBLOBs oldCard = cardMapper.selectByPrimaryKey(card.getId());
 			if(oldCard!=null && oldCard.getId()!=0) {
-				return this.nameCardService.updateNameCard(logoimage, shareimage, style2bgimage, personalimage, request, response, card, oldCard);
+				return this.nameCardService.updateNameCard(logoimage, video, shareimage, style2bgimage, personalimage, request, response, card, oldCard);
 			}
 		}
-		return this.nameCardService.createNameCard(logoimage, shareimage, style2bgimage, personalimage, request, response, card);
+		return this.nameCardService.createNameCard(logoimage, video, shareimage, style2bgimage, personalimage, request, response, card);
 	}
 	
 	@RequestMapping(value="/delete")

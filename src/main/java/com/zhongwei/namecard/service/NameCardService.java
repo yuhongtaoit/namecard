@@ -36,15 +36,17 @@ public class NameCardService {
 	private MiniQrService miniQrService;
 	
 	@Transactional
-	public CommonMessage createNameCard(MultipartFile logoimage, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
+	public CommonMessage createNameCard(MultipartFile logoimage, MultipartFile video, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card) {
 		CommonMessage message = new CommonMessage();
 		String logoImagePath = fileUploadService.uploadForSingleFile(request, response, logoimage);
+		String videoPath = fileUploadService.uploadForSingleFile(request, response, video);
 		String shareImagePath = fileUploadService.uploadForSingleFile(request, response, shareimage);
 		String style2bgImagePath = fileUploadService.uploadForSingleFile(request, response, style2bgimage);
 		List<String> personalImagePaths = fileUploadService.uploadForMultiFile(request, response, personalimage);
 		this.setCardDefaultValue(card);
 		card.setCardLogo(logoImagePath);
+		card.setVedio(videoPath);
 		card.setShareImg(shareImagePath);
 		card.setTemplateImg(style2bgImagePath);
 		card.setPhoto(personalImagePaths.toString());
@@ -61,6 +63,7 @@ public class NameCardService {
 			fileUploadService.deleteFile(style2bgImagePath);
 			fileUploadService.deleteFile(shareImagePath);
 			fileUploadService.deleteFile(logoImagePath);
+			fileUploadService.deleteFile(videoPath);
 			for(String path : personalImagePaths) {
 				fileUploadService.deleteFile(path);
 			}
@@ -70,7 +73,7 @@ public class NameCardService {
 		}
 	}
 	
-	public CommonMessage updateNameCard(MultipartFile logoimage, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
+	public CommonMessage updateNameCard(MultipartFile logoimage, MultipartFile video, MultipartFile shareimage,MultipartFile style2bgimage,MultipartFile[] personalimage,
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card, CardWithBLOBs oldCard) {
 		CommonMessage message = new CommonMessage();
 		try {
@@ -80,6 +83,14 @@ public class NameCardService {
 			}else {
 				this.fileUploadService.deleteFile(oldCard.getCardLogo());
 				card.setCardLogo(this.fileUploadService.uploadForSingleFile(request, response, logoimage));
+			}
+			if(video==null && !StringUtils.isEmpty(card.getVedio())) {
+				card.setVedio(oldCard.getVedio());
+			}else {
+				if(oldCard.getVedio()!=null) {
+					this.fileUploadService.deleteFile(oldCard.getVedio());
+				}
+				card.setVedio(this.fileUploadService.uploadForSingleFile(request, response, video));
 			}
 			if(shareimage==null && !StringUtils.isEmpty(card.getShareImg())) {
 				card.setShareImg(oldCard.getShareImg());
