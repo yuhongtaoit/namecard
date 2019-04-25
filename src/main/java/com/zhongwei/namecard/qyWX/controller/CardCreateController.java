@@ -19,40 +19,20 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.dao.AccountWxappMapper;
-import com.zhongwei.namecard.dao.ActReportMapper;
-import com.zhongwei.namecard.dao.CardChatMapper;
-import com.zhongwei.namecard.dao.CardFormMapper;
 import com.zhongwei.namecard.dao.CardMapper;
-import com.zhongwei.namecard.dao.CardMemberMapper;
-import com.zhongwei.namecard.dao.CardSetMapper;
 import com.zhongwei.namecard.dao.SetQYMapper;
 import com.zhongwei.namecard.entity.AccountWxapp;
-import com.zhongwei.namecard.entity.AccountWxappExample;
-import com.zhongwei.namecard.entity.ActReport;
-import com.zhongwei.namecard.entity.ActReportExample;
-import com.zhongwei.namecard.entity.Card;
-import com.zhongwei.namecard.entity.CardChat;
-import com.zhongwei.namecard.entity.CardChatExample;
-import com.zhongwei.namecard.entity.CardExample;
-import com.zhongwei.namecard.entity.CardForm;
-import com.zhongwei.namecard.entity.CardFormExample;
-import com.zhongwei.namecard.entity.CardMember;
-import com.zhongwei.namecard.entity.CardMemberExample;
-import com.zhongwei.namecard.entity.CardSet;
-import com.zhongwei.namecard.entity.CardSetExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.entity.SetQY;
 import com.zhongwei.namecard.entity.SetQYExample;
 import com.zhongwei.namecard.miniapp.config.WxMaProperties;
-import com.zhongwei.namecard.utils.HttpClientUtils;
+import com.zhongwei.namecard.service.FileUploadService;
+import com.zhongwei.namecard.service.MiniQrService;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.QySendUtils;
 import com.zhongwei.namecard.utils.QyUtils;
 
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/cardCreate")
@@ -68,6 +48,12 @@ public class CardCreateController {
 	
 	@Autowired
 	private SetQYMapper qyMapper;
+	@Autowired
+	private MiniQrService miniQrService;
+	@Autowired
+	private FileUploadService fileUploadService;
+	@Autowired
+	private AccountWxappMapper accountMapper;
 	
 	@RequestMapping("/cardCreate")
 	public String stafferIndex(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
@@ -246,7 +232,20 @@ public class CardCreateController {
 		card.setUserid(userid);
 		card.setWeixinid(weixinid);
 		card.setZdMsg("");
-		int insert = cardMapper.insert(card);
+		int insert  = 0;
+		try {
+			insert = cardMapper.insert(card);
+			AccountWxapp account = accountMapper.selectByPrimaryKey(card.getUniacid());
+			String accessToken = QySendUtils.getAccountToken(account.getKey(), account.getSecret(), card.getUniacid());
+			this.miniQrService.getMiniQr("uniacid="+card.getUniacid()+"&card_id="+card.getId()+"&send_cardid=0", accessToken, card.getUniacid(), card.getId());
+		} catch (Exception e) {
+			fileUploadService.deleteFile(ImageUrlUtils.getAbsolutelyURL(shareImg));
+			fileUploadService.deleteFile(ImageUrlUtils.getAbsolutelyURL(cardLogo));
+			for(String path : photos) {
+				fileUploadService.deleteFile(ImageUrlUtils.getAbsolutelyURL(path));
+			}
+			insert = 0;
+		}
 		if(insert == 0) {
 			result.put("msg", "保存失败");
 			result.put("Code", 1);

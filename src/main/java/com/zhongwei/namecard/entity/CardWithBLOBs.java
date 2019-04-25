@@ -69,6 +69,7 @@ public class CardWithBLOBs extends Card {
 		result.put("userid", card.getUserid());
 		result.put("weixinid", card.getWeixinid());
 		result.put("zdMsg", card.getZdMsg());
+		result.put("vedio", card.getVedio());
 		return result;
 	}
 }

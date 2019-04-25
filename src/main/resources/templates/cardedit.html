@@ -76,7 +76,7 @@ function cancel(){
 						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">个人小视频</label>
 						<div class="col-xs-12 col-sm-8">
 							<div class="input-group">
-								<input type="text" readonly="readonly" th:value="${card == null}?'':${card.video }" name="video" id="video" value="" class="form-control" autocomplete="off">
+								<input type="text" readonly="readonly" th:value="${card == null}?'':${card.vedio }" name="video" id="video" value="" class="form-control" autocomplete="off">
 								<span class="input-group-btn">
 									<label for="videoContent" class="btn btn-primary ng-binding" onclick="resetFlag()">上传视频</label>
 									<input type="file" id="videoContent" name="videoContent" accept="video/*" style="display: none">
