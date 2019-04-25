@@ -97,6 +97,21 @@ function save(){
 	 var thumb = $("#thumb").val();
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("thumbimage");
+	 var sort = $("#sort").val();
+	 if(!isNull(sort) && !checkNum(sort)){
+		 alert("排序必须为整数");
+		 return;
+	 }
+	 var title = $("#title").val();
+	 if(isNull(title)){
+		 alert("分类名称不能为空");
+		 return;
+	 }
+	 var num = $("#num").val();
+	 if(!isNull(num) && !checkNum(num)){
+		 alert("商品显示数量必须为整数");
+		 return;
+	 }
 	 if(m.get("thumbimage")==undefined && thumb==''){
 		 alert('请上传分类图片');
 		 return;

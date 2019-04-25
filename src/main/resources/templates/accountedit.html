@@ -7,6 +7,7 @@
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+<script type="text/javascript" src="../js/util/util.js"></script>
 <title>智慧名片后台管理</title>
 <script type="text/javascript">
 function cancel(){
@@ -14,13 +15,31 @@ function cancel(){
 }
 function save(){
 	var name = document.getElementById("name").value;
+	if(!name || myTrim(name)==''){
+		alert("商户名不能为空");
+		return;
+	}
 	var id = document.getElementById("uuid").value;
 	var original = document.getElementById("original").value;
+	if(!original || myTrim(original)==''){
+		alert("原始ID不能为空");
+		return;
+	}
 	var key = document.getElementById("key").value;
+	if(!key || myTrim(key)==''){
+		alert("AppId不能为空");
+		return;
+	}
 	var secret = document.getElementById("secret").value;
-	var encodingaeskey = document.getElementById("encodingaeskey").value;
-	var token = document.getElementById("token").value;
+	if(!secret || myTrim(secret)==''){
+		alert("AppSecret不能为空");
+		return;
+	}
 	var level = document.getElementById("level").value;
+	if(!checkNum(level)){
+		alert("版本号必须位数字");
+		return;
+	}
 	$.post("/account/saveAccount",
 			{
 				'name':name,
@@ -28,7 +47,6 @@ function save(){
 				'original':original,
 				'key':key,
 				'secret':secret,
-				'encodingaeskey':encodingaeskey,
 				'token':token,
 				'level':level
 			},
@@ -62,25 +80,19 @@ function save(){
 			<form role="form" action="/user/save" id="userinfo">
 				<input type="hidden" id="uuid" name="uuid" th:value="${account == null}?'':${account.acid}"/>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">商户名称</label><input type="text" class="form-control" id="name" name="name" th:value="${account == null}?'':${account.name }"/>
+					 <label for="exampleInputEmail1">商户名称</label><input type="text" class="form-control" maxlength="30" id="name" name="name" th:value="${account == null}?'':${account.name }"/>
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">原始ID</label><input type="text" class="form-control" id="original" name="original" th:value="${account == null}?'':${account.original }" />
+					 <label for="exampleInputPassword1">原始ID</label><input type="text" class="form-control" maxlength="30" id="original" name="original" th:value="${account == null}?'':${account.original }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">AppId</label><input type="text" class="form-control" id="key" name="key" th:value="${account == null}?'':${account.key }" />
+					 <label for="exampleInputPassword1">AppId</label><input type="text" class="form-control"  maxlength="50" id="key" name="key" th:value="${account == null}?'':${account.key }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">AppSecret</label><input type="text" class="form-control" id="secret" name="secret" th:value="${account == null}?'':${account.secret }" />
+					 <label for="exampleInputPassword1">AppSecret</label><input type="text" class="form-control" maxlength="50" id="secret" name="secret" th:value="${account == null}?'':${account.secret }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">消息密钥</label><input type="text" class="form-control" id="encodingaeskey" name="encodingaeskey" th:value="${account == null}?'':${account.encodingaeskey }" />
-				</div>
-				<div class="form-group">
-					 <label for="exampleInputPassword1">Token</label><input type="text" class="form-control" id="token" name="token" th:value="${account == null}?'':${account.token }" />
-				</div>
-				<div class="form-group">
-					 <label for="exampleInputPassword1">版本号</label><input type="text" class="form-control" id="level" name="level" th:value="${account == null}?'':${account.level }" />
+					 <label for="exampleInputPassword1">版本号</label><input type="text" class="form-control" maxlength="2" id="level" name="level" th:value="${account == null}?'':${account.level }" />
 				</div>
 				<div align="center">
 					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>

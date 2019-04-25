@@ -160,6 +160,20 @@ function save(){
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("cpBsImage");
 	 form.delete("cpBsContentImage");
+	 var cpBsName = $("#cpBsName").val();
+	 if(isNull(cpBsName)){
+		 alert("产品标题不能为空");
+		 return;
+	 }
+	 var cpBsPrice = $("#cpBsPrice").val();
+	 if(isNull(cpBsPrice)){
+		 alert("产品价格不能为空");
+		 return;
+	 }
+	 if(!isNull(cpBsPrice) && !checkCash(cpBsPrice)){
+		 alert("产品价格必须为数字");
+		 return;
+	 }
 	 if(m.get("cpBsImage")==undefined && topPic==''){
 		 alert('请上传产品首页图片');
 		 return;

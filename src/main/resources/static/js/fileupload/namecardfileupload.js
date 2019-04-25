@@ -152,6 +152,22 @@ function save(){
 	 form.delete("shareimage");
 	 form.delete("personalimage");
 	 form.delete("style2bgimage");
+	 if(!checkPhone()){
+		 alert('请填写正确的手机号码');
+		 return;
+	 }
+	 if(!checkTel()){
+		 alert('请填写正确的公司电话');
+		 return;
+	 }
+	 if(!checkEmail()){
+		 alert('请填写正确的邮箱');
+		 return;
+	 }
+	 if(!checkNum()){
+		 alert('点赞数应该为数字');
+		 return;
+	 }
 	 if(m.get("logoimage")==undefined && cardLogo==''){
 		 alert('请上传头像图片');
 		 return;
@@ -234,6 +250,37 @@ function save(){
          }, 'json');
 	 }
 
+function checkPhone(){ 
+    var phone = document.getElementById('cardTel').value;
+    if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))){ 
+        return false; 
+    } 
+    return true;
+}
+
+function checkNum(){ 
+    var num = document.getElementById('thumbsNum').value;
+    if(!(/^[0-9]*$/.test(num))){ 
+        return false; 
+    } 
+    return true;
+}
+
+function checkEmail(){ 
+    var email = document.getElementById('email').value;
+    if(!(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email))){ 
+        return false; 
+    } 
+    return true;
+}
+
+function checkTel(){
+	var tel = document.getElementById('phone').value;
+	if(!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(tel)){
+		return false;
+	}
+	return true;
+}
 /*var start = 0;
 //显示进度条的函数 
 function showProgress() {

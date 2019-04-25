@@ -19,6 +19,7 @@
 <script src="../js/fileupload/jquery.fileupload-ui.js"></script>
 <script src="../js/fileupload/main.js"></script>
 <script src="../js/fileupload/shopfileupload.js"></script>
+<script type="text/javascript" src="../js/util/util.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 .multi-img-details .multi-item {
@@ -51,7 +52,7 @@ function cancel(){
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品名称</label>
 					<div class="col-xs-12 col-sm-8">
-						<input type="text" name="shopName" id="shopName" class="form-control" value="" th:value="${shop == null}?'':${shop.shopName }">
+						<input type="text" maxlength="50" name="shopName" id="shopName" class="form-control" value="" th:value="${shop == null}?'':${shop.shopName }">
 					</div>
 				</div>
 		
@@ -95,7 +96,7 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品库存</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="shopsNum" id="shopsNum" class="form-control" value="" th:value="${shop == null}?'':${shop.shopsNum }">
+							<input type="text" name="shopsNum" maxlength="6" id="shopsNum" class="form-control" value="" th:value="${shop == null}?'':${shop.shopsNum }">
 							<span class="input-group-addon">件</span>
 						</div>
 					</div>
@@ -105,7 +106,7 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品销量</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="saleNum" id="saleNum" class="form-control" value="" th:value="${shop == null}?'':${shop.saleNum }">
+							<input type="text" name="saleNum" maxlength="6" id="saleNum" class="form-control" value="" th:value="${shop == null}?'':${shop.saleNum }">
 							<span class="input-group-addon">件</span>
 						</div>
 					</div>

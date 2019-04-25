@@ -19,6 +19,7 @@
 <script src="../js/fileupload/jquery.fileupload-ui.js"></script>
 <script src="../js/fileupload/main.js"></script>
 <script src="../js/fileupload/productfileupload.js"></script>
+<script type="text/javascript" src="../js/util/util.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 .multi-img-details .multi-item {
@@ -45,7 +46,7 @@ function cancel(){
 				<div class="form-group">
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">产品标题</label>
 					<div class="col-xs-12 col-sm-8">
-						<input type="text" name="cpBsName" id="cpBsName" class="form-control" value="" th:value="${product == null}?'':${product.cpBsName }">
+						<input type="text" name="cpBsName" maxlength="150" id="cpBsName" class="form-control" value="" th:value="${product == null}?'':${product.cpBsName }">
 					</div>
 				</div>
 		
@@ -53,7 +54,7 @@ function cancel(){
 					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">产品价格</label>
 					<div class="col-xs-12 col-sm-8">
 						<div class="input-group">
-							<input type="text" name="cpBsPrice" id="cpBsPrice" class="form-control" value="" th:value="${product == null}?'':${product.cpBsPrice }">
+							<input type="text" name="cpBsPrice" id="cpBsPrice" maxlength="10" class="form-control" value="" th:value="${product == null}?'':${product.cpBsPrice }">
 							<span class="input-group-addon">元</span>
 						</div>
 					</div>

@@ -123,7 +123,7 @@ public class AccountController {
     	account.setAppdomain(account.getAppdomain()==null?"":account.getAppdomain());
     	account.setEncodingaeskey(account.getEncodingaeskey()==null?"":account.getEncodingaeskey());
     	account.setKey(account.getKey()==null?"":account.getKey());
-    	account.setLevel(account.getLevel()==null?1:account.getLevel());
+    	account.setLevel(account.getLevel()==null?1:account.getLevel().byteValue());
     	account.setName(account.getName()==null?"":account.getName());
     	account.setOriginal(account.getOriginal()==null?"":account.getOriginal());
     	account.setSecret(account.getSecret()==null?"":account.getSecret());

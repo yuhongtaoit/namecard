@@ -167,6 +167,40 @@ function save(){
 	 form.delete("gimage");
 	 form.delete("topPicImage");
 	 form.delete("cpBsImage");
+	 var sort = $("#sort").val();
+	 if(!isNull(sort) && !checkNum(sort)){
+		 alert("排序必须为整数");
+		 return;
+	 }
+	 var shopName = $("#shopName").val();
+	 if(isNull(shopName)){
+		 alert("商品名称不能为空");
+		 return;
+	 }
+	 var shopsNum = $("#shopsNum").val();
+	 if(!isNull(shopsNum) && !checkNum(shopsNum)){
+		 alert("库存必须为整数");
+		 return;
+	 }
+	 var saleNum = $("#saleNum").val();
+	 if(!isNull(saleNum) && !checkNum(saleNum)){
+		 alert("销量必须为整数");
+		 return;
+	 }
+	 var price = $("#price").val();
+	 if(isNull(price)){
+		 alert("价格不能为空");
+		 return;
+	 }
+	 if(!isNull(price) && !checkCash(price)){
+		 alert("价格必须为数字");
+		 return;
+	 }
+	 var fxPrice = $("#fxPrice").val();
+	 if(!isNull(fxPrice) && !checkCash(fxPrice)){
+		 alert("自定义佣金必须为数字");
+		 return;
+	 }
 	 if(m.get("gimage")==undefined && gimg==''){
 		 alert('请上传商品缩略图');
 		 return;

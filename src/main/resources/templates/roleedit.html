@@ -14,6 +14,10 @@ function cancel(){
 }
 function save(){
 	var roleName = document.getElementById("rolename").value;
+	if(!roleName || myTrim(roleName)==''){
+		alert("角色名不能为空");
+		return;
+	}
 	var id = document.getElementById("uuid").value;
 	var roleNameZh = document.getElementById("rolenamezh").value;
 	$.post("/role/save",
@@ -51,10 +55,10 @@ function save(){
 			<form role="form" action="/user/save" id="userinfo">
 				<input type="hidden" id="uuid" name="uuid" th:value="${role == null}?'':${role.id}"/>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">角色名</label><input type="text" class="form-control" id="rolename" name="rolename" th:value="${role == null}?'':${role.roleName }"/>
+					 <label for="exampleInputEmail1">角色名</label><input type="text" class="form-control" maxlength="30" id="rolename" name="rolename" th:value="${role == null}?'':${role.roleName }"/>
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">说明</label><input type="text" class="form-control" id="rolenamezh" name="rolenamezh" th:value="${role == null}?'':${role.roleNameZh }" />
+					 <label for="exampleInputPassword1">说明</label><input type="text" class="form-control" maxlength="30" id="rolenamezh" name="rolenamezh" th:value="${role == null}?'':${role.roleNameZh }" />
 				</div>
 				<div align="center">
 					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
