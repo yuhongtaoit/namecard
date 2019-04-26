@@ -100,7 +100,7 @@ public class StafferController {
 			logger.info("请在企业微信打开");
 			return "qyWX/error";
 		}
-		if(status == -2) {
+		if(status == 1) {
 			model.addAttribute("uniacid", uniacid);
 			model.addAttribute("message", "没有绑定对应的名片");
 			model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());

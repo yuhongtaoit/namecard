@@ -89,9 +89,9 @@ function deleteCpBsImage(elm){
 			$(elm).parent().remove();
 		}
 	}
-	$("#cpBsImg").val('['+topPicsArray.toString()+']');
+	$("#cpBsImg").val('['+cpBsImagesArray.toString()+']');
 	if(cpBsImages!=undefined && cpBsImages.length>0){
-		for(var i=0;i<topPicImages.length;i++){
+		for(var i=0;i<cpBsImages.length;i++){
 			if(myTrim(fileSrc) == myTrim(cpBsImages[i].name)){
 				cpBsImages.splice(i--, 1);
 				$(elm).parent().remove();
@@ -109,7 +109,7 @@ function deleteCpBsContentImage(elm){
 			$(elm).parent().remove();
 		}
 	}
-	$("#cpBsContent").val('['+cpBsImgArray.toString()+']');
+	$("#cpBsContent").val('['+cpBsContentArray.toString()+']');
 	if(cpBsContentImages!=undefined && cpBsContentImages.length>0){
 		for(var i=0;i<cpBsImages.length;i++){
 			if(myTrim(fileSrc) == myTrim(cpBsContentImages[i].name)){

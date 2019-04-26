@@ -41,7 +41,7 @@ function checkPhone(value){
 }
 
 function isNull(value){
-	if (!value || myTrim(value)='') { 
+	if (!value || myTrim(value)=='') { 
 		return true;
 	}
 	return false;
