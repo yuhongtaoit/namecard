@@ -1,6 +1,7 @@
 package com.zhongwei.namecard.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,7 +72,13 @@ public class WebSiteManageController {
 			CardWeb cardWeb = cardWebList.get(0);
 			model.addAttribute("cardWeb", cardWeb);
 			List<String> cpBsImgsList = Arrays.asList(this.toArray(cardWeb.getCpBsContent()));
-			model.addAttribute("cpBsImgs", cpBsImgsList);
+			List<String> realCpBsImgsList = new ArrayList<String>();
+			for(String cpBsImg : cpBsImgsList) {
+				if(!"".equals(cpBsImg)) {
+					realCpBsImgsList.add(cpBsImg);
+				}
+			}
+			model.addAttribute("cpBsImgs", realCpBsImgsList);
 		}
 		return "webbasicset";
 	}

@@ -62,15 +62,15 @@ function update(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
 	window.open("/role/edit?id="+uuid,"修改角色","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
 function deleteRole(){
-	var flag = confirm("确定删除本条数据？");
-	if(!flag){
-		return;
-	}
 	var radios = document.getElementsByName("radio");
 	var index;
 	for(i=0;i<radios.length; i++) {
@@ -78,7 +78,15 @@ function deleteRole(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
 	$.ajax({
 	    url:'/role/delete',
 	    type:'POST', //GET

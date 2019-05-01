@@ -61,15 +61,15 @@ function update(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
 	window.open("/product/edit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
 function deleteShop(){
-	var flag = confirm("确定删除本条数据？");
-	if(!flag){
-		return;
-	}
 	var radios = document.getElementsByName("radio");
 	var index;
 	for(i=0;i<radios.length; i++) {
@@ -77,7 +77,15 @@ function deleteShop(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
 	$.ajax({
 	    url:'/product/delete',
 	    type:'POST', //GET

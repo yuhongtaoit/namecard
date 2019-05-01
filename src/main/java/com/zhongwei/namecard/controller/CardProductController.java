@@ -1,6 +1,7 @@
 package com.zhongwei.namecard.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -82,10 +83,22 @@ public class CardProductController {
 			int id = Integer.valueOf(idStr);
 			CardProductWithBLOBs product = productMapper.selectByPrimaryKey(id);
 			List<String> cpBsImgList = Arrays.asList(this.toArray(product.getCpBsImg()));
+			List<String> realCpBsImgsList = new ArrayList<String>();
+			for(String cpBsImg : cpBsImgList) {
+				if(!"".equals(cpBsImg)) {
+					realCpBsImgsList.add(cpBsImg);
+				}
+			}
 			List<String> cpBsContentList = Arrays.asList(this.toArray(product.getCpBsContent()));
+			List<String> realCpBsContentList = new ArrayList<String>();
+			for(String cpBsContent : cpBsContentList) {
+				if(!"".equals(cpBsContent)) {
+					realCpBsContentList.add(cpBsContent);
+				}
+			}
 			model.addAttribute("product", product);
-			model.addAttribute("cpBsImgs", cpBsImgList);
-			model.addAttribute("cpBsContents", cpBsContentList);
+			model.addAttribute("cpBsImgs", realCpBsImgsList);
+			model.addAttribute("cpBsContents", realCpBsContentList);
 		}else {
 			model.addAttribute("product", new CardProductWithBLOBs());
 		}

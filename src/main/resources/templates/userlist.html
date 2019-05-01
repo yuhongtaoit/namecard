@@ -7,6 +7,7 @@
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
+<script type="text/javascript" src="js/util/util.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 html{
@@ -83,15 +84,15 @@ function update(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
 	window.open("/user/edit?id="+uuid,"修改用户","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
 
 function deleteUser(){
-	var flag = confirm("确定删除本条数据？");
-	if(!flag){
-		return;
-	}
 	var radios = document.getElementsByName("radio");
 	var index;
 	for(i=0;i<radios.length; i++) {
@@ -99,7 +100,15 @@ function deleteUser(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
 	$.ajax({
 	    url:'/user/delete',
 	    type:'POST', //GET

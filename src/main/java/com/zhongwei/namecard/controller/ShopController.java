@@ -1,6 +1,7 @@
 package com.zhongwei.namecard.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,10 +105,22 @@ public class ShopController {
 			int id = Integer.valueOf(idStr);
 			CardShopsWithBLOBs shop = shopMapper.selectByPrimaryKey(id);
 			List<String> topPicsList = Arrays.asList(this.toArray(shop.getTopPic()));
+			List<String> realTopPicsList = new ArrayList<String>();
+			for(String topPic : topPicsList) {
+				if(!"".equals(topPic)) {
+					realTopPicsList.add(topPic);
+				}
+			}
 			List<String> cpBsImgsList = Arrays.asList(this.toArray(shop.getCpBsImg()));
+			List<String> realCpBsImgsList = new ArrayList<String>();
+			for(String cpBsImg : cpBsImgsList) {
+				if(!"".equals(cpBsImg)) {
+					realCpBsImgsList.add(cpBsImg);
+				}
+			}
 			model.addAttribute("shop", shop);
-			model.addAttribute("topPics", topPicsList);
-			model.addAttribute("cpBsImgs", cpBsImgsList);
+			model.addAttribute("topPics", realTopPicsList);
+			model.addAttribute("cpBsImgs", realCpBsImgsList);
 			model.addAttribute("categorys", categorys);
 			model.addAttribute("propertys", propertys);
 		}else {

@@ -18,7 +18,6 @@ $(function() {
 		//图片添加完成后触发的事件
 		.on("fileuploadadd", function(e, data) {
 			if(flag){
-				alert(111555);
 				//获取图片路径并显示
 				var inputName = data.fileInput[0].attributes.name.nodeValue;
 				if(inputName=='logoimage'){
@@ -114,6 +113,31 @@ function save(){
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("logoimage");
 	 form.delete("shopBgImage");
+	 var companyName = $("#companyName").val();
+	 if(isNull(companyName)){
+		 alert("公司名称不能为空");
+		 return;
+	 }
+	 var companyTel = $("#companyTel").val();
+	 if(!checkPhone(companyTel) && !checkTel(companyTel)){
+		 alert('请填写正确的电话号码');
+		 return;
+	 }
+	 var num = $("#num").val();
+	 if(!isNull(num) && !checkNum(num)){
+		 alert("名片个数必须为整数");
+		 return;
+	 }
+	 var redpackMin = $("#redpackMin").val();
+	 var redpackMax = $("#redpackMax").val();
+	 if(!isNull(redpackMin) && !checkCash(redpackMin)){
+		 alert("红包金额必须为数字");
+		 return;
+	 }
+	 if(!isNull(redpackMax) && !checkCash(redpackMax)){
+		 alert("红包金额必须为数字");
+		 return;
+	 }
 	 if(m.get("logoimage")==undefined && companyLogo==''){
 		 alert('请上传公司logo');
 		 return;

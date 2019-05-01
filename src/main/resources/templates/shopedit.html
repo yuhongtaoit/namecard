@@ -135,7 +135,7 @@ function cancel(){
 						<div class="input-group multi-img-details" id="topPicImagediv">
 							<div th:each="topPic,iterStat : ${topPics}" class='input-group multi-item' style='margin-top:.5em;'>
 								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(topPic)}" th:name="${topPic}" class="img-responsive img-thumbnail" width="150" height="150">
-								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
+								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteTopPicImage(this)'>×</em>
 							</div>
 						</div>	
 						<span class="help-block">商品详情幻灯片，建议400X300</span>			
@@ -156,7 +156,7 @@ function cancel(){
 						<div class="input-group multi-img-details" id="cpBsImagediv">
 							<div th:each="cpBsImg,iterStat : ${cpBsImgs}" class='input-group multi-item' style='margin-top:.5em;'>
 								<img src="../images/nopic.jpg" th:src="'/'+${#strings.trim(cpBsImg)}" th:name="${cpBsImg}" class="img-responsive img-thumbnail" width="150" height="150">
-								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteMultiImage(this)'>×</em>
+								<em class='close' style='position:absolute; top: 0px; right: -14px;' title='删除这张图片' onclick='deleteCpBsImage(this)'>×</em>
 							</div>
 						</div>	
 						<span class="help-block">商品详情幻灯片，建议宽400px</span>		

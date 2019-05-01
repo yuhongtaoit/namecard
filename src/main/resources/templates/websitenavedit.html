@@ -44,7 +44,7 @@ function cancel(){
 				 <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">标题</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="title" name="title" th:value="${cardNav == null}?'':${cardNav.title}" placeholder="请输入活动标题" value="">
+					  <input type="text" class="form-control" maxlength="150" id="title" name="title" th:value="${cardNav == null}?'':${cardNav.title}" placeholder="请输入活动标题" value="">
 					</div>
 				 </div>
 				 
@@ -100,7 +100,7 @@ function cancel(){
 				  <div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">跳转网址:</label>
 						<div class="col-sm-8">
-						  <input type="text" class="form-control" id="pathWeb" name="pathWeb" th:value="${cardNav == null}?'':${cardNav.pathWeb}" placeholder="请输入跳转网址" value="">
+						  <input type="text" class="form-control" maxlength="200" id="pathWeb" name="pathWeb" th:value="${cardNav == null}?'':${cardNav.pathWeb}" placeholder="请输入跳转网址" value="">
 						</div>
 						<span class="help-block">需要配置业务域名</span>
 				  </div>
@@ -108,7 +108,7 @@ function cancel(){
 				   <div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">跳转小程序路径:</label>
 						<div class="col-sm-8">
-						  <input type="text" class="form-control" id="path" name="path" th:value="${cardNav == null}?'':${cardNav.path}" placeholder="请输入跳转小程序路径" value="">
+						  <input type="text" class="form-control" maxlength="200" id="path" name="path" th:value="${cardNav == null}?'':${cardNav.path}" placeholder="请输入跳转小程序路径" value="">
 						</div>
 						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
 				  </div>
@@ -116,7 +116,7 @@ function cancel(){
 				  <div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">跳转的小程序appid:</label>
 						<div class="col-sm-8">
-						  <input type="text" class="form-control" id="appid" name="appid" th:value="${cardNav == null}?'':${cardNav.appid}" placeholder="请输入跳转的小程序appid" value="">
+						  <input type="text" class="form-control" maxlength="200" id="appid" name="appid" th:value="${cardNav == null}?'':${cardNav.appid}" placeholder="请输入跳转的小程序appid" value="">
 						</div>
 						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
 				  </div>

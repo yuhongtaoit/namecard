@@ -19,6 +19,7 @@
 <script src="../js/fileupload/jquery.fileupload-ui.js"></script>
 <script src="../js/fileupload/main.js"></script>
 <script src="../js/fileupload/basicsetfileupload.js"></script>
+<script type="text/javascript" src="../js/util/util.js"></script>
 <title>智慧名片后台管理</title>
 <style type="text/css">
 .multi-img-details .multi-item {
@@ -52,7 +53,7 @@ function cancel(){
 						  <div class="form-group">
 							<label for="title" class="col-sm-2 control-label">公司名称</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="companyName" name="companyName" th:value="${cardSet == null}?'':${cardSet.companyName }" placeholder="请输入公司名称" value="承德万正科技有限公司">
+							  <input type="text" class="form-control" maxlength="150" id="companyName" name="companyName" th:value="${cardSet == null}?'':${cardSet.companyName }" placeholder="请输入公司名称" value="承德万正科技有限公司">
 							</div>
 						  </div>
 						  
@@ -83,14 +84,14 @@ function cancel(){
 						<div class="form-group">
 							<label for="title" class="col-sm-2 control-label">公司地址</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="companyAddr" name="companyAddr" th:value="${cardSet == null}?'':${cardSet.companyAddr }" placeholder="请输入公司地址" value="承德市双桥区翠桥路安业大厦A1301商业">
+							  <input type="text" class="form-control" maxlength="200" id="companyAddr" name="companyAddr" th:value="${cardSet == null}?'':${cardSet.companyAddr }" placeholder="请输入公司地址" value="承德市双桥区翠桥路安业大厦A1301商业">
 							</div>
 						</div>
 						  
 						<div class="form-group">
 							<label for="title" class="col-sm-2 control-label">地址:纬度</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="lat" name="lat" th:value="${cardSet == null || cardSet.lat == ''}?'40.9684028503':${cardSet.lat }" placeholder="请输入地址:纬度" value="40.9684028503">
+							  <input type="text" class="form-control" maxlength="150" id="lat" name="lat" th:value="${cardSet == null || cardSet.lat == ''}?'40.9684028503':${cardSet.lat }" placeholder="请输入地址:纬度" value="40.9684028503">
 							 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
 							</span></span></div>
 						</div>
@@ -98,7 +99,7 @@ function cancel(){
 						<div class="form-group">
 							<label for="title" class="col-sm-2 control-label">地址:经度</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="lng" name="lng" th:value="${cardSet == null || cardSet.lng == ''}?'117.9361003014':${cardSet.lng }" placeholder="请输入地址:经度" value="117.9361003014">
+							  <input type="text" class="form-control" id="lng" maxlength="150" name="lng" th:value="${cardSet == null || cardSet.lng == ''}?'117.9361003014':${cardSet.lng }" placeholder="请输入地址:经度" value="117.9361003014">
 							 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
 							</span></span></div>
 						</div>
@@ -111,7 +112,7 @@ function cancel(){
 			  			<div class="form-group">
 							<label for="title" class="col-sm-2 control-label">消息模板id</label>
 							<div class="col-sm-8">
-							  <input type="text" class="form-control" id="templateId" name="templateId" th:value="${cardSet == null}?'':${cardSet.templateId }" placeholder="请输入消息模板" value="9Ma_IGq00LUr-8lQ-lD2Rmv3amLUaaf0xnuMYTLJ6E8">
+							  <input type="text" class="form-control" id="templateId" maxlength="200" name="templateId" th:value="${cardSet == null}?'':${cardSet.templateId }" placeholder="请输入消息模板" value="9Ma_IGq00LUr-8lQ-lD2Rmv3amLUaaf0xnuMYTLJ6E8">
 							</div>
 						</div>
 						  

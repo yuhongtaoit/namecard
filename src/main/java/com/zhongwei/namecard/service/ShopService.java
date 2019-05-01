@@ -67,7 +67,7 @@ public class ShopService {
 					newCpBsPaths.add(cpBs);
 				}
 				newCpBsPaths.addAll(newCpBsImagePaths);
-				shop.setTopPic(newCpBsPaths.toString());
+				shop.setCpBsImg(newCpBsPaths.toString());
 			}
 			this.shopMapper.updateByPrimaryKeyWithBLOBs(shop);
 			message.setSuccess(true);

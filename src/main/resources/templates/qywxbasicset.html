@@ -55,16 +55,16 @@ function save(){
 			<form role="form" action="/user/save" id="userinfo">
 				<input type="hidden" id="uuid" name="uuid" th:value="${setQy == null}?'':${setQy.id}"/>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">企业ID</label><input type="text" class="form-control" id="corpid" name="corpid" th:value="${setQy == null}?'':${setQy.corpid }"/>
+					 <label for="exampleInputEmail1">企业ID</label><input type="text" maxlength="200" class="form-control" id="corpid" name="corpid" th:value="${setQy == null}?'':${setQy.corpid }"/>
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">应用AgentId</label><input type="text" class="form-control" id="agentid" name="agentid" th:value="${setQy == null}?'':${setQy.agentid }" />
+					 <label for="exampleInputPassword1">应用AgentId</label><input type="text" maxlength="200" class="form-control" id="agentid" name="agentid" th:value="${setQy == null}?'':${setQy.agentid }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">应用Secret</label><input type="text" class="form-control" id="secret" name="secret" th:value="${setQy == null}?'':${setQy.secret }" />
+					 <label for="exampleInputPassword1">应用Secret</label><input type="text" maxlength="200" class="form-control" id="secret" name="secret" th:value="${setQy == null}?'':${setQy.secret }" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">通讯录Secret</label><input type="text" class="form-control" id="secret1" name="secret1" th:value="${setQy == null}?'':${setQy.secret1 }" />
+					 <label for="exampleInputPassword1">通讯录Secret</label><input type="text" maxlength="200" class="form-control" id="secret1" name="secret1" th:value="${setQy == null}?'':${setQy.secret1 }" />
 				</div>
 				<div align="center">
 					<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>

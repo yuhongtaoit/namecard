@@ -92,7 +92,7 @@ UE.Editor.prototype.getActionUrl = function(action) {
 				 <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">活动标题</label>
 					<div class="col-sm-8">
-					  <input type="text" class="form-control" id="title" name="title" th:value="${cardNews == null}?'':${cardNews.title}" placeholder="请输入活动标题" value="">
+					  <input type="text" class="form-control" maxlength="200" id="title" name="title" th:value="${cardNews == null}?'':${cardNews.title}" placeholder="请输入活动标题" value="">
 					</div>
 				 </div>
 				 

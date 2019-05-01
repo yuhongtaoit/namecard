@@ -47,10 +47,6 @@ body{
 
 <script type="text/javascript">
 function deleteAdv(){
-	var flag = confirm("确定删除本条数据？");
-	if(!flag){
-		return;
-	}
 	var radios = document.getElementsByName("radio");
 	var index;
 	for(i=0;i<radios.length; i++) {
@@ -58,7 +54,15 @@ function deleteAdv(){
 			index=i+1;
 		}
 	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
 	var uuid = document.getElementById("id"+index).innerText;
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
 	$.ajax({
 	    url:'/friend/reviewDelete',
 	    type:'POST', //GET
