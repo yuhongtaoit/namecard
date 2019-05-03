@@ -245,9 +245,6 @@ public class ShopsConTroller {
 			}
 		}
 		
-//		shopsExample = new CardShopsExample();
-//		shopsExample.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1);
-//		int total = cardShopsMapper.countByExample(shopsExample);
 		data.put("shops", shopsMapList);
 		data.put("total", page.getTotal());
 		result.put("data", data);
@@ -587,7 +584,7 @@ public class ShopsConTroller {
 				CardShopsExample cardShopsExample2 = new CardShopsExample();
 				cardShopsExample2.createCriteria().andUniacidEqualTo(uniacid).andIsShowEqualTo(1).andTypeidEqualTo(titles.get(i).getId());
 				cardShopsExample2.setOrderByClause("sort DESC");
-				shops2 = cardShopsMapper.selectByExampleWithBLOBs(cardShopsExample);
+				shops2 = cardShopsMapper.selectByExampleWithBLOBs(cardShopsExample2);
 				if(shops2.size() > 0) {
 					for(CardShopsWithBLOBs shop : shops2) {
 						shop.setGimg(ImageUrlUtils.getAbsolutelyURL(shop.getGimg()));
