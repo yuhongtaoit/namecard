@@ -19,11 +19,14 @@ import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.BaseWxPayRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.zhongwei.namecard.dao.AccountWxappMapper;
 import com.zhongwei.namecard.dao.CardMapper;
 import com.zhongwei.namecard.dao.CardMemberMapper;
 import com.zhongwei.namecard.dao.CardShopsMapper;
@@ -31,6 +34,8 @@ import com.zhongwei.namecard.dao.SetFxMapper;
 import com.zhongwei.namecard.dao.ShopsCategoryMapper;
 import com.zhongwei.namecard.dao.ShopsOrderMapper;
 import com.zhongwei.namecard.dao.ShopsSpecMapper;
+import com.zhongwei.namecard.dao.PaySetMapper;
+import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.AuthUser;
 import com.zhongwei.namecard.entity.CardMember;
 import com.zhongwei.namecard.entity.CardMemberExample;
@@ -44,7 +49,8 @@ import com.zhongwei.namecard.entity.ShopsCategoryExample;
 import com.zhongwei.namecard.entity.ShopsOrder;
 import com.zhongwei.namecard.entity.ShopsOrderExample;
 import com.zhongwei.namecard.entity.ShopsSpec;
-import com.zhongwei.namecard.miniapp.config.WxMaProperties;
+import com.zhongwei.namecard.entity.PaySet;
+import com.zhongwei.namecard.entity.PaySetExample;
 import com.zhongwei.namecard.utils.DateUtils;
 import com.zhongwei.namecard.utils.ImageUrlUtils;
 import com.zhongwei.namecard.utils.UserUtils;
@@ -75,20 +81,23 @@ public class ShopsConTroller {
 	private WxPayService wxPayService;
 	
 	@Autowired
-	private WxMaProperties wxMaProperties;
+	private SetFxMapper setFxMapper;
 	
 	@Autowired
-	private SetFxMapper setFxMapper;
+	private AccountWxappMapper accountMapper;
+	
+	@Autowired
+	private PaySetMapper paySetMapper;
 	
 	private int pageSize = 8;//每页大小
 	
 	private int pageNo = 1;//第几页，初始值为1
 	
-	@Autowired
-	public ShopsConTroller(WxPayService wxPayService) {
-	    this.wxPayService = wxPayService;
-	}
-	
+//	@Autowired
+//	public ShopsConTroller(WxPayService wxPayService) {
+//	    this.wxPayService = wxPayService;
+//	}
+//	
 	@RequestMapping("/shopsDetail")
 	public Map<String, Object> shopsDetail(int uniacid, Integer shops_id, Integer card_id,
 			String sessionId, HttpServletRequest request){
@@ -404,6 +413,7 @@ public class ShopsConTroller {
 		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
 		orderRequest.setNotifyUrl("http://192.168.0.106:8080/miniapp/payResult");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 		orderRequest.setSubOpenid(openId);//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
+		wxPayService = getWxService(uniacid);
 		WxPayMpOrderResult payResult = wxPayService.createOrder(orderRequest);
 		data.put("timeStamp", payResult.getTimeStamp());
 		data.put("nonceStr", payResult.getNonceStr());
@@ -445,6 +455,7 @@ public class ShopsConTroller {
 	
 	@RequestMapping("/payResult")
 	public void payResult(@RequestBody String xmlData,HttpServletRequest request, String return_code,Map<String, Object> resultMap) throws WxPayException {
+//		wxPayService = getWxService(uniacid); ****** 判断wxPayService是否有值
 		WxPayOrderNotifyResult notifyResult = wxPayService.parseOrderNotifyResult(xmlData);
 		System.out.println(notifyResult);
 		if(return_code.equals("SUCCESS")) {
@@ -602,5 +613,26 @@ public class ShopsConTroller {
 		result.put("data", data);
 		return result;
 	}
+	
+	private WxPayService getWxService( int uniacid) {
+        WxPayConfig payConfig = new WxPayConfig();
+        AccountWxapp account = accountMapper.selectByPrimaryKey(uniacid);
+        String appid = account.getKey();
+        List<PaySet> setList = new ArrayList<PaySet>();
+        PaySetExample paySetExample = new PaySetExample();
+        paySetExample.createCriteria().andUniacidEqualTo(uniacid);
+        setList = paySetMapper.selectByExample(paySetExample);
+        PaySet paySet = setList.size() > 0 ? setList.get(0) : new PaySet();
+        payConfig.setAppId(org.apache.commons.lang3.StringUtils.trimToNull(appid));
+        payConfig.setMchId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getMchid()));
+        payConfig.setMchKey(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getMchkey()));
+        payConfig.setSubAppId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getSubappid()));
+        payConfig.setSubMchId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getSubmchid()));
+        payConfig.setKeyPath(org.apache.commons.lang3.StringUtils.trimToNull(ImageUrlUtils.getAbsolutelyURL(paySet.getCertpath())));
+
+        WxPayService wxPayService = new WxPayServiceImpl();
+        wxPayService.setConfig(payConfig);
+        return wxPayService;
+    }
 
 }

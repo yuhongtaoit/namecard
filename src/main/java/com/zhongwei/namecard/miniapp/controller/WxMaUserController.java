@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zhongwei.namecard.dao.AccountWxappMapper;
 import com.zhongwei.namecard.dao.AuthUserMapper;
+import com.zhongwei.namecard.entity.AccountWxapp;
 import com.zhongwei.namecard.entity.AuthUser;
 //import com.github.binarywang.demo.wx.miniapp.config.WxMaConfiguration;
 //import com.github.binarywang.demo.wx.miniapp.utils.JsonUtils;
@@ -39,6 +41,8 @@ public class WxMaUserController {
 	 
 	 @Autowired
 	 private AuthUserMapper authUserMapper;
+	 @Autowired
+	private AccountWxappMapper accountMapper;
 	 
 	 private final WxMaServiceImpl wxMaService = new WxMaServiceImpl();
 
@@ -47,16 +51,17 @@ public class WxMaUserController {
 	     * @throws WxErrorException 
 	     */
 	    @GetMapping("/miniapplogin")
-	    public Map<String, Object> login(String code, HttpServletRequest request) throws WxErrorException {
+	    public Map<String, Object> login(String code, Integer uniacid, HttpServletRequest request) throws WxErrorException {
 	    	Map<String, Object> result = new HashMap<String, Object>();
 	        if (!StringUtils.hasText(code)) {
 	        	result.put("code", "error");
 	        	result.put("msg", "empty jscode");
 	            return result;
 	        }
+	        AccountWxapp account = accountMapper.selectByPrimaryKey(uniacid);
 	        WxMaInMemoryConfig wxMaInMemoryConfig = new WxMaInMemoryConfig();
-	        wxMaInMemoryConfig.setAppid(wxMaProperties.getAppid());
-	        wxMaInMemoryConfig.setSecret(wxMaProperties.getSecret());
+	        wxMaInMemoryConfig.setAppid(account.getKey());
+	        wxMaInMemoryConfig.setSecret(account.getSecret());
 	        wxMaService.setWxMaConfig(wxMaInMemoryConfig);
 
 	        WxMaJscode2SessionResult jscode2SessionResult = wxMaService.jsCode2SessionInfo(code);
