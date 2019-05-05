@@ -50,8 +50,9 @@ public class UserController {
 	}
 	
 	@RequestMapping("/getRoles")
-	public String getRoles(HttpServletRequest request, HttpServletResponse response, Model model, Integer userId){
-		List<Role> roles = roleDao.getAll();
+	public String getRoles(HttpServletRequest request, HttpServletResponse response, Model model, Integer userId, Principal principal, Authentication authentication){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		List<Role> roles = roleDao.getByUniacid(user.getUniacid());
 		List<Role> userRoles = roleService.getRolesByUserId(userId);
 		if(roles!=null && roles.size()>0) {
 			for(Role role : roles) {
@@ -195,5 +196,14 @@ public class UserController {
 		}
 		return message;
     }
+    
+    private boolean hasAdminRole(List<Role> roles) {
+		for(Role role : roles) {
+			if("ROLE_ADMIN".equals(role.getRoleName())) {
+				return true;
+			}
+		}
+		return false;
+	}
     
 }

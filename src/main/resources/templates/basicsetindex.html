@@ -32,7 +32,7 @@ function getBasicSet(){
 
 
 function uploadCert(){
-	$( "#mainContent" ).load( "/basic/uploadCert", function( response, status, xhr ) {
+	$( "#mainContent" ).load( "/basic/getWxPaySet", function( response, status, xhr ) {
 		  $('#mainContent').html(response);
 	});
 	$('#basicSet').attr("class","");

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery-form.js"></script>
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap-paginator.js"></script>
+
+<script src="../js/fileupload/jquery.ui.widget.js"></script>
+<script src="../js/fileupload/jquery.iframe-transport.js"></script>
+<script src="../js/fileupload/jquery.fileupload.js"></script>
+<script src="../js/fileupload/jquery.fileupload-process.js"></script>
+<script src="../js/fileupload/jquery.fileupload-image.js"></script>
+<script src="../js/fileupload/jquery.fileupload-audio.js"></script>
+<script src="../js/fileupload/jquery.fileupload-video.js"></script>
+<script src="../js/fileupload/jquery.fileupload-validate.js"></script>
+<script src="../js/fileupload/jquery.fileupload-ui.js"></script>
+<script src="../js/fileupload/main.js"></script>
+<script src="../js/fileupload/certfileupload.js"></script>
+<script type="text/javascript" src="../js/util/util.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						微信支付证书上传
+					</h3>
+				</div>
+				<div class="panel-body">
+					<form action="" method="post" id="form" class="form-horizontal" role="form">
+						  <div class="form-group">
+							<label for="lastname" class="col-sm-2 control-label">p12证书</label>
+							<div class="col-sm-8">
+								<div class="input-group ">
+									<input type="text" readonly="readonly" name="cert" id="cert" value="" class="form-control" autocomplete="off">
+									<span class="input-group-btn">
+										<label for="certfile" class="btn btn-primary ng-binding" onclick="resetFlag()">上传证书</label>
+										<input type="file" id="certfile" name="certfile" style="display: none">
+									</span>
+								</div>
+							</div>
+						  </div>
+						 <div class="form-group">
+							<div class="col-sm-offset-2 col-sm-13">
+								<button type="button" class="btn btn-primary" onclick="save()" style="width: 80px">保存</button>
+								<button type="button" class="btn btn-warning" onclick="cancel()" style="width: 80px">取消</button>
+							</div>
+						 </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.zhongwei.namecard.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,9 @@ public class BasicSetController {
 	
 	@Autowired
 	private BasicSetService basicSetService;
+	
+	@Value(value = "${file.basefilepath}")
+	private String baseFilePath;//资源文件绝对地址目录
 	
 	@RequestMapping("/index")
 	public String getIndex(Model model) {
@@ -67,6 +73,53 @@ public class BasicSetController {
 			}
 		}
 		return this.basicSetService.createBasicSet(logoimage, shopBgImage, request, response, cardSet);
+	}
+	
+	@RequestMapping("/getWxPaySet")
+	public String getWxPaySet(Model model, Principal principal, Authentication authentication) {
+		return "wxpayset";
+	}
+	
+	@RequestMapping(value= {"/wxPaySetSave"},consumes= {"multipart/form-data" })
+	@Transactional
+	public @ResponseBody CommonMessage wxPaySetSave(
+			@RequestParam(name="certFileKey",required=false) MultipartFile certFile, 
+			 Principal principal, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response){
+		CommonMessage message = new CommonMessage();
+		try {
+			UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+			File filePath = new File(baseFilePath);
+			if (!filePath.exists() && !filePath.isDirectory()) {
+				System.out.println("目录不存在，创建目录：" + filePath);
+				filePath.mkdir();
+			}
+			String fileName = "apiclient_cert.p12";
+			String returnPath = "attachment/cert/"+user.getUniacid()+"/"+fileName;
+			File tempFile = new File(filePath.getAbsolutePath(),returnPath);
+			if (!tempFile.getParentFile().exists()) {
+				tempFile.getParentFile().mkdirs();
+			}
+			if (!tempFile.exists()) {
+				try {
+					tempFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				certFile.transferTo(tempFile);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			message.setSuccess(true);
+			message.setMessage("上传成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			message.setSuccess(false);
+			message.setMessage("上传失败");
+		}
+		return message;
 	}
 	
 	@RequestMapping("/updateBottomDH")
