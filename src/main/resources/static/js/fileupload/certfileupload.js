@@ -17,7 +17,7 @@ $(function() {
 			var inputName = data.fileInput[0].attributes.name.nodeValue;
 			if(inputName=='certfile'){
 				var url = getUrl(data.files[0]);
-				$("#cert").val(data.files[0].name);
+				$("#certpath").val(data.files[0].name);
 				m.set("certfile",data.files[0]);
 			}
 			
@@ -52,9 +52,10 @@ function getUrl(file) {
 }
 
 function save(){
+	 var certpath = $("#certpath").val();
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("certfile");
-	 if(m.get("certfile")==undefined){
+	 if(m.get("certfile")==undefined && certpath==''){
 		 alert('请上传支付证书');
 		 return;
 	 }

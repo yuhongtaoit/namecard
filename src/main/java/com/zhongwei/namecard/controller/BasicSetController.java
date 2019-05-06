@@ -1,7 +1,5 @@
 package com.zhongwei.namecard.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -21,8 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardSetMapper;
+import com.zhongwei.namecard.dao.PaySetMapper;
 import com.zhongwei.namecard.entity.CardSet;
 import com.zhongwei.namecard.entity.CardSetExample;
+import com.zhongwei.namecard.entity.PaySet;
+import com.zhongwei.namecard.entity.PaySetExample;
 import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.BasicSetService;
 
@@ -32,6 +33,9 @@ public class BasicSetController {
 	
 	@Autowired
 	private CardSetMapper cardSetMapper;
+	
+	@Autowired
+	private PaySetMapper paySetMapper;
 	
 	@Autowired
 	private BasicSetService basicSetService;
@@ -77,6 +81,14 @@ public class BasicSetController {
 	
 	@RequestMapping("/getWxPaySet")
 	public String getWxPaySet(Model model, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		PaySetExample paySetExample = new PaySetExample();
+		paySetExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<PaySet> paySetList = this.paySetMapper.selectByExample(paySetExample);
+		if(paySetList!=null && paySetList.size()>0) {
+			PaySet paySet = paySetList.get(0);
+			model.addAttribute("paySet", paySet);
+		}
 		return "wxpayset";
 	}
 	
@@ -85,41 +97,16 @@ public class BasicSetController {
 	public @ResponseBody CommonMessage wxPaySetSave(
 			@RequestParam(name="certFileKey",required=false) MultipartFile certFile, 
 			 Principal principal, Authentication authentication,
-			HttpServletRequest request, HttpServletResponse response){
-		CommonMessage message = new CommonMessage();
-		try {
-			UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
-			File filePath = new File(baseFilePath);
-			if (!filePath.exists() && !filePath.isDirectory()) {
-				System.out.println("目录不存在，创建目录：" + filePath);
-				filePath.mkdir();
+			HttpServletRequest request, HttpServletResponse response, PaySet paySet){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		paySet.setUniacid(user.getUniacid());
+		if(paySet!=null && paySet.getId()!=null && paySet.getId()>0) {
+			PaySet oldPaySet = paySetMapper.selectByPrimaryKey(paySet.getId());
+			if(oldPaySet!=null && oldPaySet.getId()!=0) {
+				return this.basicSetService.updatePaySet(certFile, request, response, paySet, oldPaySet, user, baseFilePath);
 			}
-			String fileName = "apiclient_cert.p12";
-			String returnPath = "attachment/cert/"+user.getUniacid()+"/"+fileName;
-			File tempFile = new File(filePath.getAbsolutePath(),returnPath);
-			if (!tempFile.getParentFile().exists()) {
-				tempFile.getParentFile().mkdirs();
-			}
-			if (!tempFile.exists()) {
-				try {
-					tempFile.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			try {
-				certFile.transferTo(tempFile);
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}
-			message.setSuccess(true);
-			message.setMessage("上传成功");
-		} catch (Exception e) {
-			// TODO: handle exception
-			message.setSuccess(false);
-			message.setMessage("上传失败");
 		}
-		return message;
+		return this.basicSetService.createPaySet(certFile, request, response, user, paySet, baseFilePath);
 	}
 	
 	@RequestMapping("/updateBottomDH")

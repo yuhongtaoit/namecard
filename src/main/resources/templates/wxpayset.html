@@ -49,13 +49,26 @@ function cancel(){
 				</div>
 				<div class="panel-body">
 					<form action="" method="post" id="form" class="form-horizontal" role="form">
+						  <input type="hidden" id="id" name="id" th:value="${paySet == null}?'':${paySet.id}"/>
+						  <div class="form-group">
+							<label for="title" class="col-sm-2 control-label">商户号</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" maxlength="150" id="mchid" name="mchid" th:value="${paySet == null}?'':${paySet.mchid }" placeholder="请输入微信支付商户号" >
+							</div>
+						  </div>
+						  <div class="form-group">
+							<label for="title" class="col-sm-2 control-label">商户密钥</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" maxlength="150" id="mchkey" name="mchkey" th:value="${paySet == null}?'':${paySet.mchkey }" placeholder="请输入微信支付商户密钥" >
+							</div>
+						  </div>
 						  <div class="form-group">
 							<label for="lastname" class="col-sm-2 control-label">p12证书</label>
 							<div class="col-sm-8">
 								<div class="input-group ">
-									<input type="text" readonly="readonly" name="cert" id="cert" value="" class="form-control" autocomplete="off">
+									<input type="text" readonly="readonly" name="certpath" id="certpath" th:value="${paySet == null}?'':${paySet.certpath }" class="form-control" autocomplete="off">
 									<span class="input-group-btn">
-										<label for="certfile" class="btn btn-primary ng-binding" onclick="resetFlag()">上传证书</label>
+										<label for="certfile" class="btn btn-primary ng-binding">上传证书</label>
 										<input type="file" id="certfile" name="certfile" style="display: none">
 									</span>
 								</div>
