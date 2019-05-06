@@ -80,18 +80,18 @@ public class QyUtils {
 		SetQY setQY = qyList.size() > 0 ? qyList.get(0) : new SetQY();
 		String userId = (String) request.getSession().getAttribute("session_dbs_masclwlcard_usderid");
 		if (userId == null || !StringUtils.hasText(userId.toString())) {
-			// String redirectUri = wxMaProperties.getProjectRootPath() +
-			// "/staffer/stafferIndex";
-			// String scope = "snsapi_base";
-			// String codeUrl = getCodeUrl(setQY, redirectUri, scope);
-			// String qytoken = QySendUtils.getAccessToken(setQY.getCorpid(),
-			// setQY.getSecret(), setQY.getUniacid());
-			// userId = webOauth(request, response, setQY, codeUrl, qytoken);
-			// if(!StringUtils.hasText(userId)) {
-			// return -1;
-			// }
+			 String redirectUri = wxMaProperties.getProjectRootPath() +"staffer/stafferIndex";
+//			 String redirectUri = "http://192.168.43.210:8080/" +"staffer/stafferIndex";
+			 String scope = "snsapi_base";
+			 String codeUrl = getCodeUrl(setQY, redirectUri, scope);
+			 String qytoken = QySendUtils.getAccessToken(setQY.getCorpid(),
+			 setQY.getSecret(), setQY.getUniacid());
+			 userId = webOauth(request, response, setQY, codeUrl, qytoken);
+			 if(!StringUtils.hasText(userId)) {
+				 return -1;
+			 }
 //			return -2;
-			userId = "qutianshou"; // 测试******
+//			userId = "qutianshou"; // 测试******
 			request.getSession().setAttribute("session_dbs_masclwlcard_usderid", userId);
 		}
 		CardExample cardExample = new CardExample();
@@ -119,7 +119,8 @@ public class QyUtils {
 		String state = request.getParameter("state");
 		if (!StringUtils.hasText(code) && !StringUtils.hasText(state)) {
 			response.sendRedirect(codeUrl);
-			return null;
+//			HttpClientUtils.get(codeUrl);
+//			return null;
 		}
 		if (StringUtils.hasText(code)) {
 			String geturl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=" + qytoken + "&code="
@@ -130,7 +131,7 @@ public class QyUtils {
 			} catch (Exception e) {
 				return null;
 			}
-			if (StringUtils.hasText(userId)) {
+			if (!StringUtils.hasText(userId)) {
 				logger.info("请在企业微信打开");
 			}
 		}

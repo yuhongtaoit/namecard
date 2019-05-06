@@ -35,7 +35,7 @@ public class ShopsOrder {
 
     private int paid;
 
-    private Boolean hxstatus;
+    private int hxstatus;
 
     private String hxname;
 
@@ -185,11 +185,11 @@ public class ShopsOrder {
         this.paid = paid;
     }
 
-    public Boolean getHxstatus() {
+    public int getHxstatus() {
         return hxstatus;
     }
 
-    public void setHxstatus(Boolean hxstatus) {
+    public void setHxstatus(int hxstatus) {
         this.hxstatus = hxstatus;
     }
 

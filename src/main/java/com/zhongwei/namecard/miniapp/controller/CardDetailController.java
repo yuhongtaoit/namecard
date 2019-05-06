@@ -307,6 +307,7 @@ public class CardDetailController {
 						chatUser.setType(0);
 						chatUser.setIsSend(1);
 						chatUser.setStype(1);
+						chatUser.setFid(0);
 						cardChatMapper.insert(chatUser);
 						
 					}

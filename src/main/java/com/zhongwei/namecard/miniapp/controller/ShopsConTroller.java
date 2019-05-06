@@ -382,7 +382,8 @@ public class ShopsConTroller {
 			result.put("data", data);
 			return result;
 		}
-		if(shopInfo.getPrice().compareTo(new BigDecimal(0.01)) == -1) {
+		BigDecimal b = new BigDecimal (0);
+		if(shopInfo.getPrice().compareTo(b) == -1) {
 			data.put("message", "金额不得少于0.01");
 			data.put("error", 1);
 			result.put("data", data);
@@ -403,7 +404,7 @@ public class ShopsConTroller {
 		orderRequest.setBody("微信支付");
 		orderRequest.setAttach("众维广告有限公司");
 		orderRequest.setOutTradeNo(orderId);
-		orderRequest.setOpenid(openId);
+		orderRequest.setOpenid(openId);//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
 		BigDecimal shopNum = new BigDecimal(shops_num);
 //		orderRequest.setTotalFee(shopInfo.getPrice().multiply(shopNum));
 		orderRequest.setTotalFee(BaseWxPayRequest.yuanToFen(shopInfo.getPrice().multiply(shopNum).toString()));
@@ -411,8 +412,8 @@ public class ShopsConTroller {
 		orderRequest.setSignType("MD5");
 		orderRequest.setDeviceInfo("WEB");
 		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
-		orderRequest.setNotifyUrl("http://192.168.0.106:8080/miniapp/payResult");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
-		orderRequest.setSubOpenid(openId);//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
+		orderRequest.setNotifyUrl("http://192.168.43.210:8080/miniapp/payResult");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+//		orderRequest.setSubOpenid(openId);//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
 		wxPayService = getWxService(uniacid);
 		WxPayMpOrderResult payResult = wxPayService.createOrder(orderRequest);
 		data.put("timeStamp", payResult.getTimeStamp());
@@ -422,7 +423,7 @@ public class ShopsConTroller {
 		
 		ShopsOrder order = new ShopsOrder();
 		order.setPrice(shopInfo.getPrice());
-		order.setAllPrice(new BigDecimal(BaseWxPayRequest.yuanToFen(shopInfo.getPrice().multiply(new BigDecimal(shops_num)).toString())));
+		order.setAllPrice(shopInfo.getPrice().multiply(new BigDecimal(shops_num)));
 		order.setUniacid(uniacid);
 		order.setShopName(shopInfo.getShopName());
 		order.setFromUser(openId);
@@ -440,6 +441,10 @@ public class ShopsConTroller {
 		order.setPaid(0);
 		order.setNickname(user.getNickname());
 		order.setTpText("");
+		order.setShareid(0);
+		order.setTid(0);
+		order.setHxstatus(0);
+		order.setHxname("0");
 		order.setAvatar(user.getAvatar());
 		int insert = shopsOrderMapper.insert(order);
 		if(insert == 0) {
@@ -448,7 +453,7 @@ public class ShopsConTroller {
 			result.put("data", data);
 			return result;
 		}
-		
+		data.put("orderid", orderId);
 		result.put("data", data);
 		return result;
 	}
@@ -548,8 +553,8 @@ public class ShopsConTroller {
 		if(orderList.size() > 0) {
 			for(ShopsOrder order : orderList) {
 				CardShopsWithBLOBs shops = cardShopsMapper.selectByPrimaryKey(order.getCardId());
-				shops.setGimg(ImageUrlUtils.getAbsolutelyURL(order.getShops().getGimg()));
 				order.setShops(shops);
+				shops.setGimg(ImageUrlUtils.getAbsolutelyURL(order.getShops().getGimg()));
 				order.setDateline(DateUtils.millisToString(new Long(order.getAddtime())));
 			}
 		}
@@ -626,8 +631,8 @@ public class ShopsConTroller {
         payConfig.setAppId(org.apache.commons.lang3.StringUtils.trimToNull(appid));
         payConfig.setMchId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getMchid()));
         payConfig.setMchKey(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getMchkey()));
-        payConfig.setSubAppId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getSubappid()));
-        payConfig.setSubMchId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getSubmchid()));
+//        payConfig.setSubAppId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getSubappid()));
+//        payConfig.setSubMchId(org.apache.commons.lang3.StringUtils.trimToNull(paySet.getSubmchid()));
         payConfig.setKeyPath(org.apache.commons.lang3.StringUtils.trimToNull(ImageUrlUtils.getAbsolutelyURL(paySet.getCertpath())));
 
         WxPayService wxPayService = new WxPayServiceImpl();
