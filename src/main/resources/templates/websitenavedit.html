@@ -70,19 +70,19 @@ function cancel(){
 						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">链接类型</label>
 						<div class="col-xs-12 col-sm-8">
 							<label class="radio radio-inline">
-								<input type="radio" name="linktype" value="new" checked="checked" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'new'"> 文章
+								<input type="radio" name="linktype" value="new" checked="checked" th:checked="(${cardNav.linktype == null}?'new':${cardNav.linktype }) == 'new'"> 文章
 							</label>
 							
 							<label class="radio radio-inline">
-								<input type="radio" name="linktype" value="miniProgram" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'miniProgram'"> 小程序
+								<input type="radio" name="linktype" value="miniProgram" th:checked="(${cardNav.linktype == null}?'new':${cardNav.linktype }) == 'miniProgram'"> 小程序
 							</label>
 							
 							<label class="radio radio-inline">
-								<input type="radio" name="linktype" value="openaddress" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'openaddress'"> 导航
+								<input type="radio" name="linktype" value="openaddress" th:checked="(${cardNav.linktype == null}?'new':${cardNav.linktype }) == 'openaddress'"> 导航
 							</label>
 							
 							<label class="radio radio-inline">
-								<input type="radio" name="linktype" value="new_web" th:checked="(${cardNav == null}?'new':${cardNav.linktype }) == 'new_web'"> web页面
+								<input type="radio" name="linktype" value="new_web" th:checked="(${cardNav.linktype == null}?'new':${cardNav.linktype }) == 'new_web'"> web页面
 							</label>
 						</div>
 				 </div>

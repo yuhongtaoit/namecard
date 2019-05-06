@@ -19,6 +19,7 @@
 <script src="../js/fileupload/jquery.fileupload-ui.js"></script>
 <script src="../js/fileupload/main.js"></script>
 <script src="../js/fileupload/dynamicfileupload.js"></script>
+<script type="text/javascript" src="../js/util/util.js"></script>
 <script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="../ueditor/ueditor.all.js"></script>
 <script type="text/javascript" charset="utf-8" src="../ueditor/lang/zh-cn/zh-cn.js"></script>
@@ -89,6 +90,12 @@ UE.Editor.prototype.getActionUrl = function(action) {
 		<div class="col-md-12 column">
 			<form action="" method="post" id="form" class="form-horizontal" role="form">
 				 <input type="hidden" id="id" name="id" th:value="${friend == null}?'':${friend.id}"/>
+				 <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">排序</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="sort" maxlength="5" name="sort" th:value="${friend == null}?'':${friend.sort}" value="">
+					</div>
+				 </div>
 				 <div class="form-group">
 					<label for="title" class="col-sm-2 control-label">活动标题</label>
 					<div class="col-sm-8">

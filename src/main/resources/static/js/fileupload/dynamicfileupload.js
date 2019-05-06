@@ -99,6 +99,11 @@ function save(){
 	 var gimg = $("#headImg").val();
 	 var form = new FormData(document.querySelector("form"));
 	 form.delete("gimage");
+	 var sort = $("#sort").val();
+	 if(!isNull(sort) && !checkNum(sort)){
+		 alert("排序必须为整数");
+		 return;
+	 }
 	 if(m.get("gimage")==undefined && gimg==''){
 		 alert('请上传商品缩略图');
 		 return;

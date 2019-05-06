@@ -40,7 +40,10 @@ public class NameCardService {
 			HttpServletRequest request, HttpServletResponse response, CardWithBLOBs card) {
 		CommonMessage message = new CommonMessage();
 		String logoImagePath = fileUploadService.uploadForSingleFile(request, response, logoimage);
-		String videoPath = fileUploadService.uploadForSingleFile(request, response, video);
+		String videoPath = "";
+		if(video!=null) {
+			videoPath = fileUploadService.uploadForSingleFile(request, response, video);
+		}
 		String shareImagePath = fileUploadService.uploadForSingleFile(request, response, shareimage);
 		String style2bgImagePath = fileUploadService.uploadForSingleFile(request, response, style2bgimage);
 		List<String> personalImagePaths = fileUploadService.uploadForMultiFile(request, response, personalimage);
