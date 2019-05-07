@@ -196,10 +196,12 @@ public class CardController {
 			result.put("data", data);
 			return result;
 		}else {
-			result.put("message", message);
-			result.put("errno", errno);
-			result.put("isAuthorize", isAuthorize);
-			result.put("info", info);
+			Map<String, Object> data = new HashMap<>();
+			data.put("message", message);
+			data.put("errno", errno);
+			data.put("isAuthorize", isAuthorize);
+			data.put("info", info);
+			result.put("data", data);
 			return result;
 		}
 		
