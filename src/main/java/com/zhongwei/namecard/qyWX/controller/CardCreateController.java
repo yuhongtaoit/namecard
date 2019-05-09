@@ -108,11 +108,11 @@ public class CardCreateController {
 			result.put("Code", 1);
 			return result;
 		}
-		if(status == -2) {
-			result.put("msg", "没有绑定对应的名片");
-			result.put("Code", 1);
-			return result;
-		}
+//		if(status == -2) {
+//			result.put("msg", "没有绑定对应的名片");
+//			result.put("Code", 1);
+//			return result;
+//		}
 		if(media_id == null) {
 			result.put("msg", "参数错误");
 			result.put("Code", 1);
@@ -216,7 +216,6 @@ public class CardCreateController {
 		String photos[] = photo.split(",");
 		List<String> list = new ArrayList<String>(Arrays.asList(photos));
 		card.setPhoto(list.toString());
-//		card.setPhoto(photo);
 		card.setRoleName(roleName);
 		card.setSeeNum(0);
 		card.setSex(gender);
@@ -233,6 +232,7 @@ public class CardCreateController {
 		card.setUserid(userid);
 		card.setWeixinid(weixinid);
 		card.setZdMsg("");
+		card.setVedio("");
 		int insert  = 0;
 		try {
 			insert = cardMapper.insert(card);
