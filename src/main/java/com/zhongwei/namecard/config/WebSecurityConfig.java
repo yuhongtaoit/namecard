@@ -26,8 +26,10 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.zhongwei.namecard.component.MyAccessDeniedHandler;
+import com.zhongwei.namecard.filter.MyDisableUrlSessionFilter;
 import com.zhongwei.namecard.service.UserService;
 
 @Configuration
@@ -49,6 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     MyAccessDeniedHandler myAccessDeniedHandler;
     
+    @Autowired
+    private MyDisableUrlSessionFilter myDisableUrlSessionFilter;
+ 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
@@ -64,6 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     /**定义安全策略*/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	//用于客户端第一次访问时去掉URL中的jsessionid
+        http.addFilterBefore(myDisableUrlSessionFilter,UsernamePasswordAuthenticationFilter.class);
     	http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()       //配置安全策略
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
