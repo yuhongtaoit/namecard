@@ -527,7 +527,6 @@
     }
     //显示选择的图片
     function uploadImgHtml(localId) {
-    	
     	var html = ""
         for (var k = 0; k < localId.length; k++) {
             html += '<li class="weui-uploader__file li-item" style="background-image: url(' + localId[k] + ');">'
@@ -536,28 +535,14 @@
         }
         $("#uploaderFiles").append(html);
         loadBtn();
-    	/* $("#uploaderFiles").empty();
-        var html = ""
-        for (var k = 0; k < localId.length; k++) {
-            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
-        }
-        $("#uploaderFiles").append(html); */
     }
     function uploadImgHtml2(localId) {
-     //   $("#uploaderFiles").empty();
-       /*  var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
-        $("#uploaderFiles").append(html); */
         var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderFiles").append(html);
         loadBtn();
     }
     function uploadFXImgHtml(localId) {
-    	/* $("#uploaderFXFiles").empty();
-        var html = ""
-        for (var k = 0; k < localId.length; k++) {
-            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
-        }
-        $("#uploaderFXFiles").append(html); */
     	var html = ""
         for (var k = 0; k < localId.length; k++) {
             html += '<li class="weui-uploader__file li-item" style="background-image: url(' + localId[k] + ');">'
@@ -568,20 +553,12 @@
         loadFXBtn();
     }
     function uploadFXImgHtml2(localId) {
-      /*   $("#uploaderFXFiles").empty();
-        var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
-        $("#uploaderFXFiles").append(html); */
     	var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+    	html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderFXFiles").append(html);
     	loadFXBtn();
     }
     function uploadGRImgHtml(localId) {
-    	/* $("#uploaderGRFiles").empty();
-        var html = ""
-        for (var k = 0; k < localId.length; k++) {
-            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
-        }
-        $("#uploaderGRFiles").append(html); */
     	var html = ""
         for (var k = 0; k < localId.length; k++) {
             html += '<li class="weui-uploader__file li-item" style="background-image: url(' + localId[k] + ');">'
@@ -592,10 +569,8 @@
         loadGRBtn();
     }
     function uploadGRImgHtml2(localId) {
-        /* $("#uploaderGRFiles").empty();
-        var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
-        $("#uploaderGRFiles").append(html); */
     	var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+    	html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderGRFiles").append(html);
     	loadGRBtn();
     }

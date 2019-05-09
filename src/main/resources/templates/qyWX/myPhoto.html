@@ -278,6 +278,7 @@ function to_url(url) {
     }
     function uploadImgHtml2(localId) {
         var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderFiles").append(html);
         loadBtn();
     }

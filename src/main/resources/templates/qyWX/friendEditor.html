@@ -186,12 +186,16 @@
     function uploadImgHtml(localId) {
         var html = ""
         for (var k = 0; k < localId.length; k++) {
-            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>'
+            /* html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');"></li>' */
+            html += '<li class="weui-uploader__file"  style="background-image: url(' + localId[k] + ');">'
+            html += '<img class="pa close btn-delete"  data-src="' + localId[k] + '" src="../qyImages/close.png">';
+            html += '</li>'
         }
         $("#uploaderFiles").append(html);
     }
     function uploadImgHtml2(localId) {
         var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderFiles").append(html);
     }
     //发布动态
