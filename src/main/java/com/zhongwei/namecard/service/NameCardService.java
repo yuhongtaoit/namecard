@@ -87,7 +87,7 @@ public class NameCardService {
 				this.fileUploadService.deleteFile(oldCard.getCardLogo());
 				card.setCardLogo(this.fileUploadService.uploadForSingleFile(request, response, logoimage));
 			}
-			if(video==null && !StringUtils.isEmpty(card.getVedio())) {
+			if(video==null) {
 				card.setVedio(oldCard.getVedio());
 			}else {
 				if(oldCard.getVedio()!=null) {
