@@ -537,7 +537,7 @@
         loadBtn();
     }
     function uploadImgHtml2(localId) {
-        var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+        var html = '<li class="weui-uploader__file li-item"  style="background-image: url(' + localId + ');"></li>'
         html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderFiles").append(html);
         loadBtn();
@@ -553,7 +553,7 @@
         loadFXBtn();
     }
     function uploadFXImgHtml2(localId) {
-    	var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+    	var html = '<li class="weui-uploader__file li-item"  style="background-image: url(' + localId + ');"></li>'
     	html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderFXFiles").append(html);
     	loadFXBtn();
@@ -569,7 +569,7 @@
         loadGRBtn();
     }
     function uploadGRImgHtml2(localId) {
-    	var html = '<li class="weui-uploader__file"  style="background-image: url(' + localId + ');"></li>'
+    	var html = '<li class="weui-uploader__file li-item"  style="background-image: url(' + localId + ');"></li>'
     	html += '<img class="pa close btn-delete"  data-src="' + localId + '" src="../qyImages/close.png">';
         $("#uploaderGRFiles").append(html);
     	loadGRBtn();
