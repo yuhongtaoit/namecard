@@ -132,7 +132,7 @@ public class FriendQYController {
 		}else {
 			http_type = "http://";
 		}
-		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/friend/friendEditor?uniacid=" + uniacid;
+		String url = http_type + request.getServerName() + "/friend/friendEditor?uniacid=" + uniacid;
 		Map<String, Object> Sign = QySendUtils.addSign(setQY.getCorpid(), ticket, url);
 		model.addAttribute("Sign", Sign);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());

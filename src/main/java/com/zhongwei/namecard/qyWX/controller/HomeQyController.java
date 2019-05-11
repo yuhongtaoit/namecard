@@ -194,7 +194,7 @@ public class HomeQyController {
 		}else {
 			http_type = "http://";
 		}
-		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/home/myPhoto?uniacid=" + uniacid;
+		String url = http_type + request.getServerName() + "/home/myPhoto?uniacid=" + uniacid;
 		Map<String, Object> Sign = QySendUtils.addSign(setQY.getCorpid(), ticket, url);
 		model.addAttribute("Sign", Sign);
 		model.addAttribute("projectRootPath", wxMaProperties.getProjectRootPath());
