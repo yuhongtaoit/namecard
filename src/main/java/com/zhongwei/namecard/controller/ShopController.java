@@ -21,10 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardShopsMapper;
+import com.zhongwei.namecard.dao.SetFxMapper;
 import com.zhongwei.namecard.dao.ShopsCategoryMapper;
 import com.zhongwei.namecard.dao.ShopsSpecMapper;
 import com.zhongwei.namecard.entity.CardShopsExample;
 import com.zhongwei.namecard.entity.CardShopsWithBLOBs;
+import com.zhongwei.namecard.entity.SetFx;
+import com.zhongwei.namecard.entity.SetFxExample;
 import com.zhongwei.namecard.entity.ShopsCategory;
 import com.zhongwei.namecard.entity.ShopsCategoryExample;
 import com.zhongwei.namecard.entity.ShopsSpec;
@@ -48,6 +51,9 @@ public class ShopController {
 	
 	@Autowired
 	private ShopsSpecMapper propertyMapper;
+	
+	@Autowired
+	private SetFxMapper fxMapper;
 	
 	@Autowired
 	private ShopService shopService;
@@ -92,6 +98,20 @@ public class ShopController {
 		return message;
 	}
 	
+	@RequestMapping("/getFxSet")
+	public String getFxSet(Model model, Integer pindex, Principal principal, Authentication authentication) {
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		SetFxExample fxExample = new SetFxExample();
+		fxExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<SetFx> setFxList = this.fxMapper.selectByExample(fxExample);
+		if(setFxList!=null && setFxList.size()>0) {
+			model.addAttribute("fxSet", setFxList.get(0));
+		}else {
+			model.addAttribute("fxSet", new SetFx());
+		}
+		return "fxset";
+	}
+	
 	@RequestMapping("/edit")
 	public String editShop(HttpServletRequest request, HttpServletResponse response, Model model){
 		String idStr = request.getParameter("id");
@@ -129,6 +149,29 @@ public class ShopController {
 			model.addAttribute("propertys", propertys);
 		}
 		return "shopedit";
+	}
+	
+	@RequestMapping(value= {"/fxSave"},consumes= {"multipart/form-data" })
+	@Transactional
+	public @ResponseBody CommonMessage fxSave(
+			Principal principal, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response, SetFx setFx){
+		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		setFx.setUniacid(user.getUniacid());
+		if(setFx!=null && setFx.getId()!=null && setFx.getId()>0) {
+			SetFx oldSetFx = this.fxMapper.selectByPrimaryKey(setFx.getId());
+			if(oldSetFx!=null && oldSetFx.getId()!=0) {
+				message.setSuccess(true);
+				message.setMessage("保存成功！");
+				this.fxMapper.updateByPrimaryKey(setFx);
+				return message;
+			}
+		}
+		this.fxMapper.insert(setFx);
+		message.setSuccess(true);
+		message.setMessage("保存成功！");
+		return message;
 	}
 	
 	@RequestMapping(value= {"/save"},consumes= {"multipart/form-data" })

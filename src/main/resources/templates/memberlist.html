@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="jquery/jquery-form.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-paginator.js"></script>
+<title>智慧名片后台管理</title>
+<style type="text/css">
+html{
+	height: 100%;
+}
+
+body{
+	width: 100%;
+	height: 100%;
+	padding:0;
+	margin:0;
+    background: url("images/login_bg.jpg") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+}
+
+.container{
+    display:table;
+    height:100%;
+}
+
+.row{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:left;
+    margin-right:-4px;
+}
+</style>
+
+<script type="text/javascript">
+var winWidth = window.screen.width-400;
+var winHeight = window.screen.height-150;
+function add(){
+	window.open("/shop/edit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function update(){
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
+	var uuid = document.getElementById("id"+index).innerText;
+	window.open("/shop/edit?id="+uuid,"","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function deleteShop(){
+	var radios = document.getElementsByName("radio");
+	var index;
+	for(i=0;i<radios.length; i++) {
+		if(radios[i].checked==true){
+			index=i+1;
+		}
+	}
+	if(document.getElementById("id"+index)==null){
+		 alert("请选择一条数据");
+		 return;
+	 }
+	var uuid = document.getElementById("id"+index).innerText;
+	var flag = confirm("确定删除本条数据？");
+	if(!flag){
+		return;
+	}
+	$.ajax({
+	    url:'/shop/delete',
+	    type:'POST', //GET
+	    async:true,    //或false,是否异步
+	    data:{
+	    	'id':uuid
+	    },
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    success:function(data,textStatus,jqXHR){
+	    	var json = eval(data);
+			if(json.success){
+				$.ajax({
+		             type: "GET",
+		             url: "/shop/getShopList",
+		             async:false,
+		             success: function(data){
+		            	 $("#mainList", window.document).html(data);
+		             }
+		         });
+		         initPaginator();
+				alert(json.message);
+				window.close();
+			}
+	    },
+	    error:function(xhr,textStatus){
+	    	alert(JSON.parse(msg).msg);
+	    }
+	})
+}
+
+function shopCategory(){
+	window.open("/shopCategory/getCategoryList","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function shopProperty(){
+	window.open("/shopProperty/getPropertyList","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
+function fxSet(){
+	window.open("/shop/getFxSet","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-10 column">
+			<div class="btn-group">
+				 <button class="btn btn-default" type="button" onclick="deleteShop()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							选择
+						</th>
+						<th>
+							姓名
+						</th>
+						<th>
+							电话
+						</th>
+						<th>
+							昵称
+						</th>
+						<th>
+							性别
+						</th>
+						<th>
+							头像
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					 <tr th:each="member,iterStat : ${memberList}"> 
+					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
+					     <td style="vertical-align: middle;display: none;" th:text="${member.id}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${member.name}"></td>
+					     <td style="vertical-align: middle" th:text="${member.phone}"></td>
+					     <td style="vertical-align: middle" th:text="${member.nickname}"></td>
+					     <td style="vertical-align: middle" th:text="${member.gender}"></td>
+					     <td style="vertical-align: middle">
+					     	<img src="" th:src="${member == null}?'':'/'+${member.avatarUrl }" style="max-width: 48px; max-height: 48px; border: 1px dotted gray">
+					     </td>
+					 </tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

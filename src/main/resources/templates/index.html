@@ -130,8 +130,6 @@ function friendManage(){
 
 function clientManage(){
 	flag = "client";
-	totalPagesUrl = "/client/getClientTotal";
-	url="/client/getClientList";
 	$( "#mainList" ).load( "/clientManage/index", function( response, status, xhr ) {
 		  $('#mainList').html(response);
 	});
@@ -171,7 +169,7 @@ function changeAccount(){
 <div class="container" style="height:0px;margin-top: 200px">
 	<br/>
 	<div class="row clearfix">
-		<div class="col-md-12 column">
+		<div class="col-xs-12 col-sm-12 col-md-12 column">
 			<nav class="navbar navbar-default" role="navigation" style="background-color: #FCF5E3">
 				<div class="navbar-header">
 					 <a class="navbar-brand" id="userManage" href="#" onclick="userList()">用户管理</a>
@@ -184,7 +182,7 @@ function changeAccount(){
 					 <a class="navbar-brand" id="basicManage" href="#" onclick="basicSet()">基础设置</a>
 					 <a class="navbar-brand" id="qywxManage" href="#" onclick="qywxSet()">企业微信设置</a>
 					 <a class="navbar-brand" id="friendManage" href="#" onclick="friendManage()">朋友圈管理</a>
-					 <a class="navbar-brand" id="friendManage" href="#" onclick="clientManage()">客户管理</a>
+					 <a class="navbar-brand" id="clientManage" href="#" onclick="clientManage()">客户管理</a>
 				</div>
 			</nav>
 			<div class="jumbotron" >
@@ -239,7 +237,7 @@ if(!hasRoleAdmin && !hasValue(menuResources,"menu_friend_manage")){
 function initPaginator(){
 var currentPage=1;
 var totalPages;
-if(flag=="account" || flag=="card" || flag=="shop" || flag=="product" || flag="client"){
+if(flag=="account" || flag=="card" || flag=="shop" || flag=="product"){
 	$.ajax({
 	    type: "GET",
 	    url: totalPagesUrl,
@@ -273,7 +271,7 @@ if(flag=="account" || flag=="card" || flag=="shop" || flag=="product" || flag="c
 		         });
 	        }
 	    }
-	if(flag=="account" || flag=="card" || flag=="shop" || flag=="product" || flag="client"){
+	if(flag=="account" || flag=="card" || flag=="shop" || flag=="product"){
 		var html = "<ul id='pagearea' class='pagination'></ul>";
 		$("#pagediv").append(html);
 	    $('#pagearea').bootstrapPaginator(options);

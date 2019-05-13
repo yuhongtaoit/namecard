@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<title>智慧名片后台管理</title>
+<style type="text/css">
+.multi-img-details .multi-item {
+    height: 150px;
+    max-width: 150px;
+    position: relative;
+    float: left;
+    margin-right: 18px;
+}
+</style>
+<script type="text/javascript">
+function cancel(){
+	window.close();
+}
+
+function memberList(){
+	$( "#mainContent" ).load( "/clientManage/getMemberList", function( response, status, xhr ) {
+		  $('#mainContent').html(response);
+	});
+	$('#member').attr("class","active");
+	$('#cardMember').attr("class","");
+}
+
+function cardMemberList(){
+	$( "#mainContent" ).load( "/clientManage/getCardMemberList", function( response, status, xhr ) {
+		  $('#mainContent').html(response);
+	});
+	$('#member').attr("class","");
+	$('#cardMember').attr("class","active");
+}
+
+memberList()
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<ul class="nav nav-tabs">
+				<li class="active" id="member">
+					 <a href="#" onclick="memberList()">授权号码客户</a>
+				</li>
+				<li id="cardMember">
+					 <a href="#" onclick="cardMemberList()">名片客户资料</a>
+				</li>
+			</ul>
+			<div id="mainContent" class="panel panel-default">
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
