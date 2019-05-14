@@ -47,7 +47,7 @@ body{
 
 <script type="text/javascript">
 
-function deleteMember(){
+function getDetailInfo(){
 	var radios = document.getElementsByName("radio");
 	var index;
 	for(i=0;i<radios.length; i++) {
@@ -60,33 +60,17 @@ function deleteMember(){
 		 return;
 	 }
 	var uuid = document.getElementById("id"+index).innerText;
-	var flag = confirm("确定删除本条数据？");
-	if(!flag){
-		return;
-	}
 	$.ajax({
-	    url:'/clientManage/deleteMember',
+	    url:'/clientManage/getCardMemberDetail',
 	    type:'POST', //GET
 	    async:true,    //或false,是否异步
 	    data:{
 	    	'id':uuid
 	    },
-	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    dataType:'html',    //返回的数据格式：json/xml/html/script/jsonp/text
 	    success:function(data,textStatus,jqXHR){
-	    	var json = eval(data);
-			if(json.success){
-				$.ajax({
-		             type: "GET",
-		             url: "/clientManage/getMemberList",
-		             async:false,
-		             success: function(data){
-		            	 $("#mainList", window.document).html(data);
-		             }
-		         });
-		         initPaginator();
-				alert(json.message);
-				window.close();
-			}
+	    	var newwindow = window.open("about:blank");
+	    	newwindow.document.write(data);
 	    },
 	    error:function(xhr,textStatus){
 	    	alert(JSON.parse(msg).msg);
@@ -101,19 +85,13 @@ function deleteMember(){
 	<div class="row clearfix">
 		<div class="col-md-10 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button" onclick="deleteMember()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <button class="btn btn-default" type="button" onclick="getDetailInfo()"><em class="glyphicon glyphicon-remove"></em> 详细信息</button>
 			</div>
 			<table class="table">
 				<thead>
 					<tr>
 						<th>
 							选择
-						</th>
-						<th>
-							姓名
-						</th>
-						<th>
-							电话
 						</th>
 						<th>
 							昵称
@@ -124,19 +102,25 @@ function deleteMember(){
 						<th>
 							头像
 						</th>
+						<th>
+							姓名
+						</th>
+						<th>
+							电话
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-					 <tr th:each="member,iterStat : ${memberList}"> 
+					 <tr th:each="cardMember,iterStat : ${cardMemberList}"> 
 					 	 <td style="vertical-align: middle"><input name="radio" type="radio" value="radio"></td>
-					     <td style="vertical-align: middle;display: none;" th:text="${member.id}" th:id="'id'+${iterStat.count}"></td>
-					     <td style="vertical-align: middle" th:text="${member.name}"></td>
-					     <td style="vertical-align: middle" th:text="${member.phone}"></td>
-					     <td style="vertical-align: middle" th:text="${member.nickname}"></td>
-					     <td style="vertical-align: middle" th:text="${member.gender}"></td>
+					     <td style="vertical-align: middle;display: none;" th:text="${cardMember.id}" th:id="'id'+${iterStat.count}"></td>
+					     <td style="vertical-align: middle" th:text="${cardMember.nickname}"></td>
+					     <td style="vertical-align: middle" th:text="${cardMember.gender}"></td>
 					     <td style="vertical-align: middle">
-					     	<img src="" th:src="${member == null}?'':${member.avatarUrl }" style="max-width: 48px; max-height: 48px; border: 1px dotted gray">
+					     	<img src="" th:src="${cardMember == null}?'':${cardMember.avatarUrl }" style="max-width: 48px; max-height: 48px; border: 1px dotted gray">
 					     </td>
+					     <td style="vertical-align: middle" th:text="${cardMember.name}"></td>
+					     <td style="vertical-align: middle" th:text="${cardMember.phone}"></td>
 					 </tr>
 				</tbody>
 			</table>
