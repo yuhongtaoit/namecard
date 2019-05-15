@@ -80,18 +80,18 @@ public class QyUtils {
 		SetQY setQY = qyList.size() > 0 ? qyList.get(0) : new SetQY();
 		String userId = (String) request.getSession().getAttribute("session_dbs_masclwlcard_usderid");
 		if (userId == null || !StringUtils.hasText(userId.toString())) {
-//			 String redirectUri = wxMaProperties.getProjectRootPath() +"staffer/stafferIndex";
-////			 String redirectUri = "http://192.168.43.210:8080/" +"staffer/stafferIndex";
-//			 String scope = "snsapi_base";
-//			 String codeUrl = getCodeUrl(setQY, redirectUri, scope);
-//			 String qytoken = QySendUtils.getAccessToken(setQY.getCorpid(),
-//			 setQY.getSecret(), setQY.getUniacid());
-//			 userId = webOauth(request, response, setQY, codeUrl, qytoken);
-//			 if(!StringUtils.hasText(userId)) {
-//				 return -1;
-//			 }
-////			return -2;
-			userId = "yht"; // 测试******
+			 String redirectUri = wxMaProperties.getProjectRootPath() +"staffer/stafferIndex";
+//			 String redirectUri = "http://192.168.43.210:8080/" +"staffer/stafferIndex";
+			 String scope = "snsapi_base";
+			 String codeUrl = getCodeUrl(setQY, redirectUri, scope);
+			 String qytoken = QySendUtils.getAccessToken(setQY.getCorpid(),
+			 setQY.getSecret(), setQY.getUniacid());
+			 userId = webOauth(request, response, setQY, codeUrl, qytoken);
+			 if(!StringUtils.hasText(userId)) {
+				 return -1;
+			 }
+//			return -2;
+//			userId = "yht"; // 测试******
 			request.getSession().setAttribute("session_dbs_masclwlcard_usderid", userId);
 		}
 		CardExample cardExample = new CardExample();

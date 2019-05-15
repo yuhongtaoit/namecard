@@ -62,7 +62,7 @@ function getDetailInfo(){
 	var uuid = document.getElementById("id"+index).innerText;
 	$.ajax({
 	    url:'/clientManage/getCardMemberDetail',
-	    type:'POST', //GET
+	    type:'GET', //GET
 	    async:true,    //或false,是否异步
 	    data:{
 	    	'id':uuid
@@ -85,7 +85,7 @@ function getDetailInfo(){
 	<div class="row clearfix">
 		<div class="col-md-10 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button" onclick="getDetailInfo()"><em class="glyphicon glyphicon-remove"></em> 详细信息</button>
+				 <button class="btn btn-default" type="button" onclick="getDetailInfo()"><em class="glyphicon glyphicon-user"></em> 详细信息</button>
 			</div>
 			<table class="table">
 				<thead>

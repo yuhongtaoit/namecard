@@ -52,6 +52,10 @@ function add(){
 	window.open("/namecard/edit","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
 }
 
+function changeCard(){
+	window.open("/namecard/getChangeCard","","toolbar=no,menubar=no,location=no,width="+winWidth+",height="+winHeight+",left=200");
+}
+
 function getRoles(userId){
 	window.open("/user/getRoles?userId="+userId,"关联角色","height=300,toolbar=no,menubar=no,width=400,top=200,left=400");
 }
@@ -125,7 +129,10 @@ function deleteCard(){
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> <button class="btn btn-default" type="button" onclick="deleteCard()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <button class="btn btn-default" type="button" onclick="add()"><em class="glyphicon glyphicon-plus"></em> 新增</button> <button class="btn btn-default" type="button" onclick="update()"><em class="glyphicon glyphicon-pencil"></em>修改</button> 
+				 <button class="btn btn-default" type="button" onclick="deleteCard()"><em class="glyphicon glyphicon-remove"></em> 删除</button>
+				 <!-- <button class="btn btn-default" type="button" onclick="changeCard()"><em class="glyphicon glyphicon-refresh"></em> 名片交接</button> -->
+				 
 			</div>
 			<table class="table">
 				<thead>

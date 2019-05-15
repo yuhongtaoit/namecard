@@ -59,62 +59,61 @@ body{
 		
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						{$find['nickname']}详细信息
+						<span th:text="${cardMemberDetail == null}?'':${cardMemberDetail.nickname }"></span>详细信息
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
 		
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">姓名 :{$find['name']}</p>
+								<p class="form-control-static">姓名 :<span th:text="${cardMemberDetail == null}?'':${cardMemberDetail.name }"></span></p>
 							</div>
 						</div>
 						<div class="form-group">
 		
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">手机 :{$find['phone']}</p>
+								<p class="form-control-static">手机 :<span th:text="${cardMemberDetail == null}?'':${cardMemberDetail.phone }"></span></p>
 							</div>
 						</div>
 						
-						{loop $listaddres  $item} <!--循环客户地址信息-->
-					
+						<div th:each="address,iterStat : ${shopsAddressList}" class='input-group multi-item' style='margin-top:.5em;'>
 							<div class="form-group">
 								<div class="col-sm-9 col-xs-12">
-									<p class="form-control-static">姓名 :{$item['userName']}</p>
+									<p class="form-control-static">姓名 :<span th:text="${address.name}"></span></p>
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<div class="col-sm-9 col-xs-12">
-									<p class="form-control-static">手机 :{$item['telNumber']}</p>
+									<p class="form-control-static">手机 :<span th:text="${address.telNumber}"></span></p>
 								</div>
 							</div>
 						
 							<div class="form-group">
 								
 								<div class="col-sm-9 col-xs-12">
-									<p class="form-control-static">地址:{$item['provinceName']}{$item['cityName']}{$item['countyName']}{$item['detailInfo']}</p>
+									<p class="form-control-static">地址:<span th:text="${address.provinceName}+${address.cityName}+${address.countyName}+${address.detailInfo}"></span></p>
 								</div>
 							</div>
+						</div>
 						
-						{/loop}
 					</div>
 				</div>
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						{$find['nickname']}所属员工
+						<span th:text="${cardMemberDetail == null}?'':${cardMemberDetail.nickname }"></span>所属员工
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
 		
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">姓名 :{$card['card_name']}</p>
+								<p class="form-control-static">姓名 :<span th:text="${card.cardName}"></span></p>
 							</div>
 						</div>
 						<div class="form-group">
 		
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">手机 :{$card['card_tel']}</p>
+								<p class="form-control-static">手机 :<span th:text="${card.cardTel}"></span></p>
 							</div>
 						</div>
 		
@@ -125,7 +124,7 @@ body{
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						{$find['nickname']}佣金信息
+						<span th:text="${cardMemberDetail == null}?'':${cardMemberDetail.nickname }"></span>佣金信息
 					</div>
 					<div class="panel-body table-responsive">
 						<table class="table table-hover">
@@ -142,11 +141,11 @@ body{
 							
 							<tr>
 		
-								<td>{$find['canTake']}</td>
-								<td>{$find['totalBroker']}</td>
-								<td>{$find['hasTaken']}</td>
-								<td>{$find['inTaking']}</td>
-								<td>{$find['notInAccount']}</td>
+								<td th:text="${cardMemberDetail.canTake}"></td>
+								<td th:text="${cardMemberDetail.totalBroker}"></td>
+								<td th:text="${cardMemberDetail.hasTaken}"></td>
+								<td th:text="${cardMemberDetail.inTaking}"></td>
+								<td th:text="${cardMemberDetail.notInAccount}"></td>
 							</tr>
 						
 							
@@ -163,18 +162,18 @@ body{
 						<div class="form-group">
 		
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">昵称 :{$source['nickname']}</p>
+								<p class="form-control-static" >昵称 :<span th:text="${cardMemberDetail == null}?'':${sourceCardMember.nickname}"></span></p>
 							</div>
 						</div>
 						<div class="form-group">
 		
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">姓名:{$source['name']}</p>
+								<p class="form-control-static" >姓名:<span th:text="${cardMemberDetail == null}?'':${sourceCardMember.name}"></span></p>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">手机 :{$source['phone']}</p>
+								<p class="form-control-static" >手机 :<span th:text="${cardMemberDetail == null}?'':${sourceCardMember.phone}"></span></p>
 							</div>
 						</div>
 						
@@ -182,47 +181,6 @@ body{
 					</div>
 				</div>
 				
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						上级是否得到金额或者红包
-					</div>
-					<div class="panel-body table-responsive">
-						<table class="table table-hover">
-							<thead class="navbar-inner">
-							<tr>
-								
-								<th style="width:15%;">单号</th>
-								<th style="width:15%;">红包金额</th>
-								<th style="width:20%;">是否成功</th>
-					
-		
-							</tr>
-							</thead>
-							
-							<tr>
-		
-								<td>{$redpack['mch_billno']}</td>
-								<td>{$redpack['fee']}</td>
-								<td><?php if($redpack['status']){ echo '发放成功';}else{ echo '发放失败';}?></td>
-		
-							</tr>
-		
-						</table>
-					</div>
-					
-					<div class="panel-body">
-						<div class="form-group">
-		
-							<div class="col-sm-9 col-xs-12">
-								<p class="form-control-static">错误日志:{$redpack['log']}</p>
-							</div>
-						</div>
-						
-		
-					</div>
-					
-				</div>
-		
 		</div>
 	</div>
 </div>
