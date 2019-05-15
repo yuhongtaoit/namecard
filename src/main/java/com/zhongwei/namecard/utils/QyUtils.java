@@ -118,6 +118,7 @@ public class QyUtils {
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
 		if (!StringUtils.hasText(code) && !StringUtils.hasText(state)) {
+			response.setStatus(301);
 			response.sendRedirect(codeUrl);
 //			HttpClientUtils.get(codeUrl);
 //			return null;

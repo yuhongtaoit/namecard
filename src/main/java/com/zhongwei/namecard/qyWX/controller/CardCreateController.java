@@ -238,7 +238,7 @@ public class CardCreateController {
 			insert = cardMapper.insert(card);
 			AccountWxapp account = accountMapper.selectByPrimaryKey(card.getUniacid());
 			String accessToken = QySendUtils.getAccountToken(account.getKey(), account.getSecret(), card.getUniacid());
-			this.miniQrService.getMiniQr("uniacid="+card.getUniacid()+"&card_id="+card.getId()+"&send_cardid=0", accessToken, card.getUniacid(), card.getId());
+			this.miniQrService.getMiniQr("uniacid="+card.getUniacid()+"&card_id="+card.getId(), accessToken, card.getUniacid(), card.getId());
 		} catch (Exception e) {
 			fileUploadService.deleteFile(ImageUrlUtils.getAbsolutelyURL(shareImg));
 			fileUploadService.deleteFile(ImageUrlUtils.getAbsolutelyURL(cardLogo));
