@@ -80,7 +80,7 @@ public class QyUtils {
 		SetQY setQY = qyList.size() > 0 ? qyList.get(0) : new SetQY();
 		String userId = (String) request.getSession().getAttribute("session_dbs_masclwlcard_usderid");
 		if (userId == null || !StringUtils.hasText(userId.toString())) {
-			 String redirectUri = wxMaProperties.getProjectRootPath() +"staffer/stafferIndex";
+			 String redirectUri = wxMaProperties.getProjectRootPath() +"staffer/stafferIndex?uniacid="+uniacid;
 //			 String redirectUri = "http://192.168.43.210:8080/" +"staffer/stafferIndex";
 			 String scope = "snsapi_base";
 			 String codeUrl = getCodeUrl(setQY, redirectUri, scope);
