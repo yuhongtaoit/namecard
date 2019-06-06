@@ -89,18 +89,16 @@ public class CardController {
 					}
 				}
 			}
-		}
-		
-		
-		
-		CardExample cardExample = new CardExample();
-		cardExample.createCriteria().andUniacidEqualTo(uniacid).andMrtypeEqualTo(1).andIsSendcardEqualTo(0);
-		List<CardWithBLOBs> card_mr = cardMapper.selectByExampleWithBLOBs(cardExample);
-		
-		if(card_mr != null && card_mr.size() > 0) {
-			for(CardWithBLOBs card : card_mr) {
-				arr.add(card.getId());
-				arr2.add(card.getId());
+		}else {
+			CardExample cardExample = new CardExample();
+			cardExample.createCriteria().andUniacidEqualTo(uniacid).andMrtypeEqualTo(1).andIsSendcardEqualTo(0);
+			List<CardWithBLOBs> card_mr = cardMapper.selectByExampleWithBLOBs(cardExample);
+			
+			if(card_mr != null && card_mr.size() > 0) {
+				for(CardWithBLOBs card : card_mr) {
+					arr.add(card.getId());
+					arr2.add(card.getId());
+				}
 			}
 		}
 		if(arr.size() > 0) {
@@ -169,7 +167,7 @@ public class CardController {
 							card.setSourceName(StringUtils.hasText(memberShare.get(0).getName())?memberShare.get(0).getName() : memberShare.get(0).getNickname());
 						}else {
 							if(memberInfo.size() >0 && memberInfo.get(0).getSendCardid() > 0) {
-								cardExample = new CardExample();
+								CardExample cardExample = new CardExample();
 								cardExample.createCriteria().andUniacidEqualTo(uniacid).andIdEqualTo(memberInfo.get(0).getSendCardid());
 								memberSorce = cardMapper.selectByExampleWithBLOBs(cardExample);
 								if(memberSorce.size() > 0) {

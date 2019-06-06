@@ -351,13 +351,13 @@
       <if test="record.aid != null" >
         aid = #{record.aid,jdbcType=INTEGER},
       </if>
-      <if test="record.showZan != null" >
+      <if test="record.showZan != null and record.showZan != 0" >
         show_zan = #{record.showZan,jdbcType=TINYINT},
       </if>
-      <if test="record.isPopCard != null" >
+      <if test="record.isPopCard != null and record.isPopCard != 0" >
         is_pop_card = #{record.isPopCard,jdbcType=TINYINT},
       </if>
-      <if test="record.gender != null" >
+      <if test="record.gender != null and record.gender != 0" >
         gender = #{record.gender,jdbcType=TINYINT},
       </if>
       <if test="record.city != null" >
@@ -375,13 +375,13 @@
       <if test="record.avatar != null" >
         avatar = #{record.avatar,jdbcType=VARCHAR},
       </if>
-      <if test="record.gailv != null" >
+      <if test="record.gailv != null and record.gailv != 0" >
         gailv = #{record.gailv,jdbcType=TINYINT},
       </if>
-      <if test="record.hmdStatus != null" >
+      <if test="record.hmdStatus != null and record.hmdStatus != 0" >
         hmd_status = #{record.hmdStatus,jdbcType=TINYINT},
       </if>
-      <if test="record.pbStatus != null" >
+      <if test="record.pbStatus != null and record.pbStatus != 0" >
         pb_status = #{record.pbStatus,jdbcType=TINYINT},
       </if>
       <if test="record.sourceId != null" >
