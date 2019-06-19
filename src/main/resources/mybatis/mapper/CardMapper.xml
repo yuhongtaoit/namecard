@@ -500,13 +500,13 @@
       <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.sex != null" >
+      <if test="record.sex != null and record.sex != 0" >
         sex = #{record.sex,jdbcType=BIT},
       </if>
-      <if test="record.templateType != null" >
+      <if test="record.templateType != null and record.templateType != 0" >
         template_type = #{record.templateType,jdbcType=BIT},
       </if>
-      <if test="record.cardForwardStatus != null" >
+      <if test="record.cardForwardStatus != null and record.cardForwardStatus != 0" >
         card_forward_status = #{record.cardForwardStatus,jdbcType=BIT},
       </if>
       <if test="record.seeNum != null" >
@@ -527,16 +527,16 @@
       <if test="record.totalPicNum != null" >
         total_pic_num = #{record.totalPicNum,jdbcType=INTEGER},
       </if>
-      <if test="record.ishide != null" >
+      <if test="record.ishide != null and record.ishide != 0" >
         ishide = #{record.ishide,jdbcType=BIT},
       </if>
       <if test="record.thumbsNum != null" >
         thumbs_num = #{record.thumbsNum,jdbcType=INTEGER},
       </if>
-      <if test="record.mrtype != null" >
+      <if test="record.mrtype != null and record.mrtype != 0" >
         mrtype = #{record.mrtype,jdbcType=BIT},
       </if>
-      <if test="record.cardLevel != null" >
+      <if test="record.cardLevel != null and record.cardLevel != 0" >
         card_level = #{record.cardLevel,jdbcType=BIT},
       </if>
       <if test="record.lastUpdateStarTime != null" >
@@ -554,13 +554,13 @@
       <if test="record.email != null" >
         email = #{record.email,jdbcType=VARCHAR},
       </if>
-      <if test="record.hideProperty != null" >
+      <if test="record.hideProperty != null and record.hideProperty != 0" >
         hide_property = #{record.hideProperty,jdbcType=BIT},
       </if>
-      <if test="record.customerDisturb != null" >
+      <if test="record.customerDisturb != null and record.customerDisturb != 0" >
         customer_disturb = #{record.customerDisturb,jdbcType=BIT},
       </if>
-      <if test="record.openBoss != null" >
+      <if test="record.openBoss != null and record.openBoss != 0" >
         open_boss = #{record.openBoss,jdbcType=TINYINT},
       </if>
       <if test="record.zdMsg != null" >

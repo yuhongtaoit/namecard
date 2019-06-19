@@ -20,8 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageHelper;
 import com.zhongwei.namecard.common.CommonMessage;
 import com.zhongwei.namecard.dao.CardMapper;
+import com.zhongwei.namecard.dao.CardMemberMapper;
 import com.zhongwei.namecard.entity.Card;
 import com.zhongwei.namecard.entity.CardExample;
+import com.zhongwei.namecard.entity.CardMember;
+import com.zhongwei.namecard.entity.CardMemberExample;
 import com.zhongwei.namecard.entity.CardWithBLOBs;
 import com.zhongwei.namecard.entity.UserDetailsEntity;
 import com.zhongwei.namecard.service.FileUploadService;
@@ -36,6 +39,9 @@ public class NameCardController {
 	
 	@Autowired
 	private NameCardService nameCardService;
+	
+	@Autowired
+	private CardMemberMapper cardMemberMapper;
 	
 	@Autowired
 	private FileUploadService fileUploadService;
@@ -87,6 +93,84 @@ public class NameCardController {
 			model.addAttribute("photos", photoList);
 		}
 		return "cardedit";
+	}
+	
+	@RequestMapping("/getChangeCard")
+	public String getChangeCard(HttpServletRequest request, HttpServletResponse response, Model model, Principal principal, Authentication authentication){
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardExample cardExample = new CardExample();
+		cardExample.createCriteria().andUniacidEqualTo(user.getUniacid());
+		List<CardWithBLOBs> cardList = this.cardMapper.selectByExampleWithBLOBs(cardExample);
+		model.addAttribute("cardList", cardList);
+		return "cardchange";
+	}
+	
+	@RequestMapping("/changeCard")
+	public @ResponseBody CommonMessage changeCard(HttpServletRequest request, HttpServletResponse response, Model model, Principal principal, Authentication authentication){
+		CommonMessage message = new CommonMessage();
+		UserDetailsEntity user = (UserDetailsEntity) authentication.getPrincipal();
+		CardWithBLOBs sendCard = null;
+		CardWithBLOBs recCard = null;
+		String sendCardId = request.getParameter("sendCardId");
+		if(sendCardId==null || sendCardId.trim().equals("")) {
+			message.setSuccess(false);
+			message.setMessage("操作失败请选择交出方！");
+			return message;
+		}else {
+			CardExample cardExample = new CardExample();
+			cardExample.createCriteria().andUniacidEqualTo(user.getUniacid()).andIdEqualTo(Integer.valueOf(sendCardId));
+			List<CardWithBLOBs> sendCardList = this.cardMapper.selectByExampleWithBLOBs(cardExample);
+			if(sendCardList==null || sendCardList.size()==0) {
+				message.setSuccess(false);
+				message.setMessage("操作失败交出方不存在！");
+				return message;
+			}else {
+				sendCard = sendCardList.get(0);
+			}
+		}
+		String recCardId = request.getParameter("recCardId");
+		if(recCardId==null || recCardId.trim().equals("")) {
+			message.setSuccess(false);
+			message.setMessage("操作失败请选择接收方！");
+			return message;
+		}else {
+			CardExample cardExample = new CardExample();
+			cardExample.createCriteria().andUniacidEqualTo(user.getUniacid()).andIdEqualTo(Integer.valueOf(recCardId));
+			List<CardWithBLOBs> recCardList = this.cardMapper.selectByExampleWithBLOBs(cardExample);
+			if(recCardList==null || recCardList.size()==0) {
+				message.setSuccess(false);
+				message.setMessage("操作失败接收方不存在！");
+				return message;
+			}else {
+				recCard = recCardList.get(0);
+			}
+		}
+		if(sendCardId.trim().equals(recCardId.trim())) {
+			message.setSuccess(false);
+			message.setMessage("操作失败接收方与接收方是同一个人员！");
+			return message;
+		}
+		try {
+			CardWithBLOBs card = new CardWithBLOBs();
+			card.setIsSendcard(1);
+			card.setIsSendcardId(Integer.valueOf(recCardId.trim()));
+			CardExample cardExample = new CardExample();
+			cardExample.createCriteria().andIdEqualTo(Integer.valueOf(sendCardId.trim()));
+			this.cardMapper.updateByExampleSelective(card, cardExample);
+			CardMemberExample cardMemberExample = new CardMemberExample();
+			cardMemberExample.createCriteria().andUniacidEqualTo(user.getUniacid()).andAidEqualTo(Integer.valueOf(sendCardId.trim()));
+			CardMember cardMember = new CardMember();
+			cardMember.setAid(Integer.valueOf(recCardId.trim()));
+			this.cardMemberMapper.updateByExampleSelective(cardMember, cardMemberExample);
+			message.setSuccess(true);
+			message.setMessage("交接成功！");
+			return message;
+		} catch (Exception e) {
+			// TODO: handle exception
+			message.setSuccess(false);
+			message.setMessage("交接失败！");
+		}
+		return message;
 	}
 	
 	@RequestMapping(value= {"/save"},consumes= {"multipart/form-data" })
