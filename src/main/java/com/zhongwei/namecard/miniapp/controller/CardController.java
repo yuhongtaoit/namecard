@@ -81,16 +81,26 @@ public class CardController {
 			if(cardMamberList.size() > 0) {
 				for(CardMember cardMember : cardMamberList) {
 					CardExample example = new CardExample();
-					example.createCriteria().andUniacidEqualTo(uniacid).andIdEqualTo(cardMember.getAid()).andIsSendcardEqualTo(0);
+					example.createCriteria().andUniacidEqualTo(uniacid).andIdEqualTo(cardMember.getAid());
 					List<CardWithBLOBs> cardMo = cardMapper.selectByExampleWithBLOBs(example);
 					if(cardMo.size() >0) {
 						arr.add(cardMember.getAid());
 						arr1.add(cardMember.getAid());
 					}
 				}
+				CardExample cardExample = new CardExample();
+				cardExample.createCriteria().andUniacidEqualTo(uniacid).andMrtypeEqualTo(1);
+				List<CardWithBLOBs> card_mr = cardMapper.selectByExampleWithBLOBs(cardExample);
+				
+				if(card_mr != null && card_mr.size() > 0) {
+					for(CardWithBLOBs card : card_mr) {
+						arr.add(card.getId());
+						arr2.add(card.getId());
+					}
+				}
 			}else {
 				CardExample cardExample = new CardExample();
-				cardExample.createCriteria().andUniacidEqualTo(uniacid).andMrtypeEqualTo(1).andIsSendcardEqualTo(0);
+				cardExample.createCriteria().andUniacidEqualTo(uniacid);
 				List<CardWithBLOBs> card_mr = cardMapper.selectByExampleWithBLOBs(cardExample);
 				
 				if(card_mr != null && card_mr.size() > 0) {

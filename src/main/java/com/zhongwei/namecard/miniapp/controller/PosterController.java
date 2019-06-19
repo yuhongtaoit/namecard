@@ -46,11 +46,11 @@ public class PosterController {
 		setExample.createCriteria().andUniacidEqualTo(uniacid);
 		list = setMapper.selectByExample(setExample);
 		CardSet cardSet = list.size() > 0 ? list.get(0) : new CardSet();
-		cardSet.setCompanyLogo(ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()).replaceAll("https://", "http://"));
+		cardSet.setCompanyLogo(ImageUrlUtils.getAbsolutelyURL(cardSet.getCompanyLogo()).replaceAll("http://", "https://"));
 		data.put("base", cardSet);
-		data.put("codepng", ImageUrlUtils.getAbsolutelyURL("attachment/images/" + uniacid + "/" + card.getId() + ".png").replaceAll("https://", "http://"));
-		data.put("cardLogo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("https://", "http://"));
-		data.put("card_logo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("https://", "http://"));
+		data.put("codepng", ImageUrlUtils.getAbsolutelyURL("attachment/images/" + uniacid + "/" + card.getId() + ".png").replaceAll("http://", "https://"));
+		data.put("cardLogo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("http://", "https://"));
+		data.put("card_logo", ImageUrlUtils.getAbsolutelyURL(card.getCardLogo()).replaceAll("http://", "https://"));
 		
 		result.put("data", data);
 		return result;

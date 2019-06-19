@@ -192,7 +192,7 @@ public class HomeQyController {
 		if(StringUtils.hasText(refererURL)){
 			http_type = refererURL.toLowerCase() + "://";
 		}else {
-			http_type = "http://";
+			http_type = "https://";
 		}
 		String url = http_type + request.getServerName() + "/home/myPhoto?uniacid=" + uniacid;
 		Map<String, Object> Sign = QySendUtils.addSign(setQY.getCorpid(), ticket, url);

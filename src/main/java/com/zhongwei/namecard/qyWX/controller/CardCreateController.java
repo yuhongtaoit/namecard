@@ -74,7 +74,7 @@ public class CardCreateController {
 		if(StringUtils.hasText(refererURL)){
 			http_type = refererURL.toLowerCase() + "://";
 		}else {
-			http_type = "http://";
+			http_type = "https://";
 		}
 //		String url = http_type + request.getServerName() + ":" + request.getServerPort() + "/cardCreate/cardCreate?uniacid=" + uniacid;
 		String url = http_type + request.getServerName()  + "/cardCreate/cardCreate?uniacid=" + uniacid;

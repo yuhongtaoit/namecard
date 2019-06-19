@@ -11,7 +11,7 @@ public class PublicMsg {
             "    \"imageCompressEnable\": true,\n" +
             "    \"imageCompressBorder\": 1600,\n" +
             "    \"imageInsertAlign\": \"none\",\n" +
-            "    \"imageUrlPrefix\": \"http://localhost:8080\",\n" +
+            "    \"imageUrlPrefix\": \"https://zhihui.chengdecanyin.com\",\n" +
             "    \"imagePathFormat\": \"/ueditor/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}\",\n" +
             "\n" +
             "    \"scrawlActionName\": \"uploadscrawl\",\n" +

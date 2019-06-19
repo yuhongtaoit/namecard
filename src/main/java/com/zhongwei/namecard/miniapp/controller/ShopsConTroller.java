@@ -412,7 +412,7 @@ public class ShopsConTroller {
 		orderRequest.setSignType("MD5");
 		orderRequest.setDeviceInfo("WEB");
 		orderRequest.setTradeType(WxPayConstants.TradeType.JSAPI);
-		orderRequest.setNotifyUrl("http://192.168.43.210:8080/miniapp/payResult");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+		orderRequest.setNotifyUrl("https://zhihui.chengdecanyin.com/miniapp/payResult");//******接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 //		orderRequest.setSubOpenid(openId);//trade_type=JSAPI，此参数必传，用户在子商户appid下的唯一标识。openid和sub_openid可以选传其中之一，如果选择传sub_openid,则必须传sub_appid。
 		wxPayService = getWxService(uniacid);
 		WxPayMpOrderResult payResult = wxPayService.createOrder(orderRequest);
