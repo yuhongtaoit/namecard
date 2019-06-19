@@ -111,17 +111,6 @@ public class CardController {
 					arr2.add(card.getId());
 				}
 			}
-		}else {
-			CardExample cardExample = new CardExample();
-			cardExample.createCriteria().andUniacidEqualTo(uniacid).andMrtypeEqualTo(1).andIsSendcardEqualTo(0);
-			List<CardWithBLOBs> card_mr = cardMapper.selectByExampleWithBLOBs(cardExample);
-			
-			if(card_mr != null && card_mr.size() > 0) {
-				for(CardWithBLOBs card : card_mr) {
-					arr.add(card.getId());
-					arr2.add(card.getId());
-				}
-			}
 		}
 		if(arr.size() > 0) {
 			CardExample cardExample1 = new CardExample();
